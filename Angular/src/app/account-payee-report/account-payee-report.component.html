@@ -1,0 +1,297 @@
+<div class="container main-container">
+    <div>
+        <h2>
+            Bank/Account - Payee Report
+        </h2>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-11 mx-auto">
+            <div class="card">
+                <div class="card-header account-payee-header">
+                    <h3>
+                        <div class="row">
+                            <div class="col-md-2 mx-auto">
+                                <button type="button" (click)="goBack()" class="btn btn-primary">
+                                    <i class="bi bi-backspace-fill"> Cancel</i>
+                                </button>
+                            </div>
+                            <div class="col-md-10 mx-auto">
+                                <h5>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <form class="form" [formGroup]="accountPayeeReportForm">
+
+                                                <!-- bank -->
+                                                <div class="form-group">
+                                                    <div class="row mb-3">
+                                                        <label for="BankId" class="col-sm-2 col-form-label">
+                                                            Bank
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <select class="form-control" 
+                                                                (change)="changeBank($event)"
+                                                                formControlName="BankId">
+                                                                <option disabled>Choose Bank</option>
+                                                                <option value="">Choose Bank</option>
+                                                                <option value={{b.bankId}} *ngFor="let b of banks">
+                                                                    {{b.bankName}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <span class="col-sm-4 text-danger"
+                                                            *ngIf="submitted && accountPayeeReportFormControl.BankId.errors?.required">
+                                                            Bank is required !
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- account -->
+                                                <div class="form-group">
+                                                    <div class="row mb-3">
+                                                        <label for="AccountId" class="col-sm-2 col-form-label">
+                                                            Account
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <select class="form-control" 
+                                                                (change)="changeAccount($event)"
+                                                                formControlName="AccountId">
+                                                                <option disabled>Choose Account</option>
+                                                                <option value="">Choose Account</option>
+                                                                <option value="All Accounts">All Accounts</option>
+                                                                <option value={{a.accountId}}
+                                                                    *ngFor="let a of accounts">
+                                                                    {{a.accountNumber}} -
+                                                                    [{{displayAccountType(a.accountType)}}]
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <span class="col-sm-4 text-danger"
+                                                            *ngIf="(accountPayeeReportFormControl.AccountId.touched || submitted) && handleError('AccountId', 'required')">
+                                                            Account is required !
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- payee -->
+                                                <div class="form-group">
+                                                    <div class="row mb-3">
+                                                        <label for="PayeeId" class="col-sm-2 col-form-label">
+                                                            Payee
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <select class="form-control" formControlName="PayeeId">
+                                                                <option disabled>Choose Payee</option>
+                                                                <option value="">Choose Payee</option>
+                                                                <option value="0">All Payees</option>
+                                                                <option value={{p.payeeId}} *ngFor="let p of payees">
+                                                                    {{p.payeeName}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <span class="col-sm-4 text-danger"
+                                                            *ngIf="submitted && accountPayeeReportFormControl.PayeeId.errors?.required">
+                                                            Payee is required !
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-check">
+                                                    <input class="form-check-input" 
+                                                        value="1"
+                                                        (change)="onItemChange($event)"
+                                                        type="radio" 
+                                                        name="flexRadioDefault" 
+                                                        id="flexRadioDefault1">
+                                                    <label class="form-check-label" 
+                                                        for="flexRadioDefault1">
+                                                        Need Date Filter!
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" 
+                                                        value="0"
+                                                        (change)="onItemChange($event)"
+                                                        type="radio" 
+                                                        name="flexRadioDefault" 
+                                                        id="flexRadioDefault2" checked>
+                                                    <label class="form-check-label" 
+                                                        for="flexRadioDefault2">
+                                                        Hide Date Filter!
+                                                    </label>
+                                                </div>
+
+
+                                                <div *ngIf="datePanelDisplay">
+                                                    <!-- start date -->
+                                                    <div class="form-group datepicker">
+                                                        <div class="row mb-3">
+                                                            <label for="StartDate" class="col-sm-2 col-form-label">
+                                                                Start Date</label>
+                                                            <div class="col-sm-6">
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="StartDate"
+                                                                            ngbDatepicker #d="ngbDatepicker">
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <span class="input-group-append">
+                                                                            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                                                                                <i class="bi bi-calendar-check-fill"></i>
+                                                                            </button>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <span class="col-sm-4 text-danger"
+                                                                *ngIf="(accountPayeeReportFormControl.StartDate.touched || submitted) && accountPayeeReportFormControl.StartDate.errors?.required">
+                                                                Start Date is required!
+                                                            </span>
+                                                            <span class="col-sm-4 text-danger"
+                                                                *ngIf="(accountPayeeReportFormControl.StartDate.touched || submitted) && !accountPayeeReportFormControl.StartDate.valid && !accountPayeeReportFormControl.StartDate.errors?.required ">
+                                                                Invalid Start Date !
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- end date -->
+                                                    <div class="form-group datepicker">
+                                                        <div class="row mb-3">
+                                                            <label for="EndDate" class="col-sm-2 col-form-label">
+                                                                End Date</label>
+                                                            <div class="col-sm-6">
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dpe" formControlName="EndDate"
+                                                                            ngbDatepicker #de="ngbDatepicker">
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <span class="input-group-append">
+                                                                            <button class="btn btn-outline-secondary calendar" (click)="de.toggle()" type="button">
+                                                                                <i class="bi bi-calendar-check-fill"></i>
+                                                                            </button>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <span class="col-sm-4 text-danger"
+                                                                *ngIf="(accountPayeeReportFormControl.EndDate.touched || submitted) && accountPayeeReportFormControl.EndDate.errors?.required">
+                                                                End Date is required!
+                                                            </span>
+                                                            <span class="col-sm-4 text-danger"
+                                                                *ngIf="(accountPayeeReportFormControl.EndDate.touched || submitted) && !accountPayeeReportFormControl.EndDate.valid && !accountPayeeReportFormControl.EndDate.errors?.required ">
+                                                                Invalid End Date !
+                                                            </span>
+                                                            <span class="col-sm-4 text-danger"
+                                                                *ngIf="invalidEndDate && accountPayeeReportFormControl.EndDate.valid && !accountPayeeReportFormControl.EndDate.errors?.required">
+                                                                End Date &lt; Start Date !
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                              
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <button type="button" (click)="beginAccountPayeeReport()"
+                                                            class="btn btn-info">
+                                                            Get Report !
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <button type="button" (click)="reset()" class="btn btn-success">
+                                                            Reset
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </h5>
+                            </div>
+                        </div>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- bank statement -->
+<!-- all-accounts-payee statement -->
+<div *ngIf="allAccounts" class="container">
+    <app-bank-statement [bankStatement]="bankStatement" >
+    </app-bank-statement>
+</div>
+
+
+<!-- account-payee statement -->
+<div *ngIf="accountStatement.accountId && !allAccounts" class="container">
+    <hr />
+    <p></p>
+    <div>
+        <p></p>
+        <div class="row">
+            <!-- bank -->
+            <div class="col-sm-2 headerBank">
+                <h5>Bank : <b>{{accountStatement.bankName}}</b></h5>
+            </div>
+            <!-- account -->
+            <div class="col-sm-4 headerAccount">
+                <h5>
+                    Account :
+                    <b>
+                        {{accountStatement.accountNumber}} -
+                        [{{accountStatement.accountTypeDisplay}}]
+                    </b>
+                    <p></p>
+                    Balance : <b class="balance">{{accountStatement.lastBalance}}</b>
+                </h5>
+            </div>
+            <!-- payee summary -->
+            <div class="col-sm-6 headerPayeeSummary">
+                <h5>
+                    <b><u>Payee Summary</u></b>
+                    <div class="row">
+                        <div class="col-md-4">
+                           Payee Type #
+                        </div>
+                        <div class="col-md-8">
+                            <b>{{accountStatement.payeeTypeSummaryDisplay}}</b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            Date Range #
+                        </div>
+                        <div *ngIf="dateRange" class="col-md-8">
+                            <b>{{accountStatement.startDate | date}} -TO- {{accountStatement.endDate | date}}</b>
+                        </div>
+                        <div *ngIf="!dateRange" class="col-md-8">
+                            N/A
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            $ Summary
+                        </div>
+                        <div class="col-md-8">
+                            <b>Total In +$[{{accountStatement.totalIn}}]</b>
+                            <br />
+                            <b>Total Out -$[{{accountStatement.totalOut}}]</b>
+                        </div>
+                    </div>
+                </h5>
+            </div>
+        </div>
+        <p></p>
+        <hr />
+        <app-account-transaction [childTransactions]="childTransactions"
+            [lastAccountBalance]="accountStatement.lastBalance">
+        </app-account-transaction>
+        <hr />
+        <p></p>
+    </div>
+</div>

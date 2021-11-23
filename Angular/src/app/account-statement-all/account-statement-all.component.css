@@ -1,0 +1,31 @@
+.account-statement-all{
+    background-color: navajowhite; 
+}
+
+.title {
+  text-align: center;
+  border: 3px solid black;
+}
+.headerBank {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid green;
+}
+.headerAccount {
+  justify-content: center;
+  align-items: center;
+  border: 1px solid green;
+}
+.noTransactions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid blue;
+}
+
+.balance{
+    color: white;
+    background-color: black;
+    font-size: larger;
+}

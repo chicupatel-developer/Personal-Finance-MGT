@@ -1,0 +1,127 @@
+<div class="container">
+    <p></p>
+
+    <div class="card" style="width: 70rem;">    
+        <div class="card-header statementHeader" 
+            [style.color]="bankStatement.bankColor">
+            <b>{{bankStatement.bankName}}</b>
+        </div>
+        <div class="card-body">
+            <!-- if accounts[] available -->
+            <div *ngIf="bankStatement.bankAccounts?.length>0">
+                <!-- bankStatement.bankAccounts[] -->
+                <div *ngFor="let ac of bankStatement.bankAccounts" class="row">
+                    <div class="card" style="width: 70rem;">
+                        <div class="card-header accountHeader">
+                            <!-- account -->
+                            <div class="row">
+                                <div [style.color]="ac.accountColor">
+                                    <b>[ {{ac.accountTypeDisplay}} ] # {{ac.accountNumber}}</b>
+                                </div>
+                                <div>
+                                    Last Balance <b class="balance">${{ac.lastBalance}}</b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- if transactions[] available -->
+                            <div *ngIf="ac.transactions?.length>0">
+                                <!-- transactions[] -->
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-sm-1">
+                                            <h5><b>#</b></h5>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <h5><b>Type</b></h5>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <h5><b>Entity</b></h5>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <h5><b>$Amount$</b></h5>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <h5><b>$Current$</b></h5>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <h5><b>$Last$</b></h5>
+                                        </div>                                     
+                                        <div class="col-sm-2">
+                                            <h5><b>Date</b></h5>
+                                        </div>
+                                    </div>
+                                    <div *ngFor="let t of ac.transactions" [style.color]="ac.accountColor" class="row">
+                                        <div class="col-sm-1">
+                                            {{t.bankTransactionId}}
+                                        </div>
+                                        <div class="col-sm-1">
+                                            {{t.transactionTypeDisplay}}
+                                        </div>
+                                        <div *ngIf="t.transactionType==1" class="col-sm-3">
+                                            {{t.payeeName}} - [{{t.payeeTypeDisplay}}]
+                                        </div>
+                                        <div *ngIf="t.transactionType==0" class="col-sm-3">
+                                            {{t.sourceName}}
+                                        </div>
+                                        <div *ngIf="t.transactionType==1" class="col-sm-2">
+                                            - {{t.amountPaid}}
+                                        </div>
+                                        <div *ngIf="t.transactionType==0" class="col-sm-2">
+                                            + {{t.amountPaid}}
+                                        </div>                                     
+                                        <div *ngIf="t.currentBalance==ac.lastBalance" class="col-sm-2">
+                                            <b class="balance">
+                                                {{t.currentBalance}}
+                                            </b>
+                                        </div>
+                                        <div *ngIf="t.currentBalance!=ac.lastBalance" class="col-sm-2">
+                                            <b>
+                                                {{t.currentBalance}}
+                                            </b>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            {{t.lastBalance}}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {{t.transactionDate | date}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- if transactions[] not available -->
+                            <div *ngIf="ac.transactions?.length<1" [style.color]="ac.accountColor" class="noTransactions">
+                                Transactions Not Available !
+                            </div>
+                        </div>
+                        <div class="card-footer accountFooter" *ngIf="ac.transactions?.length>0">                            
+                            <div class="row" [style.color]="ac.accountColor">                              
+                                <div class="col-md-12">
+                                    Total In <b>+$[{{ac.totalIn}}]</b> / {{ac.totalEllapseDays}} Days
+                                    <br />
+                                    Total Out <b>-$[{{ac.totalOut}}]</b> / {{ac.totalEllapseDays}} Days
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer accountFooter" *ngIf="ac.transactions?.length<1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- if accounts not available -->
+            <div *ngIf="bankStatement.bankAccounts?.length<1" class="noAccounts">
+                Accounts Not Available !
+            </div>
+        </div>
+        <div class="card-footer bankFooter">
+            <!-- summary report for all accounts -->
+            <div class="row" [style.color]="bankStatement.bankColor">
+                <div class="col-md-12">
+                    Total In <b>+$[{{bankStatement.totalIn}}]</b> / {{bankStatement.bankTotalEllapseDays}} Days
+                    <br />
+                    Total Out <b>-$[{{bankStatement.totalOut}}]</b> / {{bankStatement.bankTotalEllapseDays}} Days
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

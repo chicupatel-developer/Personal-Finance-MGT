@@ -1,0 +1,14 @@
+
+.btn.btn-custom-lg,
+.btn.btn-custom-sm,
+.btn.btn-custom-xs {
+  border-radius: 0;
+  width: 500px;
+  height: 75px;
+  justify-content: center;
+  align-items: center;
+  background-color:burlywood;
+  color: red;
+  font-size: x-large;
+  font-weight: bold;
+}

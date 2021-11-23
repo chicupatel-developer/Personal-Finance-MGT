@@ -1,0 +1,157 @@
+<div class="container main-container">
+    <div>
+        <h2>
+            Manage Credit-Card / Transaction
+        </h2>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header" 
+                    [ngStyle]="{'background-color': ccColor}">
+                    <h3>
+                        <div class="row">
+                            <div class="col-md-4 mx-auto">
+                                <button type="button" 
+                                    (click)="goBack()" 
+                                    class="btn btn-primary">
+                                    <i class="bi bi-backspace-fill"> Cancel</i>
+                                </button>
+                            </div>
+                            <div class="col-md-8 mx-auto add-cc-transaction-header">
+                                Add Your Transaction here...
+                            </div>
+                        </div>
+                    </h3>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h6 class="maximumCredit" 
+                                *ngIf="ccTransaction.creditCardId">
+                                <span>
+                                    Credit Card : {{ccTransaction.ccAccountNumber}}
+                                    <p></p>
+                                    Maximum Credit Available : ${{ccTransaction.balance}}
+                                </span>
+                            </h6>
+                        </div>
+                    </div>
+                    <h4 *ngIf="apiResponse">
+                        <span [style.color]="responseColor">
+                            {{apiResponse}}
+                        </span>
+                        <hr />
+                    </h4>
+                    <h5 *ngIf="errors.length > 0">
+                        <ul [style.color]="responseColor">
+                            <li *ngFor="let error of errors">
+                                {{ error }}
+                            </li>
+                        </ul>
+                        <hr />
+                    </h5>
+
+                </div>
+                <div class="card-body">
+                    <form class="form-payee"    
+                        [formGroup]="transactionForm">   
+                        <div class="form-group">
+                            <div class="row mb-2">
+                                <label for="PayeeId" 
+                                    class="col-sm-2 col-form-label">
+                                    Payee
+                                </label>
+                                <div class="col-sm-5">
+                                    <select class="form-control" 
+                                        formControlName="PayeeId">
+                                        <option disabled>Select Payee</option>
+                                        <option value="">Choose Payee</option>
+                                        <option value="{{p.payeeId}}" 
+                                            *ngFor="let p of payees">
+                                            {{p.payeeName}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <span class="col-sm-5 text-danger"
+                                    *ngIf="(transactionFormControl.PayeeId.touched || submitted) && handleError('PayeeId', 'required')">
+                                    Payee is required!
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row mb-3">
+                                <label for="TransactionAmount"                                     
+                                    class="col-sm-2 col-form-label">
+                                    Amount
+                                </label>
+                                <div class="col-sm-5">
+                                    <input type="text" 
+                                        class="form-control" 
+                                        formControlName="TransactionAmount">
+                                </div>
+                                <span class="col-sm-5 text-danger"
+                                    *ngIf="(transactionFormControl.TransactionAmount.touched || submitted) && transactionFormControl.TransactionAmount.errors?.required">
+                                    Transaction Amount is required!
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group datepicker">
+                            <div class="row mb-3">
+                                <label for="TransactionDate"                                     
+                                    class="col-sm-2 col-form-label">Date</label>
+                                <div class="col-sm-5">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <input class="form-control" 
+                                                placeholder="yyyy-mm-dd" 
+                                                name="dp"
+                                                formControlName="TransactionDate" 
+                                                ngbDatepicker #d="ngbDatepicker">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <span class="input-group-append">
+                                                <button class="btn btn-outline-secondary calendar" 
+                                                    (click)="d.toggle()"
+                                                    type="button">
+                                                    <i class="bi bi-calendar-check-fill"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="col-sm-5 text-danger"
+                                    *ngIf="(transactionFormControl.TransactionDate.touched || submitted) && transactionFormControl.TransactionDate.errors?.required">
+                                    Transaction Date is required!
+                                </span>
+                                <span class="col-sm-5 text-danger"
+                                    *ngIf="(transactionFormControl.TransactionDate.touched || submitted) && !transactionFormControl.TransactionDate.valid && !transactionFormControl.TransactionDate.errors?.required ">
+                                    Invalid Transaction Date !
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <button type="button" (click)="addCCTransaction()" 
+                                class="btn btn-success">
+                                Commit Transaction
+                            </button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" 
+                                (click)="resetCCTransaction()" 
+                                class="btn btn-primary">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

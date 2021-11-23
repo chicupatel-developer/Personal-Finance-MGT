@@ -1,0 +1,116 @@
+<div class="container">
+    <p></p>
+    <div *ngIf="ccStatement.creditCardId>0" 
+            class="card" 
+            style="width: 70rem;">
+        <div class="card-header statementHeader" 
+            [style.color]="ccStatement.ccColor">
+            <b>{{ccStatement.creditCardName}} - {{ccStatement.creditCardNumber}}</b>
+        </div>
+        <div class="card-body">            
+            <div class="card" style="width: 70rem;">
+                <div class="card-header ccHeader">
+                    <div class="row">
+                        <div>
+                            Last Balance <b class="balance">${{ccStatement.balance}}</b>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card-body">
+                    <!-- if transactions[] available -->
+                    <div *ngIf="ccStatement.transactions?.length>0">
+                        <!-- transactions[] -->
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <h5><b>#</b></h5>
+                                </div>
+                                <div class="col-sm-1">
+                                    <h5><b>Type</b></h5>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h5><b>Entity</b></h5>
+                                </div>
+                                <div class="col-sm-2">
+                                    <h5><b>$Amount$</b></h5>
+                                </div>                               
+                                <div class="col-sm-2">
+                                    <h5><b>$Current$</b></h5>
+                                </div>
+                                <div class="col-sm-1">
+                                    <h5><b>$Last$</b></h5>
+                                </div>
+                                <div class="col-sm-2">
+                                    <h5><b>Date</b></h5>
+                                </div>
+                            </div>
+                            <div *ngFor="let t of ccStatement.transactions" class="row">
+                                <div class="col-sm-1">
+                                    {{t.creditCardTransactionId}}
+                                </div>
+                                <div class="col-sm-1">
+                                    {{t.transactionTypeDisplay}}
+                                </div>
+                                <div *ngIf="t.transactionType==1" class="col-sm-3">
+                                    {{t.payeeName}} - [{{t.payeeTypeDisplay}}]
+                                </div>
+                                <div *ngIf="t.transactionType==0" class="col-sm-3">
+                                    {{t.bankName}} - [{{t.accountNumber}}]
+                                </div>
+                                <div *ngIf="t.transactionType==1" class="col-sm-2">
+                                    - {{t.amountPaid}}
+                                </div>
+                                <div *ngIf="t.transactionType==0" class="col-sm-2">
+                                    + {{t.amountPaid}}
+                                </div>                               
+                                <div *ngIf="t.currentBalance==ccStatement.balance" class="col-sm-2">
+                                    <b class="balance">
+                                        {{t.currentBalance}}
+                                    </b>
+                                </div>
+                                <div *ngIf="t.currentBalance!=ccStatement.balance" class="col-sm-2">
+                                    <b>
+                                        {{t.currentBalance}}
+                                    </b>
+                                </div>
+                                <div class="col-sm-1">
+                                    {{t.lastBalance}}
+                                </div>
+                                <div class="col-sm-2">
+                                    {{t.transactionDate | date}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- if transactions[] not available -->
+                    <div *ngIf="ccStatement.transactions?.length<1" 
+                        class="noTransactions">
+                        Transactions Not Available !
+                    </div>
+                </div>
+
+                <div class="card-footer ccFooter">
+                    <div class="row">
+                        <div>
+                            Payee Type # {{ccStatement.payeeTypeSummaryDisplay}}
+                        </div>
+                        <div>
+                            Total In $  +[{{ccStatement.totalIn}}]
+                        </div>
+                        <div>
+                            Total Out $  -[{{ccStatement.totalOut}}]
+                        </div>
+                        <div *ngIf="ccStatement.startDate">
+                            Date Range # {{ccStatement.startDate | date}} - {{ccStatement.endDate | date}}
+                        </div>
+                        <div *ngIf="!ccStatement.startDate">
+                            Date Range # N/A
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

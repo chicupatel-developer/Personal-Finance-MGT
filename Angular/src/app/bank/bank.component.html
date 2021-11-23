@@ -1,0 +1,81 @@
+<div class="container main-container">
+    <div>
+        <h2>
+            Manage Banks
+        </h2>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-header header-bg-color">
+                   
+                    <button type="button" 
+                        class="btn btn-primary"
+                        (click)="addBank()" >
+                        <i class="bi bi-plus-circle"> Bank</i>
+                    </button>
+
+                </div>
+                <div *ngIf="(banks?.length > 0)" class="card-body">
+                    <table class="table table-text ">
+                        <thead class="table-header-text">
+                            <tr>
+                                <th>#</th>
+                                <th>Bank Name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr [ngStyle]="{'background-color': b.bgColor}" 
+                                *ngFor="let b of banks" >
+                                
+                                <td>
+                                    <h2><i class="bi bi-bank">{{b.bankId}}</i></h2>
+                                </td>
+                                <td>
+                                    {{b.bankName}}
+                                </td>
+                             
+                                <td>
+                                    <div class="row">
+                                        <div class="col-1"></div>
+                                        <div class="col-2">                                             
+                                            <button type="button" 
+                                                (click)="editBank(b)" 
+                                                class="btn btn-primary"> 
+                                                <i class="bi bi-pencil-fill"></i>
+                                                                                            
+                                            </button>
+                                        </div>
+                                        <div class="col-1"></div>
+                                        <div class="col-2">
+                                            <button type="button" 
+                                                (click)="removeBank(b)" 
+                                                class="btn btn-danger"> 
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-1"></div>
+                                        <div class="col-4">
+                                            <button type="button" 
+                                                (click)="getBankAccounts(b)" 
+                                                class="btn btn-success">
+                                                <i class="bi bi-arrow-right"></i> Accounts
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="!(banks?.length > 0)" class="card-body no-bank">
+                    No Banks Yet !!!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

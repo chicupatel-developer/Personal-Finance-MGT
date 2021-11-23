@@ -1,0 +1,98 @@
+<div class="container main-container">
+    <div>
+        <h2>
+            Manage Bank / Accounts
+        </h2>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+            <div class="card">
+                <div class="card-header" 
+                    [ngStyle]="{'background-color': bankColor}">                               
+                    <h3 >
+                        <div class="row">
+                            <div class="col-md-4 mx-auto">
+                                <button type="button" 
+                                    (click)="goBack()" 
+                                    class="btn btn-primary">
+                                    <i class="bi bi-backspace-fill"> Cancel</i>
+                                </button>
+                            </div>
+                            <div class="col-md-8 mx-auto edit-bank-header">
+                                {{bankAccounts.bankName}} Accounts here...
+                            </div>
+                        </div>
+                    </h3>
+                    <h4 *ngIf="apiResponse">
+                        <span [style.color]="responseColor">
+                            {{apiResponse}}
+                        </span>
+                        <hr />
+                    </h4>
+                    <h5 *ngIf="errors.length > 0">
+                        <ul [style.color]="responseColor">
+                            <li *ngFor="let error of errors">
+                                {{ error }}
+                            </li>
+                        </ul>
+                        <hr />
+                    </h5>
+                </div>
+                <div *ngIf="(bankAccounts.accounts?.length > 0 && isDataAvailable)"
+                    class="card-body">
+                    <table class="table table-text ">
+                        <thead class="table-header-text">
+                            <tr>
+                                <th>A/C Number</th>
+                                <th>Type</th>
+                                <th>Balance</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let a of bankAccounts.accounts">
+                                <td>
+                                    <h2><i class="bi bi-bag">{{a.accountNumber}}</i></h2>
+                                </td>
+                                <td [style.color]="localDataService.getAccountTypeColor(a.accountType)">
+                                    {{displayAccountType(a.accountType)}}
+                                </td>                                            
+                                <td>{{a.balance}}</td>   
+                                <td>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <button type="button" 
+                                                (click)="bankTransactionBeginAdd(a)" 
+                                                class="btn btn-primary">
+                                               -$  To  Payee
+                                            </button>
+                                        </div>   
+                                        <div class="col-5">
+                                            <button type="button"
+                                                (click)="bankInputFromSource(a)" 
+                                                    class="btn btn-primary">
+                                                +$ From Source
+                                            </button>
+                                        </div>
+                                        <div class="col-3">
+                                            <button type="button" (click)="getAccountStatementAll(a)" class="btn btn-primary">
+                                                Statement
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>                            
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="!apiResponse && !(bankAccounts.accounts?.length > 0)" 
+                    class="card-body no-bank-account">
+                    No Accounts Yet !!!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

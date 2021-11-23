@@ -1,0 +1,44 @@
+.statementHeader {
+  font-size: xx-large;
+  text-align: center;
+  font-weight: bolder;
+  font-style: italic;
+}
+.accountHeader {
+  font-size: x-large;
+  text-align: center;
+}
+.balance{
+    color: white;
+    background-color: black;
+    font-size: larger;
+}
+
+.noAccounts {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid black;
+  color:red;
+  font-size: x-large;
+}
+
+.noTransactions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid black;
+  font-size: x-large;
+}
+
+.accountFooter {
+  font-size: x-large;
+  text-align: center;
+  background-color: lightgoldenrodyellow;  
+}
+
+.bankFooter {
+  font-size: x-large;
+  text-align: center;
+  background-color: lightgoldenrodyellow;  
+}

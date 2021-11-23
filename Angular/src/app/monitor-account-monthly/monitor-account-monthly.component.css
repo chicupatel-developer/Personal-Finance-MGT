@@ -1,0 +1,19 @@
+.noTransactions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid black;
+  color:red;
+  font-size: x-large;
+}
+
+.bankAccountInfo{
+  display: flex;
+  height: 200px;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid black;
+  color: white ;
+  background-color: crimson;
+  font-size: larger;
+}

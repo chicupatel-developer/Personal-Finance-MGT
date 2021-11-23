@@ -1,0 +1,205 @@
+<div class="container main-container">
+    <div>
+        <h2>
+            CreditCard - Payee Report
+        </h2>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-11 mx-auto">
+            <div class="card">
+                <div class="card-header cc-payee-header">
+                    <h3>
+                        <div class="row">
+                            <div class="col-md-2 mx-auto">
+                                <button type="button" 
+                                    (click)="goBack()" 
+                                    class="btn btn-primary">
+                                    <i class="bi bi-backspace-fill"> Cancel</i>
+                                </button>
+                            </div>
+                            <div class="col-md-10 mx-auto">
+                                <h5>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <form class="form" 
+                                                [formGroup]="ccPayeeReportForm">
+
+                                                <!-- cc -->
+                                                <div class="form-group">
+                                                    <div class="row mb-3">
+                                                        <label for="CreditCardId" class="col-sm-2 col-form-label">
+                                                            Credit Card
+                                                        </label>
+                                                        <div class="col-sm-6">
+                                                            <select class="form-control" 
+                                                                formControlName="CreditCardId">
+                                                                <option disabled>Choose Credit Card</option>
+                                                                <option value="">Choose Credit Card</option>
+                                                                <option value={{cc.creditCardId}} 
+                                                                    *ngFor="let cc of creditCards">
+                                                                    {{cc.creditCardName}} - {{cc.creditCardNumber}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <span class="col-sm-4 text-danger"
+                                                            *ngIf="submitted && ccPayeeReportFormControl.CreditCardId.errors?.required">
+                                                            Credit Card is required !
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- payee -->
+                                                <div class="form-group">
+                                                    <div class="row mb-3">
+                                                        <label for="PayeeId" class="col-sm-2 col-form-label">
+                                                            Payee
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <select class="form-control" formControlName="PayeeId">
+                                                                <option disabled>Choose Payee</option>
+                                                                <option value="">Choose Payee</option>
+                                                                <option value="0">All Payees</option>
+                                                                <option value={{p.payeeId}} *ngFor="let p of payees">
+                                                                    {{p.payeeName}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <span class="col-sm-4 text-danger" 
+                                                            *ngIf="submitted && ccPayeeReportFormControl.PayeeId.errors?.required">
+                                                            Payee is required !
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-check">
+                                                    <input class="form-check-input" value="1" (change)="onItemChange($event)" type="radio" name="flexRadioDefault"
+                                                        id="flexRadioDefault1">
+                                                    <label class="form-check-label" for="flexRadioDefault1">
+                                                        Need Date Filter!
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" value="0" (change)="onItemChange($event)" type="radio" name="flexRadioDefault"
+                                                        id="flexRadioDefault2" checked>
+                                                    <label class="form-check-label" for="flexRadioDefault2">
+                                                        Hide Date Filter!
+                                                    </label>
+                                                </div>
+
+
+                                                <div *ngIf="datePanelDisplay">
+                                                    <!-- start date -->
+                                                    <div class="form-group datepicker">
+                                                        <div class="row mb-3">
+                                                            <label for="StartDate" class="col-sm-2 col-form-label">
+                                                                Start Date</label>
+                                                            <div class="col-sm-6">
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <input class="form-control" 
+                                                                            placeholder="yyyy-mm-dd" 
+                                                                            name="dp" 
+                                                                            formControlName="StartDate"
+                                                                            ngbDatepicker #d="ngbDatepicker">
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <span class="input-group-append">
+                                                                            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                                                                                <i class="bi bi-calendar-check-fill"></i>
+                                                                            </button>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <span class="col-sm-4 text-danger"
+                                                                *ngIf="(ccPayeeReportFormControl.StartDate.touched || submitted) && ccPayeeReportFormControl.StartDate.errors?.required">
+                                                                Start Date is required!
+                                                            </span>
+                                                            <span class="col-sm-4 text-danger"
+                                                                *ngIf="(ccPayeeReportFormControl.StartDate.touched || submitted) && !ccPayeeReportFormControl.StartDate.valid && !ccPayeeReportFormControl.StartDate.errors?.required ">
+                                                                Invalid Start Date !
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- end date -->
+                                                    <div class="form-group datepicker">
+                                                        <div class="row mb-3">
+                                                            <label for="EndDate" class="col-sm-2 col-form-label">
+                                                                End Date</label>
+                                                            <div class="col-sm-6">
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <input class="form-control" 
+                                                                            placeholder="yyyy-mm-dd" 
+                                                                            name="dpe" 
+                                                                            formControlName="EndDate"
+                                                                            ngbDatepicker #de="ngbDatepicker">
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <span class="input-group-append">
+                                                                            <button class="btn btn-outline-secondary calendar" (click)="de.toggle()" type="button">
+                                                                                <i class="bi bi-calendar-check-fill"></i>
+                                                                            </button>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <span class="col-sm-4 text-danger"
+                                                                *ngIf="(ccPayeeReportFormControl.EndDate.touched || submitted) && ccPayeeReportFormControl.EndDate.errors?.required">
+                                                                End Date is required!
+                                                            </span>
+                                                            <span class="col-sm-4 text-danger"
+                                                                *ngIf="(ccPayeeReportFormControl.EndDate.touched || submitted) && !ccPayeeReportFormControl.EndDate.valid && !ccPayeeReportFormControl.EndDate.errors?.required ">
+                                                                Invalid End Date !
+                                                            </span>
+                                                            <span class="col-sm-4 text-danger"
+                                                                *ngIf="invalidEndDate && ccPayeeReportFormControl.EndDate.valid && !ccPayeeReportFormControl.EndDate.errors?.required">
+                                                                End Date &lt; Start Date !
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <button type="button" 
+                                                            (click)="beginCreditCardPayeeReport()"
+                                                            class="btn btn-info">
+                                                            Get Report !
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <button type="button" 
+                                                            (click)="reset()" class="btn btn-success">
+                                                            Reset
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </h5>
+                            </div>
+                        </div>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- cc statement -->
+<!-- credit-card-payee statement -->
+<div class="container">
+    <app-cc-statement [ccStatement]="ccStatement">
+    </app-cc-statement>
+</div>

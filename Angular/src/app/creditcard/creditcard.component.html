@@ -1,0 +1,108 @@
+<div class="container main-container">
+    <div>
+        <h2>
+           Pay By Credit-Card
+        </h2>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+            <div class="card">
+                <div class="card-header header-bg-color">
+                    <button type="button" 
+                        (click)="goBack()" 
+                        class="btn btn-primary">
+                        <i class="bi bi-backspace-fill"> Cancel</i>
+                    </button>
+                </div>
+                <div *ngIf="isDataAvailable">
+                    <div *ngIf="(payees?.length > 0)" class="card-body">
+                        <table class="table table-text ">
+                            <thead class="table-header-text">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <!-- <th>Description</th> -->
+                                    <th>A/C Number</th>
+                                    <!-- <th>Type</th> -->
+                                    <th>Balance</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr [style.color]="cc.payeeColor" *ngFor="let cc of payees">
+                                    <td>
+                                        <h2><i class="bi bi-credit-card">{{cc.payeeId}}</i></h2>
+                                    </td>
+                                    <td>
+                                        {{cc.payeeName}}
+                                    </td>
+                                    <!-- 
+                                                                            <td>
+                                                                                {{cc.description}}
+                                                                            </td>
+                                                                            -->
+                                    <td>
+                                        {{cc.payeeACNumber}}
+                                    </td>
+                                    <!-- 
+                                                                            <td>
+                                                                                {{displayPayeeType(cc.payeeType)}}
+                                                                            </td>
+                                                                            -->
+                                    <td>
+                                        <h3 [style.color]="cc.balanceColor"><b>{{cc.balance}}</b></h3>
+                                    </td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="button" (click)="ccTransactionBegin(cc, modalData)" class="btn btn-primary">
+                                                    <i class="bi bi-credit-card-fill">
+                                                        Pay by
+                                                    </i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div *ngIf="isDataAvailable">
+                    <div *ngIf="!(payees?.length > 0)" class="card-body no-payee">
+                        No Credit-Cards Yet !!!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<ng-template #modalData let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" 
+            id="modal-basic-title">Warning !!!</h4>
+        <button type="button" 
+            class="close" 
+            aria-label="Close" 
+            (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p><strong>You can not pay by this <span class="text-primary">"Credit Card"</span> ! </strong>
+        </p>
+
+        <p><strong>Balance is 0 ! </strong>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" 
+            class="btn btn-danger" 
+            (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>

@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+
+/*
+bootstrap icons
+*/
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
+html, body { height: 100%; }
+body { 
+    margin: 0; 
+    font-family: Roboto, "Helvetica Neue", sans-serif;     
+}
+
+.main-container{
+    padding-top: 50px;
+}
+
+
+.header-bg-color{
+    background-color: navajowhite;
+}
+
+.table-text{
+    font-size: medium;
+}
+.table-header-text{
+    font-weight: bold;
+    font-style: italic;
+    font-size: x-large;
+}

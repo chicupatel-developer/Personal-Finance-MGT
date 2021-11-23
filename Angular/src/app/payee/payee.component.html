@@ -1,0 +1,89 @@
+<div class="container main-container">
+    <div>
+        <h2>
+            Manage Payees
+        </h2>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+            <div class="card">
+                <div class="card-header header-bg-color">
+
+                    <button type="button" 
+                        class="btn btn-primary" 
+                        (click)="addPayee()">
+                        <i class="bi bi-plus-circle"> Payee</i>
+                    </button>
+
+                </div>
+                <div *ngIf="(payees?.length > 0)" 
+                    class="card-body">
+                    <table class="table table-text ">
+                        <thead class="table-header-text">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>A/C Number</th>
+                                <th>Type</th>
+                                <th>Balance</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>                           
+                            <tr [style.color]="p.payeeColor" 
+                                *ngFor="let p of payees">                             
+                                <td>
+                                    <h3><b><i [ngClass]="p.payeeIcon">{{p.payeeId}}</i></b></h3>
+                                </td>
+                                <td>
+                                    {{p.payeeName}}
+                                </td>
+                                <td>
+                                    {{p.description}}
+                                </td>
+                                <td>
+                                    {{p.payeeACNumber}}
+                                </td>
+                                <td>
+                                    {{displayPayeeType(p.payeeType)}}                                
+                                </td>    
+                                <td *ngIf="displayPayeeType(p.payeeType)=='CreditCard'">
+                                        <h3 [style.color]="p.balanceColor"><b>{{p.balance}}</b></h3>                                   
+                                </td> 
+                                <td *ngIf="displayPayeeType(p.payeeType)!='CreditCard'">
+                                    N/A
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <button type="button" 
+                                                (click)="editPayee(p)" 
+                                                class="btn btn-primary">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-1">                                           
+                                        </div>
+                                        <div class="col-5">
+                                            <button type="button" 
+                                                (click)="removePayee(p)" 
+                                                class="btn btn-danger">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="!(payees?.length > 0)" class="card-body no-payee">
+                    No Payees Yet !!!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

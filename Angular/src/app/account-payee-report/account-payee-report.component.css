@@ -1,0 +1,30 @@
+.account-payee-header{
+    background-color: navajowhite; 
+}
+.title {
+  text-align: center;
+  border: 3px solid black;
+}
+.headerBank {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid green;
+}
+.headerAccount {
+    padding-top: 20px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid green;
+}
+.noTransactions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid blue;
+}
+.headerPayeeSummary {
+  justify-content: center;
+  align-items: center;
+  border: 2px solid violet;
+}

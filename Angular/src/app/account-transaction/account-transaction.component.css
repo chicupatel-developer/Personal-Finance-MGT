@@ -1,0 +1,13 @@
+.noTransactions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid black;
+  color:red;
+  font-size: x-large;
+}
+.balance{
+    color: white;
+    background-color: black;
+    font-size: larger;
+}

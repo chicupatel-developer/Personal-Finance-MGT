@@ -1,0 +1,4 @@
+﻿Package Manager Commands,,,
+
+Add-Migration BankTransactions-edit -context FMS.Entity.Context.FMSContext -OutputDir Migrations
+update-database -context FMS.Entity.Context.FMSContext

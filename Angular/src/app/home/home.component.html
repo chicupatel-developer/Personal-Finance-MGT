@@ -1,0 +1,176 @@
+<div class="container">
+
+    <div class="homePageHeader">
+        <h3>Personal Finance Management</h3>
+        <h5>Technology : .Net Core Web API / EF Core / SQL Server / Angular</h5>
+    </div>
+    <hr />
+    <p></p>
+    <div class="row">
+        <div class="col-sm-5">
+            <div>
+                <div class="titleHeader">
+                    <b>Managing Process,,,</b>
+                </div>
+                <p></p>
+                <div class="titleBody">
+                    <ul>
+                        <li>
+                            Source To Bank-Account Transaction
+                        </li>
+                        <li>
+                            Bank-Account To Payee Transaction
+                        </li>
+                        <li>
+                            Bank-Account To CreditCard Transaction
+                        </li>
+                        <li>
+                            CreditCard To Payee Transaction
+                        </li>
+                    </ul>
+                </div>
+                <p></p>   
+                <hr />             
+            </div>
+            <div>
+                <div class="titleHeader">
+                    <b>Tracking Process By Reports,,,Charts,,,</b>
+                </div>
+                <p></p>
+                <div class="titleBody">
+                    <ul>
+                        <li>
+                            Custom Date - Range Selection For Any Report
+                        </li>
+                        <li>
+                            Account (Selected) - To - Payee (Selected) Report
+                        </li>
+                        <li>
+                            Account (Selected) - To - Payees (All) Report
+                        </li>
+                        <li>
+                            Accounts (All) - To - Payee (Selected) Report
+                        </li>
+                        <li>
+                            Accounts (All) - To - Payees (All) Report
+                        </li>
+                        <li>
+                            Credit-Card (Selected) - To - Payee (Selected) Report
+                        </li>
+                        <li>
+                            Credit-Card (Selected) - To - Payees (All) Report
+                        </li>
+                        <li>
+                            Bank - Account Health Chart
+                        </li>
+                    </ul>
+                </div>
+                <p></p>
+            </div>
+        </div>
+    
+        <div class="col-sm-7">
+            <div class="container-fluid">
+                <div class="row" >
+                    <div class="col-sm-6">
+                        <div (click)="addBank()" class="divButton">
+                            <b>Bank <i class="bi bi-arrow-right"></i> Add</b>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div (click)="getBank()" class="divButton">
+                            <b>Bank <i class="bi bi-arrow-right"></i> Edit / View</b>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row" style="padding-top: 15px;">
+                    <div class="col-sm-6">
+                        <div (click)="getBank()" class="divButton">
+                            <b>Bank <i class="bi bi-arrow-right"></i> Account</b>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div (click)="getTransaction()" class="divButton">
+                            <b>Bank <i class="bi bi-arrow-right"></i> Account <i class="bi bi-arrow-right"></i> Transaction</b>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row" style="padding-top: 15px;">
+                    <div class="col-sm-6">
+                        <div (click)="getStatement()" class="divButton">
+                            <b>Bank <i class="bi bi-arrow-right"></i> Account <i class="bi bi-arrow-right"></i> Statement</b>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div (click)="addAccount()" class="divButton">
+                            <b>Account <i class="bi bi-arrow-right"></i> Add</b>
+                        </div>
+                    </div>
+                </div>
+            
+            
+                <div class="row" style="padding-top: 15px;">
+                    <div class="col-sm-6">
+                        <div (click)="getAccounts()" class="divButton">
+                            <b>Account <i class="bi bi-arrow-right"></i> Edit / View</b>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div (click)="getCC()" class="divButton">
+                            <b>Pay by Credit-Card</b>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row" style="padding-top: 15px;">
+                    <div class="col-sm-6">
+                        <div (click)="getPayee()" class="divButton">
+                            <b>Payee</b>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div (click)="addPayee()" class="divButton">
+                            <b>Add Payee</b>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row" style="padding-top: 15px;">
+                    <div class="col-sm-6">
+                        <div (click)="accountPayeeReport()" class="divButton">
+                            <b>Account - Report</b>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div (click)="ccPayeeReport()" class="divButton">
+                            <b>CreditCard - Report</b>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row" style="padding-top: 15px;">
+                    <div class="col-sm-6">
+                        <div (click)="getCodingLengthReport()" class="divButton">
+                            <b>Coding Length - Report</b>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div (click)="accountHealthChart()" class="divButton">
+                            <b>Account Health - Chart</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

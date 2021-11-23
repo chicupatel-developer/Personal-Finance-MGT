@@ -1,0 +1,75 @@
+<div class="container main-container">
+    <div>
+        <h2>
+            Manage Banks
+        </h2>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-header header-bg-color">
+                    <h3>
+                        <div class="row">
+                            <div class="col-md-4 mx-auto">
+                                <button type="button" 
+                                    (click)="goBack()" 
+                                    class="btn btn-primary">
+                                        <i class="bi bi-backspace-fill"> Cancel</i>
+                                </button>
+                            </div>
+                            <div class="col-md-8 mx-auto add-bank-header">
+                                Add Your Bank here...
+                            </div>
+                        </div>
+                    </h3>
+                    <h4 *ngIf="apiResponse">
+                        <span [style.color]="responseColor">
+                            {{apiResponse}}
+                        </span>
+                        <hr />                       
+                    </h4>
+                    <h5 *ngIf="errors.length > 0">
+                        <ul [style.color]="responseColor">
+                            <li *ngFor="let error of errors">
+                                {{ error }}
+                            </li>
+                        </ul>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form class="form-bank" [formGroup]="bankForm">
+                        <div class="form-group">
+                            <label>Bank Name</label>
+                            <p></p>
+                            <input type="text" class="form-control" formControlName="BankName">
+                            <div class="alert alert-danger mt-2"
+                                *ngIf="(bankFormControl.BankName.touched || submitted) && bankFormControl.BankName.errors?.required">
+                                Bank Name is required!
+                            </div>
+                        </div>                       
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <button type="button" 
+                                (click)="addBank()"  
+                                class="btn btn-success">
+                                New Bank
+                            </button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" 
+                                (click)="resetBank()" 
+                                class="btn btn-primary">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>

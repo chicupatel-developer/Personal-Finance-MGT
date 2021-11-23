@@ -1,0 +1,13 @@
+.add-bank-transaction-header{
+    color: blue;
+}
+
+.maximumCredit {
+  justify-content: center;
+  align-items: center;
+  border: 5px solid red; 
+  font-size: larger; 
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+}

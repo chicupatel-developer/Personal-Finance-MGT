@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "LinesReport/1.0.0": {
+        "dependencies": {
+          "LinesCount": "1.0.0"
+        },
+        "runtime": {
+          "LinesReport.dll": {}
+        }
+      },
+      "LinesCount/1.0.0": {
+        "runtime": {
+          "LinesCount.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "LinesReport/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LinesCount/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

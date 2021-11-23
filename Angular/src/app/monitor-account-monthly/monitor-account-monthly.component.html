@@ -1,0 +1,148 @@
+<div class="container main-container">
+    <div>
+        <h2>
+            Account Monitoring
+        </h2>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-11 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h3>
+                        <div class="row">
+                            <div class="col-md-2 mx-auto">
+                                <button type="button" 
+                                    (click)="goBack()" 
+                                    class="btn btn-primary">
+                                    <i class="bi bi-backspace-fill"> Cancel</i>
+                                </button>
+                            </div>
+                            <div class="col-md-10 mx-auto">
+                                <h5>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <form class="form" 
+                                                [formGroup]="accountMonitorReportForm">
+
+                                                <!-- bank -->
+                                                <div class="form-group">
+                                                    <div class="row mb-3">
+                                                        <label for="BankId" 
+                                                            class="col-sm-2 col-form-label">
+                                                            Bank
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <select class="form-control" 
+                                                                (change)="changeBank($event)"
+                                                                formControlName="BankId">
+                                                                <option disabled>Choose Bank</option>
+                                                                <option value="">Choose Bank</option>
+                                                                <option value={{b.bankId}} 
+                                                                    *ngFor="let b of banks">
+                                                                    {{b.bankName}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <span class="col-sm-4 text-danger"
+                                                            *ngIf="submitted && accountMonitorReportFormControl.BankId.errors?.required">
+                                                            Bank is required !
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- account -->
+                                                <div class="form-group">
+                                                    <div class="row mb-3">
+                                                        <label for="AccountId" 
+                                                            class="col-sm-2 col-form-label">
+                                                            Account
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <select class="form-control"
+                                                                formControlName="AccountId">
+                                                                <option disabled>Choose Account</option>
+                                                                <option value="">Choose Account</option>                                                                
+                                                                <option value={{a.accountId}}
+                                                                    *ngFor="let a of accounts">
+                                                                    {{a.accountNumber}} -
+                                                                    [{{displayAccountType(a.accountType)}}]
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <span class="col-sm-4 text-danger"
+                                                            *ngIf="(accountMonitorReportFormControl.AccountId.touched || submitted) && handleError('AccountId', 'required')">
+                                                            Account is required !
+                                                        </span>
+                                                    </div>
+                                                </div>                                           
+
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <button type="button" 
+                                                            (click)="monitorAccountMonthly()"
+                                                            class="btn btn-info">
+                                                            Monitor !
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <button type="button" 
+                                                            (click)="reset()" 
+                                                            class="btn btn-success">
+                                                            Reset
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </h5>
+                            </div>
+                        </div>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="container" *ngIf="showAnyAccountChart">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>Monthly Account Monitor</h1>
+            <ngx-charts-bar-vertical-2d 
+                [view]="[accountMonthlyParams.width,accountMonthlyParams.height]" 
+                [scheme]="colorScheme" 
+                [results]="multiFinal"
+                [gradient]="accountMonthlyParams.gradient" 
+                [xAxis]="accountMonthlyParams.showXAxis" 
+                [yAxis]="accountMonthlyParams.showYAxis" 
+                [legend]="accountMonthlyParams.showLegend"
+                [showXAxisLabel]="accountMonthlyParams.showXAxisLabel" 
+                [showYAxisLabel]="accountMonthlyParams.showYAxisLabel" 
+                [xAxisLabel]="accountMonthlyParams.xAxisLabel"
+                [yAxisLabel]="accountMonthlyParams.yAxisLabel">
+            </ngx-charts-bar-vertical-2d>
+        </div>
+        <div class="col-md-4 bankAccountInfo">
+            Bank : {{selectedBank}}
+            <br />
+            Account : {{selectedAccount}}
+            <br />
+            Total In $ [ {{totalIn}} ] 
+            <br />
+            Total Out $ [ -{{totalOut}} ]
+        </div>
+    </div>
+</div>
+
+<div class="container noTransactions" *ngIf="!showAnyAccountChart && noTransactions">
+    Transactions Not Available !
+</div>

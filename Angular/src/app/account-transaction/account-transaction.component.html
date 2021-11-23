@@ -1,0 +1,70 @@
+<div class="container transactions">
+
+    <!-- if transactions available -->
+    <div *ngIf="childTransactions?.length>0" class="row">
+        <div class="row">
+            <div class="col-sm-1">
+                <h5><b>#</b></h5>
+            </div>
+            <div class="col-sm-1">
+                <h5><b>Type</b></h5>
+            </div>
+            <div class="col-sm-3">
+                <h5><b>Entity</b></h5>
+            </div>
+            <div class="col-sm-2">
+                <h5><b>$Amount$</b></h5>
+            </div>          
+            <div class="col-sm-2">
+                <h5><b>$Current$</b></h5>
+            </div>
+            <div class="col-sm-1">
+                <h5><b>$Last$</b></h5>
+            </div>
+            <div class="col-sm-2">
+                <h5><b>Date</b></h5>
+            </div>
+        </div>
+        <div *ngFor="let t of childTransactions" class="row">
+            <div class="col-sm-1">
+                {{t.bankTransactionId}}
+            </div>
+            <div class="col-sm-1">
+                {{t.transactionTypeDisplay}}
+            </div>
+            <div *ngIf="t.transactionType==1" class="col-sm-3">
+                {{t.payeeName}} - [{{t.payeeTypeDisplay}}]
+            </div>
+            <div *ngIf="t.transactionType==0" class="col-sm-3">
+                {{t.sourceName}}
+            </div>
+            <div *ngIf="t.transactionType==1" class="col-sm-2">
+                - {{t.amountPaid}}
+            </div>
+            <div *ngIf="t.transactionType==0" class="col-sm-2">
+                + {{t.amountPaid}}
+            </div>         
+            <div *ngIf="t.currentBalance==lastAccountBalance" class="col-sm-2">
+                <b class="balance">
+                    {{t.currentBalance}}
+                </b>
+            </div>
+            <div *ngIf="t.currentBalance!=lastAccountBalance" class="col-sm-2">
+                <b>
+                    {{t.currentBalance}}
+                </b>
+            </div>
+            <div class="col-sm-1">
+                {{t.lastBalance}}
+            </div>
+            <div class="col-sm-2">
+                {{t.transactionDate | date}}
+            </div>
+        </div>
+    </div>
+    <!-- if transactions not available -->
+    <div *ngIf="childTransactions?.length<1" class="row noTransactions">
+        Transactions Not Available !
+    </div>
+
+</div>
