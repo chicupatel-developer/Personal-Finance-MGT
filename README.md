@@ -23,6 +23,13 @@ Technology
 
 
 
+# SYSTEM Diagram
+
+
+![SYSTEM_Diagram](https://user-images.githubusercontent.com/26190114/130498428-5357a158-389a-4848-93f8-ee730b1fe22c.jpg)
+
+
+
 DB Tables
 ---------
     [sources]
@@ -71,21 +78,6 @@ DB Tables Relationship
 
 	- (Payee)1------->0-*(CreditCardTransaction)
 	- (CreditCardTransaction)1------->1(Payee)
-  
-
-
----> exceptions handling
-
-	  - Model validations are handled on Client(Angular - Component) and Server(Controller)  side
-	  - all Server side exceptions are handled on Api - Controller / C# Service
-
-
-
-# SYSTEM Diagram
-
-
-![SYSTEM_Diagram](https://user-images.githubusercontent.com/26190114/130498428-5357a158-389a-4848-93f8-ee730b1fe22c.jpg)
-
 
 
 # Screens
