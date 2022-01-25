@@ -30,56 +30,6 @@ Technology
 
 
 
-DB Tables
----------
-    [sources]
-    [accounts]
-    [banks]
-    [payees]
-    [banktransactions] 
-    [creditcardtransactions]    
-    - db context: FMSContext.cs
-
-
-DB Tables Relationship
-----------------------
-
----> [Bank]-[Account] Relationship
-
-	- (Bank)1------->0-*(Account)
-	- (Account)1------->1(Bank)
-  
-
----> [Bank]-[BankTransaction] Relationship
-
-	- (Bank)1------->0-*(BankTransaction)
-	- (BankTransaction)1------->1(Bank)
-  
-
----> [Account]-[BankTransaction] Relationship
-
-	- (Account)1------->0-*(BankTransaction)
-	- (BankTransaction)1------->1(Account)
-  
-
----> [Payee]-[BankTransaction] Relationship
-
-	- (Payee)1------->0-*(BankTransaction)
-	- (BankTransaction)1------->1(Payee)
-  
-
----> [Source]-[BankTransaction] Relationship
-
-	- (Source)1------->0-*(BankTransaction)
-	- (BankTransaction)1------->1(Source)
-  
-
----> [Payee]-[CreditCardTransaction] Relationship
-
-	- (Payee)1------->0-*(CreditCardTransaction)
-	- (CreditCardTransaction)1------->1(Payee)
-
-
 # Screens
 
 ## Home->
@@ -176,5 +126,57 @@ DB Tables Relationship
 
 
 ![Monthly-Account-Monitor-Chart](https://user-images.githubusercontent.com/26190114/130497211-31294883-be5d-4299-8c45-99fa7e2784e8.PNG)
+
+
+
+
+DB Tables
+---------
+    [sources]
+    [accounts]
+    [banks]
+    [payees]
+    [banktransactions] 
+    [creditcardtransactions]    
+    - db context: FMSContext.cs
+
+
+DB Tables Relationship
+----------------------
+
+---> [Bank]-[Account] Relationship
+
+	- (Bank)1------->0-*(Account)
+	- (Account)1------->1(Bank)
+  
+
+---> [Bank]-[BankTransaction] Relationship
+
+	- (Bank)1------->0-*(BankTransaction)
+	- (BankTransaction)1------->1(Bank)
+  
+
+---> [Account]-[BankTransaction] Relationship
+
+	- (Account)1------->0-*(BankTransaction)
+	- (BankTransaction)1------->1(Account)
+  
+
+---> [Payee]-[BankTransaction] Relationship
+
+	- (Payee)1------->0-*(BankTransaction)
+	- (BankTransaction)1------->1(Payee)
+  
+
+---> [Source]-[BankTransaction] Relationship
+
+	- (Source)1------->0-*(BankTransaction)
+	- (BankTransaction)1------->1(Source)
+  
+
+---> [Payee]-[CreditCardTransaction] Relationship
+
+	- (Payee)1------->0-*(CreditCardTransaction)
+	- (CreditCardTransaction)1------->1(Payee)
 
 
