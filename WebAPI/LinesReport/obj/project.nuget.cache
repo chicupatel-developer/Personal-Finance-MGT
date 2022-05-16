@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2Vcmrdmooc2FIPNsdX2BT3lzh9NSmBvR3ezxr90VB0fg3pWE2o5Qu9uP2JqLeQCJKbp2lBVNlRYu9It6bRxQjg==",
+  "dgSpecHash": "t4LgNhoRC4NaX9jRU7bz3zclIxl8FNN+/TbWF2gzK9Fbr/YJj7NOwXPcdZbkeaUzmNowwShB5xtidf2oayoauQ==",
   "success": true,
-  "projectFilePath": "C:\\FMSapi\\apiFMS\\LinesReport\\LinesReport.csproj",
+  "projectFilePath": "C:\\Personal_Finance_MGT\\WebAPI\\LinesReport\\LinesReport.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

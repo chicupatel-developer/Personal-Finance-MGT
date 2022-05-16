@@ -23,3 +23,12 @@ C:\FMSapi\apiFMS\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.AssemblyInfo.cs
 C:\FMSapi\apiFMS\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.csproj.CoreCompileInputs.cache
 C:\FMSapi\apiFMS\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.dll
 C:\FMSapi\apiFMS\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.pdb
+C:\Personal_Finance_MGT\WebAPI\LinesCount\bin\Debug\netcoreapp3.1\LinesCount.deps.json
+C:\Personal_Finance_MGT\WebAPI\LinesCount\bin\Debug\netcoreapp3.1\LinesCount.dll
+C:\Personal_Finance_MGT\WebAPI\LinesCount\bin\Debug\netcoreapp3.1\LinesCount.pdb
+C:\Personal_Finance_MGT\WebAPI\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.csproj.AssemblyReference.cache
+C:\Personal_Finance_MGT\WebAPI\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.AssemblyInfoInputs.cache
+C:\Personal_Finance_MGT\WebAPI\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.AssemblyInfo.cs
+C:\Personal_Finance_MGT\WebAPI\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.csproj.CoreCompileInputs.cache
+C:\Personal_Finance_MGT\WebAPI\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.dll
+C:\Personal_Finance_MGT\WebAPI\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.pdb

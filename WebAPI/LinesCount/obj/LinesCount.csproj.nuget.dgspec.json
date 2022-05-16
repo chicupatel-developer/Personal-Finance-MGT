@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\FMSapi\\apiFMS\\LinesCount\\LinesCount.csproj": {}
+    "C:\\Personal_Finance_MGT\\WebAPI\\LinesCount\\LinesCount.csproj": {}
   },
   "projects": {
-    "C:\\FMSapi\\apiFMS\\LinesCount\\LinesCount.csproj": {
+    "C:\\Personal_Finance_MGT\\WebAPI\\LinesCount\\LinesCount.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\FMSapi\\apiFMS\\LinesCount\\LinesCount.csproj",
+        "projectUniqueName": "C:\\Personal_Finance_MGT\\WebAPI\\LinesCount\\LinesCount.csproj",
         "projectName": "LinesCount",
-        "projectPath": "C:\\FMSapi\\apiFMS\\LinesCount\\LinesCount.csproj",
+        "projectPath": "C:\\Personal_Finance_MGT\\WebAPI\\LinesCount\\LinesCount.csproj",
         "packagesPath": "C:\\Users\\ankit_2\\.nuget\\packages\\",
-        "outputPath": "C:\\FMSapi\\apiFMS\\LinesCount\\obj\\",
+        "outputPath": "C:\\Personal_Finance_MGT\\WebAPI\\LinesCount\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
