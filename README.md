@@ -34,7 +34,7 @@ Technology
 
 ## Home->
 
-![Home](https://user-images.githubusercontent.com/26190114/139503501-bac2d688-ee59-485c-b0c7-eeb96f4aedf8.PNG)
+
 
 
 ## Bank->
@@ -117,12 +117,6 @@ Technology
 
 
 ![CreditCard-Payee-DateRange-Report](https://user-images.githubusercontent.com/26190114/130497160-5ff56734-05f0-43b0-9f4b-f8b736aed7b5.PNG)
-
-
-![CodingLength1](https://user-images.githubusercontent.com/26190114/139483139-5cbce66a-df9e-4dd7-b7fd-59879b2d47d0.PNG)
-
-
-![CodingLength2](https://user-images.githubusercontent.com/26190114/139483157-2b74bc67-2c23-446d-8f65-5bcf188329a4.PNG)
 
 
 ![Monthly-Account-Monitor-Chart](https://user-images.githubusercontent.com/26190114/130497211-31294883-be5d-4299-8c45-99fa7e2784e8.PNG)
