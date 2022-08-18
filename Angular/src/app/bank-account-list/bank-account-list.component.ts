@@ -83,6 +83,7 @@ export class BankAccountListComponent implements OnInit {
       this.dataService.getBankAccounts(this.bankAccounts.bankId)
         .subscribe(
           data => {
+            console.log(data);
             this.apiResponse = '';
             this.responseColor = 'green';
             this.errors = [];
