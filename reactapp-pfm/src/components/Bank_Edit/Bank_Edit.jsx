@@ -1,48 +1,68 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
 import "./style.css";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
+import { getBankColor } from "../../services/local.service";
 import BankService from "../../services/bank.service";
 
 import { useNavigate } from "react-router";
 
 import Moment from "moment";
 
-const Bank_Create = () => {
+const Bank_Edit = () => {
   let navigate = useNavigate();
+
+  let { id } = useParams();
 
   const [modelErrors, setModelErrors] = useState([]);
 
-  const [bankCreateResponse, setBankCreateResponse] = useState({});
+  const [bankEditResponse, setBankEditResponse] = useState({});
 
   // form
-  const [form, setForm] = useState({});
+  const [bankName, setBankName] = useState("");
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getBank(id);
+  }, []);
+
+  const getBank = (id) => {
+    console.log("Editing bank : ", id);
+    if (checkForNumbersOnly(id)) {
+      BankService.getBank(id)
+        .then((response) => {
+          console.log(response.data);
+          setBankName(response.data.bankName);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else navigate("/bank");
+  };
 
   // reset form
   // form reference
   const formRef = useRef(null);
 
-  const setField = (field, value) => {
-    setForm({
-      ...form,
-      [field]: value,
-    });
-
-    // Check and see if errors exist, and remove them from the error object:
-    if (!!errors[field])
+  const handleBankName = (event) => {
+    setBankName(event.target.value);
+    if (!errors[bankName])
       setErrors({
         ...errors,
-        [field]: null,
+        bankName: "",
       });
   };
 
+  const checkForNumbersOnly = (newVal) => {
+    const re = /^\d*\.?\d*$/;
+    if (re.test(newVal)) return true;
+    else return false;
+  };
+
   const findFormErrors = () => {
-    const { bankName } = form;
     const newErrors = {};
 
     if (!bankName || bankName === "")
@@ -54,6 +74,8 @@ const Bank_Create = () => {
   const handleModelState = (error) => {
     var errors = [];
     if (error.response.status === 400) {
+      // console.log(error.response.data);
+
       for (let prop in error.response.data.errors) {
         if (error.response.data.errors[prop].length > 1) {
           for (let error_ in error.response.data.errors[prop]) {
@@ -69,10 +91,6 @@ const Bank_Create = () => {
     return errors;
   };
 
-  const goBack = (e) => {
-    navigate("/bank");
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -82,53 +100,21 @@ const Bank_Create = () => {
       setErrors(newErrors);
     } else {
       var bankModel = {
-        bankName: form.bankName,
+        // check for ModelState @api
+        bankName: bankName,
+        // departmentName: null,
+        bankId: parseInt(id),
       };
 
       console.log(bankModel);
-
-      // api call
-      BankService.createBank(bankModel)
-        .then((response) => {
-          setModelErrors([]);
-          setBankCreateResponse({});
-          console.log(response.data);
-
-          var bankCreateResponse = {
-            responseCode: response.data.responseCode,
-            responseMessage: response.data.responseMessage,
-          };
-          if (response.data.responseCode === 0) {
-            resetForm();
-            setBankCreateResponse(bankCreateResponse);
-
-            setTimeout(() => {
-              navigate("/bank");
-            }, 3000);
-          } else if (response.data.responseCode === -1) {
-            setBankCreateResponse(bankCreateResponse);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          setModelErrors([]);
-          setBankCreateResponse({});
-          // 400
-          // ModelState
-          if (error.response.status === 400) {
-            console.log("400 !");
-            var modelErrors = handleModelState(error);
-            setModelErrors(modelErrors);
-          }
-        });
     }
   };
 
   const resetForm = (e) => {
     formRef.current.reset();
     setErrors({});
-    setForm({});
-    setBankCreateResponse({});
+    setBankName("");
+    setBankEditResponse({});
     setModelErrors([]);
   };
 
@@ -149,29 +135,15 @@ const Bank_Create = () => {
           <div className="col-md-6 mx-auto">
             <div className="card">
               <div className="card-header header">
-                <div className="row">
-                  <div className="col-md-8 mx-auto">
-                    <h3>Create New Bank</h3>
-                  </div>
-                  <div className="col-md-4 mx-auto">
-                    <Button
-                      className="btn btn-primary"
-                      type="button"
-                      onClick={(e) => goBack(e)}
-                    >
-                      <i className="bi bi-arrow-return-left"></i> Back
-                    </Button>
-                  </div>
-                </div>
+                <h3>Edit Bank # {id}</h3>
                 <p></p>{" "}
-                {bankCreateResponse &&
-                bankCreateResponse.responseCode === -1 ? (
-                  <span className="bankCreateError">
-                    {bankCreateResponse.responseMessage}
+                {bankEditResponse && bankEditResponse.responseCode === -1 ? (
+                  <span className="bankEditError">
+                    {bankEditResponse.responseMessage}
                   </span>
                 ) : (
-                  <span className="bankCreateSuccess">
-                    {bankCreateResponse.responseMessage}
+                  <span className="bankEditSuccess">
+                    {bankEditResponse.responseMessage}
                   </span>
                 )}
                 {modelErrors.length > 0 ? (
@@ -187,9 +159,10 @@ const Bank_Create = () => {
                       <Form.Group controlId="bankName">
                         <Form.Label>Bank Name</Form.Label>
                         <Form.Control
+                          value={bankName}
                           type="text"
                           isInvalid={!!errors.bankName}
-                          onChange={(e) => setField("bankName", e.target.value)}
+                          onChange={(e) => handleBankName(e)}
                         />
                         <Form.Control.Feedback type="invalid">
                           {errors.bankName}
@@ -207,7 +180,7 @@ const Bank_Create = () => {
                       type="button"
                       onClick={(e) => handleSubmit(e)}
                     >
-                      Create Bank
+                      Edit Bank
                     </Button>
                     <Button
                       className="btn btn-primary"
@@ -226,4 +199,4 @@ const Bank_Create = () => {
     </div>
   );
 };
-export default Bank_Create;
+export default Bank_Edit;

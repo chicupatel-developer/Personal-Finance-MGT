@@ -88,7 +88,7 @@ namespace FMS.API.Controllers
 
                 if (bank == null)
                 {
-                    return BadRequest();
+                    return BadRequest("Bank Not Found!");
                 }
                 else
                 {
@@ -97,7 +97,7 @@ namespace FMS.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest("Server Error!");
             }
         }
 
