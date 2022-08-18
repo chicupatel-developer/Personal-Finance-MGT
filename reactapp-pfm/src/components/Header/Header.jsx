@@ -28,6 +28,10 @@ const Header = () => {
               <i className="bi bi-house-fill"></i>
               Home
             </Link>
+            <Link to={"/bank"} className="nav-link">
+              <i className="bi bi-bank"></i>
+              Bank
+            </Link>
           </Nav>
         </Navbar.Collapse>
         {/*
