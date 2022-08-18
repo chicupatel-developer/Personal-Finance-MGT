@@ -9,6 +9,7 @@ import Home from "./components/Home/Home";
 import NotFound from "./components/NotFound/NotFound";
 import Bank from "./components/Bank/Bank";
 import Bank_Create from "./components/Bank_Create/Bank_Create";
+import Bank_Edit from "./components/Bank_Edit/Bank_Edit";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/bank" element={<Bank />} />
             <Route path="/bank-create" element={<Bank_Create />} />
+            <Route path="/bank-edit/:id" element={<Bank_Edit />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace FMS.API.Controllers
 {
+    // react ok
     [Route("api/[controller]")]
     [ApiController]
     public class BankController : ControllerBase

@@ -33,12 +33,20 @@ const Bank_Edit = () => {
     console.log("Editing bank : ", id);
     if (checkForNumbersOnly(id)) {
       BankService.getBank(id)
+        // BankService.getBank(11111) error: bank not found!
         .then((response) => {
           console.log(response.data);
           setBankName(response.data.bankName);
         })
         .catch((e) => {
           console.log(e);
+          if (e.response.status === 400) {
+            var bankEditResponse = {
+              responseCode: -1,
+              responseMessage: e.response.data,
+            };
+            setBankEditResponse(bankEditResponse);
+          }
         });
     } else navigate("/bank");
   };
@@ -102,11 +110,45 @@ const Bank_Edit = () => {
       var bankModel = {
         // check for ModelState @api
         bankName: bankName,
-        // departmentName: null,
+        // bankName: null,
         bankId: parseInt(id),
+        // bankId: 11111,
       };
 
       console.log(bankModel);
+
+      // api call
+      BankService.editBank(bankModel)
+        .then((response) => {
+          console.log(response.data);
+          setModelErrors([]);
+          setBankEditResponse({});
+          var bankEditResponse = {
+            responseCode: response.data.responseCode,
+            responseMessage: response.data.responseMessage,
+          };
+
+          resetForm();
+          setBankEditResponse(bankEditResponse);
+          if (response.data.responseCode === 0) {
+            setTimeout(() => {
+              navigate("/bank");
+            }, 3000);
+          }
+        })
+        .catch((error) => {
+          setModelErrors([]);
+          setBankEditResponse({});
+          // 400
+          // ModelState
+          if (error.response.status === 400) {
+            console.log("400 !");
+            var modelErrors = handleModelState(error);
+            setModelErrors(modelErrors);
+          } else {
+            console.log(error);
+          }
+        });
     }
   };
 

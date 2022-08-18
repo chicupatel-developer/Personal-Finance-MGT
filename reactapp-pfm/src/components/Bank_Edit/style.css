@@ -2,13 +2,13 @@
     padding: 50px;
 }
 
-.deptEditSuccess {
+.bankEditSuccess {
     color: green;
     font-size: medium;
     font-weight: bold;
 }
 
-.deptEditError {
+.bankEditError {
     color: red;
     font-size: medium;
     font-weight: bold;
