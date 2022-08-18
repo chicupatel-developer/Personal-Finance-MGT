@@ -32,9 +32,18 @@ const Bank = () => {
 
   const getBankStyle = (row, rowIdx) => {
     var bankColor = getBankColor(row.bankName);
-    return { backgroundColor: bankColor };   
+    return { backgroundColor: bankColor };
   };
 
+  const displayBankId = (cell, row) => {
+    return (
+      <div>
+        <span>
+          <i className="bi bi-bank"></i> {cell}
+        </span>
+      </div>
+    );
+  };
   const displayActionBtn = (cell, row) => {
     // console.log(row);
     return (
@@ -70,6 +79,7 @@ const Bank = () => {
       dataField: "bankId",
       text: "#",
       sort: true,
+      formatter: (cell, row) => displayBankId(cell, row),
     },
     {
       dataField: "bankName",
