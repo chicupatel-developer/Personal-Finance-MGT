@@ -1,20 +1,18 @@
 # Personal Finance MGT. 
 
-# DotNet Core API + Angular
-
 Technology
 ----------
-- .Net Core Web API
-
-- XUnit - Unit Test
-
-- EF Core - Code First - EF Transaction
+- Web API Core - 3.1, EF Core - Code First - EF Transaction
 
 - Repository pattern
 
+- XUnit - Unit Test
+
 - Sql Server
 
-- Angular, Html, CSS, Javascript, Bootstrap
+- Client(1) : Angular, Html, Css, Bootstrap
+
+- ### WIP Client(2) : React, Html, Css, Bootstrap 
 
 
 # Database
@@ -34,7 +32,7 @@ Technology
 
 ## Home->
 
-
+![Home](https://user-images.githubusercontent.com/26190114/185442599-4226c882-ed78-4bc4-80de-4775aa4bca8d.PNG)
 
 
 ## Bank->
