@@ -13,7 +13,7 @@ namespace FMS.Entity.Context.Models
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BankId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Bank Name is required")]
         public string BankName { get; set; }    
 
         public ICollection<Account> Accounts { get; set; }
