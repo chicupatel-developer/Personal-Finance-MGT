@@ -106,7 +106,7 @@ const Bank = () => {
   };
   const getAccounts = (e, bankId) => {
     console.log("getting accounts for bank : ", bankId);
-    navigate("/bank-accounts/" + bankId);
+    navigate("/bank-account-list/" + bankId);
   };
 
   return (

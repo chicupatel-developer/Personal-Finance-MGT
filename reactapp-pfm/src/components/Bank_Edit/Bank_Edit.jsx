@@ -159,6 +159,9 @@ const Bank_Edit = () => {
     setBankEditResponse({});
     setModelErrors([]);
   };
+  const goBack = (e) => {
+    navigate("/bank");
+  };
 
   let modelErrorList =
     modelErrors.length > 0 &&
@@ -177,8 +180,21 @@ const Bank_Edit = () => {
           <div className="col-md-6 mx-auto">
             <div className="card">
               <div className="card-header header">
-                <h3>Edit Bank # {id}</h3>
-                <p></p>{" "}
+                <div className="row">
+                  <div className="col-md-8 mx-auto">
+                    <h3>Edit Bank # {id}</h3>
+                  </div>
+                  <div className="col-md-4 mx-auto">
+                    <Button
+                      className="btn btn-primary"
+                      type="button"
+                      onClick={(e) => goBack(e)}
+                    >
+                      <i className="bi bi-arrow-return-left"></i> Back
+                    </Button>
+                  </div>
+                </div>
+                <p></p>
                 {bankEditResponse && bankEditResponse.responseCode === -1 ? (
                   <span className="bankEditError">
                     {bankEditResponse.responseMessage}
