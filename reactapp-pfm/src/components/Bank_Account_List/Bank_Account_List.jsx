@@ -29,6 +29,8 @@ const Bank_Account_List = () => {
 
   const [bankAccounts, setBankAccounts] = useState([]);
   const [bankName, setBankName] = useState("");
+  const [bankAcResponse, setBankAcResponse] = useState("");
+  const [responseColor, setResponseColor] = useState("");
 
   const checkForNumbersOnly = (newVal) => {
     const re = /^\d*\.?\d*$/;
@@ -44,10 +46,18 @@ const Bank_Account_List = () => {
   const getBankAccounts = (id) => {
     console.log("getting accounts for bank : ", id);
     if (checkForNumbersOnly(id)) {
+      setBankAcResponse("");
+      setResponseColor("");
       AccountService.getBankAccounts(id)
         .then((response) => {
-          setBankAccounts(response.data.accounts);
-          setBankName(response.data.bankName);
+          console.log(response.data);
+          if (response.data.bankName === null) {
+            setBankAcResponse("Bank Not Found !");
+            setResponseColor("red");
+          } else {
+            setBankAccounts(response.data.accounts);
+            setBankName(response.data.bankName);
+          }
         })
         .catch((e) => {
           console.log(e);
@@ -114,7 +124,11 @@ const Bank_Account_List = () => {
             <div style={getBankStyle(bankName)} className="card-header">
               <div className="row">
                 <div className="col-md-10 mx-auto">
-                  <h4>{bankName} Accounts here...</h4>
+                  {bankAcResponse ? (
+                    <h4 style={{ color: responseColor }}>{bankAcResponse}</h4>
+                  ) : (
+                    <h4>{bankName} Accounts here...</h4>
+                  )}
                 </div>
                 <div className="col-md-2 mx-auto">
                   <Button

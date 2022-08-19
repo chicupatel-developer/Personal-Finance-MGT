@@ -12,13 +12,13 @@ namespace FMS.Entity.Context.Models
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PayeeId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Payee Name is required")]
         public string PayeeName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Payee Desc is required")]
         public string Description { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Payee AC Number is required")]
         public string PayeeACNumber { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Payee Type is required")]
         public PayeeType PayeeType { get; set; }
 
 
