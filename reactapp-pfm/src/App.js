@@ -10,6 +10,8 @@ import Bank from "./components/Bank/Bank";
 import Bank_Create from "./components/Bank_Create/Bank_Create";
 import Bank_Edit from "./components/Bank_Edit/Bank_Edit";
 import Bank_Account_List from "./components/Bank_Account_List/Bank_Account_List";
+import Payee from "./components/Payee/Payee";
+import Payee_Create from "./components/Payee_Create/Payee_Create";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
               path="/bank-account-list/:id"
               element={<Bank_Account_List />}
             />
+            <Route path="/payee" element={<Payee />} />
+            <Route path="/payee-create" element={<Payee_Create />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
