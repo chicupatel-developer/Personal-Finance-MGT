@@ -4,7 +4,7 @@ import "./style.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-import BankService from "../../services/bank.service";
+import PayeeService from "../../services/payee.service";
 
 import { useNavigate } from "react-router";
 
@@ -14,18 +14,32 @@ const Payee_Create = () => {
   let navigate = useNavigate();
 
   const [modelErrors, setModelErrors] = useState([]);
+  const [payeeTypes, setPayeeTypes] = useState([]);
 
-  const [bankCreateResponse, setBankCreateResponse] = useState({});
+  const [payeeCreateResponse, setPayeeCreateResponse] = useState({});
 
   // form
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getPayeeTypes();
+  }, []);
 
   // reset form
   // form reference
   const formRef = useRef(null);
+
+  const getPayeeTypes = () => {
+    PayeeService.allPayeeTypes()
+      .then((response) => {
+        console.log(response.data);
+        setPayeeTypes(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   const setField = (field, value) => {
     setForm({
@@ -41,13 +55,30 @@ const Payee_Create = () => {
       });
   };
 
+  const checkForNumbersOnly = (newVal) => {
+    const re = /^\d*\.?\d*$/;
+    if (re.test(newVal)) return true;
+    else return false;
+  };
+
   const findFormErrors = () => {
-    const { bankName } = form;
+    const { payeeName, description, payeeACNumber, payeeType, balance } = form;
     const newErrors = {};
 
-    if (!bankName || bankName === "")
-      newErrors.bankName = "Bank Name is Required!";
+    if (!payeeName || payeeName === "")
+      newErrors.payeeName = "Payee Name is Required!";
+    if (!description || description === "")
+      newErrors.description = "Description is Required!";
+    if (!payeeACNumber || payeeACNumber === "")
+      newErrors.payeeACNumber = "Payee A/C No is Required!";
+    if (!payeeType || payeeType === "")
+      newErrors.payeeType = "Payee Type is Required!";
 
+    if (!balance || balance === "") newErrors.balance = "Balance is Required!";
+    if (!(!balance || balance === "")) {
+      if (!checkForNumbersOnly(balance))
+        newErrors.balance = "Only Numbers are Allowed!";
+    }
     return newErrors;
   };
 
@@ -70,7 +101,7 @@ const Payee_Create = () => {
   };
 
   const goBack = (e) => {
-    navigate("/bank");
+    navigate("/payee");
   };
 
   const handleSubmit = (e) => {
@@ -81,46 +112,15 @@ const Payee_Create = () => {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      var bankModel = {
-        bankName: form.bankName,
+      var payeeModel = {
+        payeeName: form.payeeName,
+        description: form.description,
+        payeeACNumber: form.payeeACNumber,
+        payeeType: form.payeeType,
+        balance: Number(form.balance),
       };
 
-      console.log(bankModel);
-
-      // api call
-      BankService.createBank(bankModel)
-        .then((response) => {
-          setModelErrors([]);
-          setBankCreateResponse({});
-          console.log(response.data);
-
-          var bankCreateResponse = {
-            responseCode: response.data.responseCode,
-            responseMessage: response.data.responseMessage,
-          };
-          if (response.data.responseCode === 0) {
-            resetForm();
-            setBankCreateResponse(bankCreateResponse);
-
-            setTimeout(() => {
-              navigate("/bank");
-            }, 3000);
-          } else if (response.data.responseCode === -1) {
-            setBankCreateResponse(bankCreateResponse);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          setModelErrors([]);
-          setBankCreateResponse({});
-          // 400
-          // ModelState
-          if (error.response.status === 400) {
-            console.log("400 !");
-            var modelErrors = handleModelState(error);
-            setModelErrors(modelErrors);
-          }
-        });
+      console.log(payeeModel);
     }
   };
 
@@ -128,7 +128,7 @@ const Payee_Create = () => {
     formRef.current.reset();
     setErrors({});
     setForm({});
-    setBankCreateResponse({});
+    setPayeeCreateResponse({});
     setModelErrors([]);
   };
 
@@ -142,18 +142,28 @@ const Payee_Create = () => {
       );
     }, this);
 
+  const renderOptionsForPayeeTypes = () => {
+    return payeeTypes.map((dt, i) => {
+      return (
+        <option value={dt} key={i} name={dt}>
+          {dt}
+        </option>
+      );
+    });
+  };
+
   return (
     <div className="mainContainer">
       <div className="container">
         <div className="row">
-          <div className="col-md-6 mx-auto">
+          <div className="col-md-8 mx-auto">
             <div className="card">
               <div className="card-header header">
                 <div className="row">
-                  <div className="col-md-8 mx-auto">
-                    <h3>Create New Bank</h3>
+                  <div className="col-md-9 mx-auto">
+                    <h3>Create New Payee</h3>
                   </div>
-                  <div className="col-md-4 mx-auto">
+                  <div className="col-md-3 mx-auto">
                     <Button
                       className="btn btn-primary"
                       type="button"
@@ -164,14 +174,14 @@ const Payee_Create = () => {
                   </div>
                 </div>
                 <p></p>{" "}
-                {bankCreateResponse &&
-                bankCreateResponse.responseCode === -1 ? (
-                  <span className="bankCreateError">
-                    {bankCreateResponse.responseMessage}
+                {payeeCreateResponse &&
+                payeeCreateResponse.responseCode === -1 ? (
+                  <span className="payeeCreateError">
+                    {payeeCreateResponse.responseMessage}
                   </span>
                 ) : (
-                  <span className="bankCreateSuccess">
-                    {bankCreateResponse.responseMessage}
+                  <span className="payeeCreateSuccess">
+                    {payeeCreateResponse.responseMessage}
                   </span>
                 )}
                 {modelErrors.length > 0 ? (
@@ -184,15 +194,77 @@ const Payee_Create = () => {
                 <Form ref={formRef}>
                   <div className="row">
                     <div className="col-md-6 mx-auto">
-                      <Form.Group controlId="bankName">
-                        <Form.Label>Bank Name</Form.Label>
+                      <Form.Group controlId="payeeName">
+                        <Form.Label>Payee Name</Form.Label>
                         <Form.Control
                           type="text"
-                          isInvalid={!!errors.bankName}
-                          onChange={(e) => setField("bankName", e.target.value)}
+                          isInvalid={!!errors.payeeName}
+                          onChange={(e) =>
+                            setField("payeeName", e.target.value)
+                          }
                         />
                         <Form.Control.Feedback type="invalid">
-                          {errors.bankName}
+                          {errors.payeeName}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="description">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          rows="5"
+                          isInvalid={!!errors.description}
+                          onChange={(e) =>
+                            setField("description", e.target.value)
+                          }
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.description}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </div>
+                    <div className="col-md-6 mx-auto">
+                      <Form.Group controlId="payeeType">
+                        <Form.Label>Payee Type</Form.Label>
+                        <Form.Control
+                          as="select"
+                          isInvalid={!!errors.payeeType}
+                          onChange={(e) => {
+                            setField("payeeType", e.target.value);
+                          }}
+                        >
+                          <option value="">Select Payee Type</option>
+                          {renderOptionsForPayeeTypes()}
+                        </Form.Control>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.payeeType}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="payeeACNumber">
+                        <Form.Label>A/C Number</Form.Label>
+                        <Form.Control
+                          type="text"
+                          isInvalid={!!errors.payeeACNumber}
+                          onChange={(e) =>
+                            setField("payeeACNumber", e.target.value)
+                          }
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.payeeACNumber}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="balance">
+                        <Form.Label>Balance</Form.Label>
+                        <Form.Control
+                          className="qtyField"
+                          type="text"
+                          isInvalid={!!errors.balance}
+                          onChange={(e) => setField("balance", e.target.value)}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.balance}
                         </Form.Control.Feedback>
                       </Form.Group>
                     </div>
@@ -207,7 +279,7 @@ const Payee_Create = () => {
                       type="button"
                       onClick={(e) => handleSubmit(e)}
                     >
-                      Create Bank
+                      Create Payee
                     </Button>
                     <Button
                       className="btn btn-primary"

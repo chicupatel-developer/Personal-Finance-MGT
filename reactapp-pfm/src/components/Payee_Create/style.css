@@ -25,3 +25,7 @@
     background-color: lightsalmon;
     text-align: left;
 }
+
+.qtyField {
+    width: 150px;
+}
