@@ -50,7 +50,7 @@ const Bank_Account_List = () => {
       setResponseColor("");
       AccountService.getBankAccounts(id)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           if (response.data.bankName === null) {
             setBankAcResponse("Bank Not Found !");
             setResponseColor("red");
@@ -89,6 +89,34 @@ const Bank_Account_List = () => {
       </div>
     );
   };
+  const displayActionBtn = (cell, row) => {
+    return (
+      <div>
+        {" "}
+        <Button
+          className="btn btn-info"
+          type="button"
+          onClick={(e) => bankTransactionBeginAdd(e, row)}
+        >
+          -$ To Payee
+        </Button>{" "}
+      </div>
+    );
+  };
+  const bankTransactionBeginAdd = (e, account) => {
+    var bankTransaction = {
+      bankId: id,
+      bankName: bankName,
+      accountId: account.accountId,
+      accountNumber: account.accountNumber,
+      balance: account.balance,
+    };
+    console.log(bankTransaction);
+
+         navigate("/bank-transaction-add", {
+           state: bankTransaction,
+         });
+  };
 
   const columns = [
     {
@@ -106,6 +134,11 @@ const Bank_Account_List = () => {
     {
       dataField: "balance",
       text: "Balance",
+    },
+    {
+      dataField: "actions",
+      text: "Actions",
+      formatter: (cell, row) => displayActionBtn(cell, row),
     },
   ];
 

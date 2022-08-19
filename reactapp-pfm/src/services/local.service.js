@@ -25,7 +25,6 @@ export function getAccountColor(acType) {
 }
 
 export function getPayeeIcon(payeeType) {
-  console.log(payeeType);
   if (payeeType === 0) {
     return "bi bi-phone-fill";
   }

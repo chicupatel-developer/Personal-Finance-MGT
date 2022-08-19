@@ -12,6 +12,7 @@ import Bank_Edit from "./components/Bank_Edit/Bank_Edit";
 import Bank_Account_List from "./components/Bank_Account_List/Bank_Account_List";
 import Payee from "./components/Payee/Payee";
 import Payee_Create from "./components/Payee_Create/Payee_Create";
+import Bank_Transaction_Add from "./components/Bank_Transaction_Add/Bank_Transaction_Add";
 
 function App() {
   return (
@@ -32,6 +33,10 @@ function App() {
             />
             <Route path="/payee" element={<Payee />} />
             <Route path="/payee-create" element={<Payee_Create />} />
+            <Route
+              path="/bank-transaction-add"
+              element={<Bank_Transaction_Add />}
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
