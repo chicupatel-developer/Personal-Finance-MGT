@@ -116,11 +116,46 @@ const Payee_Create = () => {
         payeeName: form.payeeName,
         description: form.description,
         payeeACNumber: form.payeeACNumber,
-        payeeType: form.payeeType,
+        payeeType: Number(form.payeeType),
         balance: Number(form.balance),
       };
 
       console.log(payeeModel);
+
+      // api call
+      PayeeService.createPayee(payeeModel)
+        .then((response) => {
+          setModelErrors([]);
+          setPayeeCreateResponse({});
+          console.log(response.data);
+
+          var payeeCreateResponse = {
+            responseCode: response.data.responseCode,
+            responseMessage: response.data.responseMessage,
+          };
+          if (response.data.responseCode === 0) {
+            resetForm();
+            setPayeeCreateResponse(payeeCreateResponse);
+
+            setTimeout(() => {
+              navigate("/payee");
+            }, 3000);
+          } else if (response.data.responseCode === -1) {
+            setPayeeCreateResponse(payeeCreateResponse);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          setModelErrors([]);
+          setPayeeCreateResponse({});
+          // 400
+          // ModelState
+          if (error.response.status === 400) {
+            console.log("400 !");
+            var modelErrors = handleModelState(error);
+            setModelErrors(modelErrors);
+          }
+        });
     }
   };
 
@@ -145,7 +180,7 @@ const Payee_Create = () => {
   const renderOptionsForPayeeTypes = () => {
     return payeeTypes.map((dt, i) => {
       return (
-        <option value={dt} key={i} name={dt}>
+        <option value={i} key={i} name={dt}>
           {dt}
         </option>
       );
