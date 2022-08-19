@@ -5,7 +5,11 @@ import "./style.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-import { getBankColor } from "../../services/local.service";
+import {
+  getBankColor,
+  getAccountType,
+  getAccountColor,
+} from "../../services/local.service";
 import BankService from "../../services/bank.service";
 import AccountService from "../../services/account.service";
 
@@ -32,6 +36,11 @@ const Bank_Account_List = () => {
     else return false;
   };
 
+  const getBankStyle = (_bankName) => {
+    var bankColor = getBankColor(_bankName);
+    return { backgroundColor: bankColor };
+  };
+
   const getBankAccounts = (id) => {
     console.log("getting accounts for bank : ", id);
     if (checkForNumbersOnly(id)) {
@@ -50,21 +59,39 @@ const Bank_Account_List = () => {
     getBankAccounts(id);
   }, []);
 
+  const displayAcType = (cell, row) => {
+    return (
+      <div>
+        <b>
+          <span style={{ color: `${getAccountColor(cell)}` }}>
+            {getAccountType(cell)}
+          </span>
+        </b>
+      </div>
+    );
+  };
+  const displayAccountNumber = (cell, row) => {
+    return (
+      <div>
+        <span>
+          <i className="bi bi-bag"></i> {cell}
+        </span>
+      </div>
+    );
+  };
+
   const columns = [
-    {
-      dataField: "accountId",
-      text: "#",
-      sort: true,
-    },
     {
       dataField: "accountNumber",
       text: "Account Number",
       sort: true,
+      formatter: (cell, row) => displayAccountNumber(cell, row),
     },
     {
       dataField: "accountType",
       text: "Account Type",
       sort: true,
+      formatter: (cell, row) => displayAcType(cell, row),
     },
     {
       dataField: "balance",
@@ -72,13 +99,37 @@ const Bank_Account_List = () => {
     },
   ];
 
+  const goBack = (e) => {
+    navigate("/bank");
+  };
+
   return (
     <div className="container">
       <div className="mainHeader">Bank-Accounts</div>
       <hr />
       <div className="row">
-        <div className="col-md-2 mx-auto"></div>
-        <div className="col-md-8 mx-auto">
+        <div className="col-md-1 mx-auto"></div>
+        <div className="col-md-10 mx-auto">
+          <div className="card">
+            <div style={getBankStyle(bankName)} className="card-header">
+              <div className="row">
+                <div className="col-md-10 mx-auto">
+                  <h4>{bankName} Accounts here...</h4>
+                </div>
+                <div className="col-md-2 mx-auto">
+                  <Button
+                    className="btn btn-primary"
+                    type="button"
+                    onClick={(e) => goBack(e)}
+                  >
+                    <i className="bi bi-arrow-return-left"></i> Back
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p></p>
           {bankAccounts && bankAccounts.length > 0 ? (
             <BootstrapTable
               bootstrap4
@@ -92,7 +143,7 @@ const Bank_Account_List = () => {
             <div className="noBanks">No Accounts!</div>
           )}
         </div>
-        <div className="col-md-2 mx-auto"></div>
+        <div className="col-md-1 mx-auto"></div>
       </div>
     </div>
   );
