@@ -169,6 +169,7 @@ namespace FMS.API.Controllers
             return Ok(_response);
         }
 
+        // react ok
         [HttpGet]
         [Route("getBankAccounts/{bankId}")]
         public IActionResult GetBankAccounts(int bankId)

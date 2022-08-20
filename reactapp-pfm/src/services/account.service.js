@@ -1,8 +1,8 @@
 import http from "../axios/account-http-common";
 
-class BankService {
+class AccountService {
   getBankAccounts = async (bankId) => {
     return await http.get(`/getBankAccounts/${bankId}`);
   };
 }
-export default new BankService();
+export default new AccountService();

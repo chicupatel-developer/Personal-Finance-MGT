@@ -24,7 +24,8 @@ namespace FMS.API.Controllers
             _btranRepo = btranRepo;
             _payeeRepo = payeeRepo;
         }
-  
+
+        // react ok
         [HttpGet]
         [Route("listOfPayees")]
         public IActionResult ListOfPayees()
@@ -39,8 +40,9 @@ namespace FMS.API.Controllers
         {
             var transactionStatusTypes = _btranRepo.GetTransactionStatusTypes();
             return Ok(transactionStatusTypes);
-        }           
+        }
 
+        // react ok
         [HttpPost]
         [Route("addBankTransaction")]
         public IActionResult AddBankTransaction(BankTransaction bankTransaction)

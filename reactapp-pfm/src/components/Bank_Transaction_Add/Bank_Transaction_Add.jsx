@@ -118,12 +118,12 @@ const Bank_Tranaction_Add = () => {
       setErrors(newErrors);
     } else {
       var bankTransaction = {
-        payeeId: form.payeeId,
+        payeeId: Number(form.payeeId),
         transactionAmount: Number(form.transactionAmount),
         transactionDate: form.transactionDate,
-        bankId: bankId,
+        bankId: Number(bankId),
         accountId: accountId,
-        balance: balance,
+        balance: Number(balance),
       };
 
       console.log(bankTransaction);

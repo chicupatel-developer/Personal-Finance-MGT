@@ -30,6 +30,7 @@ namespace FMS.API.Controllers
             return Ok(allPayeeTypes);
         }
 
+        // react ok
         [HttpGet]
         [Route("allPayees")]
         public IActionResult GetAllPayees()
@@ -38,6 +39,7 @@ namespace FMS.API.Controllers
             return Ok(allPayees);
         }
 
+        // react ok
         [HttpPost]
         [Route("addPayee")]
         public IActionResult AddPayee(Payee payee)
@@ -82,6 +84,7 @@ namespace FMS.API.Controllers
             }
         }
 
+        // react ok
         [HttpGet]
         [Route("allPayeesCC")]
         public IActionResult GetAllPayeesCC()

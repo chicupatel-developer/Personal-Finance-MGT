@@ -9,8 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace FMS.API.Controllers
-{
-    // react ok
+{    
     [Route("api/[controller]")]
     [ApiController]
     public class BankController : ControllerBase
@@ -23,6 +22,7 @@ namespace FMS.API.Controllers
             _bankRepo = bankRepo;
         }
 
+        // react ok
         [HttpGet]
         [Route("allBanks")]
         public IActionResult GetAllBanks()
@@ -31,6 +31,7 @@ namespace FMS.API.Controllers
             return Ok(allBanks);
         }
 
+        // react ok
         [HttpPost]
         [Route("addBank")]
         public IActionResult AddBank(Bank bank)
@@ -73,6 +74,7 @@ namespace FMS.API.Controllers
             }            
         }
 
+        // react ok
         // edit bank
         [HttpGet]
         [Route("getBank/{selectedBankId}")]
@@ -102,6 +104,7 @@ namespace FMS.API.Controllers
             }
         }
 
+        // react ok
         // edit bank in action
         [HttpPost]
         [Route("editBank")]
