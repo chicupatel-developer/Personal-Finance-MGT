@@ -5,19 +5,19 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 import { getBankColor } from "../../services/local.service";
-import BankTransactionService from "../../services/bank.transaction.service";
+import SourceToBankTransactionService from "../../services/source.to.bank.transaction.service";
 
 import { useNavigate, useLocation } from "react-router";
 
 import Moment from "moment";
 
-const Bank_Tranaction_Add = () => {
+const Source_To_Bank_Transaction = () => {
   let navigate = useNavigate();
 
   const { state } = useLocation();
   const { bankId, bankName, accountId, accountNumber, balance } = state || {}; // Read values passed on state
 
-  const [payees, setPayees] = useState([]);
+  const [sources, setSources] = useState([]);
   const [modelErrors, setModelErrors] = useState([]);
   const [bankTrAddCreateResponse, setBankTrAddCreateResponse] = useState({});
 
@@ -33,13 +33,13 @@ const Bank_Tranaction_Add = () => {
     if (accountId === undefined || balance === undefined)
       navigate("/bank-account-list" + bankId);
 
-    listOfPayees();
+    allSources();
   }, []);
 
-  const listOfPayees = () => {
-    BankTransactionService.listOfPayees()
+  const allSources = () => {
+    SourceToBankTransactionService.allSources()
       .then((response) => {
-        setPayees(response.data);
+        setSources(response.data);
         console.log(response.data);
       })
       .catch((e) => {
@@ -75,10 +75,11 @@ const Bank_Tranaction_Add = () => {
   };
 
   const findFormErrors = () => {
-    const { payeeId, transactionAmount, transactionDate } = form;
+    const { sourceId, transactionAmount, transactionDate } = form;
     const newErrors = {};
 
-    if (!payeeId || payeeId === "") newErrors.payeeId = "Payee is Required!";
+    if (!sourceId || sourceId === "")
+      newErrors.sourceId = "Source is Required!";
     if (!transactionDate || transactionDate === "")
       newErrors.transactionDate = "Transaction Date is Required!";
 
@@ -118,7 +119,7 @@ const Bank_Tranaction_Add = () => {
       setErrors(newErrors);
     } else {
       var bankTransaction = {
-        payeeId: Number(form.payeeId),
+        sourceId: Number(form.sourceId),
         transactionAmount: Number(form.transactionAmount),
         transactionDate: form.transactionDate,
         bankId: Number(bankId),
@@ -129,7 +130,7 @@ const Bank_Tranaction_Add = () => {
       console.log(bankTransaction);
 
       // api call
-      BankTransactionService.addBankTransaction(bankTransaction)
+      SourceToBankTransactionService.bankInputFromSource(bankTransaction)
         .then((response) => {
           setModelErrors([]);
           setBankTrAddCreateResponse({});
@@ -183,11 +184,11 @@ const Bank_Tranaction_Add = () => {
       );
     }, this);
 
-  const renderOptionsForPayees = () => {
-    return payees.map((dt, i) => {
+  const renderOptionsForSources = () => {
+    return sources.map((dt, i) => {
       return (
-        <option value={dt.payeeId} key={i} name={dt.payeeName}>
-          {dt.payeeName}
+        <option value={dt.sourceId} key={i} name={dt.sourceName}>
+          {dt.sourceName}
         </option>
       );
     });
@@ -203,13 +204,13 @@ const Bank_Tranaction_Add = () => {
                 <div className="row">
                   <div className="col-md-10 mx-auto">
                     <h4>Add Your Transaction Here...</h4>
-                    <h5>[ From Bank ---&gt; Payee &amp; CC ]</h5>
+                    <h5>[ From Source ---&gt; Bank ]</h5>
                     <div className="bankHeader">
                       Bank : {bankName}
                       <br />
                       Account Number : {accountNumber}
                       <br />
-                      Maximum Pay : {balance}
+                      Current Balance : {balance}
                     </div>
                   </div>
                   <div className="col-md-2 mx-auto">
@@ -243,20 +244,20 @@ const Bank_Tranaction_Add = () => {
                 <Form ref={formRef}>
                   <div className="row">
                     <div className="col-md-6 mx-auto">
-                      <Form.Group controlId="payeeId">
-                        <Form.Label>Payee</Form.Label>
+                      <Form.Group controlId="sourceId">
+                        <Form.Label>Source</Form.Label>
                         <Form.Control
                           as="select"
-                          isInvalid={!!errors.payeeId}
+                          isInvalid={!!errors.sourceId}
                           onChange={(e) => {
-                            setField("payeeId", e.target.value);
+                            setField("sourceId", e.target.value);
                           }}
                         >
-                          <option value="">Select Payee</option>
-                          {renderOptionsForPayees()}
+                          <option value="">Select Source</option>
+                          {renderOptionsForSources()}
                         </Form.Control>
                         <Form.Control.Feedback type="invalid">
-                          {errors.payeeId}
+                          {errors.sourceId}
                         </Form.Control.Feedback>
                       </Form.Group>
                       <Form.Group controlId="transactionAmount">
@@ -317,4 +318,4 @@ const Bank_Tranaction_Add = () => {
     </div>
   );
 };
-export default Bank_Tranaction_Add;
+export default Source_To_Bank_Transaction;

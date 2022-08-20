@@ -100,8 +100,29 @@ const Bank_Account_List = () => {
         >
           -$ To Payee
         </Button>{" "}
+        <Button
+          className="btn btn-info"
+          type="button"
+          onClick={(e) => bankInputFromSource(e, row)}
+        >
+          +$ From Source
+        </Button>
       </div>
     );
+  };
+  const bankInputFromSource = (e, account) => {
+    var bankTransaction = {
+      bankId: id,
+      bankName: bankName,
+      accountId: account.accountId,
+      accountNumber: account.accountNumber,
+      balance: account.balance,
+    };
+    console.log(bankTransaction);
+
+    navigate("/source-to-bank-transaction", {
+      state: bankTransaction,
+    });
   };
   const bankTransactionBeginAdd = (e, account) => {
     var bankTransaction = {
@@ -113,9 +134,9 @@ const Bank_Account_List = () => {
     };
     console.log(bankTransaction);
 
-         navigate("/bank-transaction-add", {
-           state: bankTransaction,
-         });
+    navigate("/bank-transaction-add", {
+      state: bankTransaction,
+    });
   };
 
   const columns = [

@@ -1,0 +1,38 @@
+.mainContainer {
+    padding: 50px;
+}
+
+.bankTrAddCreateSuccess {
+    color: green;
+    font-size: large;
+    font-weight: bold;
+}
+
+.bankTrAddCreateError {
+    color: red;
+    font-size: large;
+    font-weight: bold;
+}
+
+.modelError {
+    color: red;
+    font-size: medium;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+.qtyField {
+    width: 150px;
+}
+
+.bankHeader {
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 20px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border: 2px solid green;
+    border-radius: 10px;
+    background-color: lightskyblue;
+    font-size: medium;
+}

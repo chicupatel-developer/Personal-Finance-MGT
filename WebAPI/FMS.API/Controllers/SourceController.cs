@@ -22,6 +22,7 @@ namespace FMS.API.Controllers
             _sourceRepo = sourceRepo;
         }
 
+        // react ok
         [HttpGet]
         [Route("allSources")]
         public IActionResult GetAllSources()
@@ -30,6 +31,7 @@ namespace FMS.API.Controllers
             return Ok(allSources);
         }
 
+        // react ok
         [HttpPost]
         [Route("bankInputFromSource")]
         public IActionResult BankInputFromSource(BankTransaction bankTransaction)
