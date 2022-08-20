@@ -39,7 +39,6 @@ C:\Personal_Finance_MGT\WebAPI\FMS.Entity.Context\bin\Debug\netcoreapp3.1\FMS.En
 C:\Personal_Finance_MGT\WebAPI\FMS.Entity.Context\bin\Debug\netcoreapp3.1\FMS.Entity.Context.runtimeconfig.dev.json
 C:\Personal_Finance_MGT\WebAPI\FMS.Entity.Context\bin\Debug\netcoreapp3.1\FMS.Entity.Context.dll
 C:\Personal_Finance_MGT\WebAPI\FMS.Entity.Context\bin\Debug\netcoreapp3.1\FMS.Entity.Context.pdb
-C:\Personal_Finance_MGT\WebAPI\FMS.Entity.Context\obj\Debug\netcoreapp3.1\FMS.Entity.Context.csproj.AssemblyReference.cache
 C:\Personal_Finance_MGT\WebAPI\FMS.Entity.Context\obj\Debug\netcoreapp3.1\FMS.Entity.Context.AssemblyInfoInputs.cache
 C:\Personal_Finance_MGT\WebAPI\FMS.Entity.Context\obj\Debug\netcoreapp3.1\FMS.Entity.Context.AssemblyInfo.cs
 C:\Personal_Finance_MGT\WebAPI\FMS.Entity.Context\obj\Debug\netcoreapp3.1\FMS.Entity.Context.csproj.CoreCompileInputs.cache

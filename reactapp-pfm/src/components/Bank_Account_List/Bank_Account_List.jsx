@@ -106,6 +106,13 @@ const Bank_Account_List = () => {
           onClick={(e) => bankInputFromSource(e, row)}
         >
           +$ From Source
+        </Button>{" "}
+        <Button
+          className="btn btn-info"
+          type="button"
+          onClick={(e) => getAccountStatementAll(e, row)}
+        >
+          Statement
         </Button>
       </div>
     );
@@ -138,6 +145,19 @@ const Bank_Account_List = () => {
       state: bankTransaction,
     });
   };
+  const getAccountStatementAll = (e, account) => {
+    var accountVM = {
+      bankId: id,
+      bankName: bankName,
+      accountId: account.accountId,
+    };
+    console.log(accountVM);
+
+    navigate("/account-statement-all", {
+      state: accountVM,
+    });
+    };
+    
 
   const columns = [
     {

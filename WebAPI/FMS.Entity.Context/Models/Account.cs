@@ -13,19 +13,19 @@ namespace FMS.Entity.Context.Models
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AccountId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Account Number is required")]
         public int AccountNumber { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Account Type is required")]
         public AccountType AccountType { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Bank Name is required")]
         [ForeignKey(nameof(Bank))]
         public int BankId { get; set; }
 
         [JsonIgnore]
         public Bank Bank { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Balance is required")]
         public decimal Balance { get; set; }
         public ICollection<BankTransaction> BankTransactions { get; set; }
     }
