@@ -4,11 +4,20 @@ import "./style.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-import { getBankColor } from "../../services/local.service";
+import {
+  getBankColor,
+  getPayeeTypeName,
+  getAmountSign,
+  getTransactionTypeDisplay,
+} from "../../services/local.service";
 import BankTransactionService from "../../services/bank.transaction.service";
 import AccountService from "../../services/account.service";
 
 import { useNavigate, useLocation } from "react-router";
+// react-bootstrap-table-2
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
+import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 
 import Moment from "moment";
 
@@ -76,6 +85,76 @@ const Account_Statement_All = () => {
   const goBack = (e) => {
     navigate("/bank-account-list/" + bankId);
   };
+
+  const displayEntity = (cell, row) => {
+    return (
+      <div>
+        <span>
+          {cell} - [{getPayeeTypeName(row.payeeType)}]
+        </span>
+      </div>
+    );
+  };
+  const displayAmount = (cell, row) => {
+    return (
+      <div>
+        <span>
+          {getAmountSign(row.transactionType)}&nbsp;
+          {cell}
+        </span>
+      </div>
+    );
+  };
+  const displayDate = (cell) => {
+    if (cell === null || cell === "") return "N/A";
+    else {
+      return Moment(cell).format("DD-MMM-YYYY");
+    }
+  };
+  const displayTransactionType = (cell, row) => {
+    return getTransactionTypeDisplay(row.transactionType);
+  };
+  const columns = [
+    {
+      dataField: "bankTransactionId",
+      text: "#",
+      sort: true,
+    },
+    {
+      dataField: "transactionTypeDisplay",
+      text: "Type",
+      sort: true,
+      formatter: (cell, row) => displayTransactionType(cell, row),
+    },
+    {
+      dataField: "payeeName",
+      text: "Entity",
+      sort: true,
+      formatter: (cell, row) => displayEntity(cell, row),
+    },
+    {
+      dataField: "amountPaid",
+      text: "$Amount$",
+      sort: true,
+      formatter: (cell, row) => displayAmount(cell, row),
+    },
+    {
+      dataField: "currentBalance",
+      text: "$Current$",
+      sort: true,
+    },
+    {
+      dataField: "lastBalance",
+      text: "$Last$",
+      sort: true,
+    },
+    {
+      dataField: "transactionDate",
+      text: "Date",
+      sort: true,
+      formatter: (cell, row) => displayDate(cell, row),
+    },
+  ];
 
   const setField = (field, value) => {
     setForm({
@@ -168,24 +247,27 @@ const Account_Statement_All = () => {
     <div className="mainContainer">
       <div className="container">
         <div className="row">
-          <div className="col-md-8 mx-auto">
+          <div className="col-md-12 mx-auto">
             <div className="card">
               <div style={getBankStyle(bankName)} className="card-header">
                 <div className="row">
-                  <div className="col-md-10 mx-auto">
-                    <h4>Account Statement</h4>
+                  <div className="col-md-12 mx-auto statHeader">
+                    <h3 className="mainHeader">
+                      <u>Account Statement</u>
+                    </h3>
                     {accountStatement && accountStatement.accountNumber && (
-                      <div className="bankHeader">
+                      <div className="">
                         Bank : {bankName}
                         <br />
                         Account Number : {accountStatement.accountNumber} -{" "}
                         {accountType && <span>{accountType}</span>}
                         <br />
-                        Balance [Closing] : {accountStatement.lastBalance}
+                        <span className="closingBalance">
+                          Balance [Closing] : {accountStatement.lastBalance}
+                        </span>
                       </div>
                     )}
                   </div>
-                  <div className="col-md-2 mx-auto"></div>
                 </div>
                 <p></p>
                 {accountStatementResponse &&
@@ -204,7 +286,22 @@ const Account_Statement_All = () => {
                   <span></span>
                 )}
               </div>
-              <div className="card-body"></div>
+              <div className="card-body">
+                <p></p>
+                {accountStatement.transactions &&
+                accountStatement.transactions.length > 0 ? (
+                  <BootstrapTable
+                    bootstrap4
+                    keyField="bankTransactionId"
+                    data={accountStatement.transactions}
+                    columns={columns}
+                    pagination={paginationFactory({ sizePerPage: 5 })}
+                    filter={filterFactory()}
+                  />
+                ) : (
+                  <div className="noBanks">No Transactions!</div>
+                )}
+              </div>
             </div>
           </div>
         </div>

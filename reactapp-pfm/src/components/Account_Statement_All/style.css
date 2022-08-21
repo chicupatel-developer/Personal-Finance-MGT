@@ -21,14 +21,20 @@
     margin-top: 30px;
 }
 
-.bankHeader {
+.statHeader {
     text-align: center;
     vertical-align: middle;
     margin-top: 20px;
     padding-bottom: 10px;
     padding-top: 10px;
-    border: 2px solid green;
-    border-radius: 10px;
-    background-color: lightskyblue;
-    font-size: medium;
+    font-size: large;
+}
+
+.closingBalance{
+    font-style: italic;
+    font-weight: bold;
+    font-size: x-large;
+}
+.mainHeader{
+    margin-bottom: 20px;
 }
