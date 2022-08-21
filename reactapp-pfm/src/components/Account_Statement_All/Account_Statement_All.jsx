@@ -90,7 +90,13 @@ const Account_Statement_All = () => {
     return (
       <div>
         <span>
-          {cell} - [{getPayeeTypeName(row.payeeType)}]
+          {row.transactionType === 0 && row.sourceId && row.payeeId === 0 ? (
+            <span>{row.sourceName}</span>
+          ) : (
+            <span>
+              {cell} - [{getPayeeTypeName(row.payeeType)}]
+            </span>
+          )}
         </span>
       </div>
     );
@@ -114,6 +120,7 @@ const Account_Statement_All = () => {
   const displayTransactionType = (cell, row) => {
     return getTransactionTypeDisplay(row.transactionType);
   };
+
   const columns = [
     {
       dataField: "bankTransactionId",
@@ -176,7 +183,7 @@ const Account_Statement_All = () => {
 
     return newErrors;
   };
-
+  const searchTransaction = () => {};
   const handleModelState = (error) => {
     var errors = [];
     if (error.response.status === 400) {
@@ -267,6 +274,48 @@ const Account_Statement_All = () => {
                         </span>
                       </div>
                     )}
+                    <div className="searchTrForm">
+                      <Form ref={formRef}>
+                        <div className="row">
+                          <div className="col-md-3 mx-auto">
+                            <Form.Label>
+                              <b>Start Date</b>
+                            </Form.Label>
+                            <Form.Control
+                              type="date"
+                              name="startDate"
+                              placeholder="Start Date"
+                              onChange={(e) =>
+                                setField("startDate", e.target.value)
+                              }
+                            />
+                          </div>
+                          <div className="col-md-3 mx-auto">
+                            <Form.Label>
+                              <b>End Date</b>
+                            </Form.Label>
+                            <Form.Control
+                              type="date"
+                              name="endDate"
+                              placeholder="End Date"
+                              onChange={(e) =>
+                                setField("endDate", e.target.value)
+                              }
+                            />
+                          </div>
+                          <div className="col-md-1 mx-auto searchBtn">
+                            <Button
+                              className="btn btn-primary"
+                              type="button"
+                              onClick={(e) => searchTransaction(e)}
+                            >
+                              <i className="bi bi-search"></i>
+                            </Button>
+                          </div>
+                          <div className="col-md-5 mx-auto"></div>
+                        </div>
+                      </Form>
+                    </div>
                   </div>
                 </div>
                 <p></p>
