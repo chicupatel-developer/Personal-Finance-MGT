@@ -41,6 +41,10 @@ const Account_Statement_All = () => {
   // form reference
   const formRef = useRef(null);
 
+  const [transactions_, setTransactions_] = useState([]);
+  const [enableSearch, setEnableSearch] = useState(false);
+  const [searchDone, setSearchDone] = useState(false);
+
   useEffect(() => {
     if (accountId === undefined) navigate("/bank-account-list" + bankId);
     else {
@@ -181,9 +185,56 @@ const Account_Statement_All = () => {
     const { groupBy, startDate, endDate } = form;
     const newErrors = {};
 
+    if (!startDate || startDate === "")
+      newErrors.startDate = "Start Date is Required!";
+
+    if (!endDate || endDate === "") newErrors.endDate = "End Date is Required!";
+    if (!(!startDate || startDate === "") && !(!endDate || endDate === "")) {
+      if (startDate > endDate) {
+        newErrors.startDate = "Start Date Must be < End Date!";
+      } else {
+        console.log("date ok");
+      }
+    }
+
     return newErrors;
   };
-  const searchTransaction = () => {};
+
+  // search
+  const displaySearchPanel = (e) => {
+    setEnableSearch(true);
+    setSearchDone(false);
+  };
+  const resetForm = (e) => {
+    setSearchDone(false);
+    setTransactions_([]);
+    formRef.current.reset();
+    setForm({});
+    setEnableSearch(false);
+  };
+  const searchTransaction = (e) => {
+    e.preventDefault();
+    setSearchDone(true);
+    var searchTransactions = [];
+
+    const newErrors = findFormErrors();
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      for (var i = 0; i < accountStatement.transactions.length; i++) {
+        if (
+          accountStatement.transactions[i].transactionDate <= form.endDate &&
+          accountStatement.transactions[i].transactionDate >= form.startDate
+        ) {
+          searchTransactions.push(accountStatement.transactions[i]);
+        }
+      }
+      console.log(searchTransactions);
+      setTransactions_(searchTransactions);
+    }
+  };
+
   const handleModelState = (error) => {
     var errors = [];
     if (error.response.status === 400) {
@@ -200,34 +251,6 @@ const Account_Statement_All = () => {
       console.log(error);
     }
     return errors;
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const newErrors = findFormErrors();
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-    } else {
-      var filterObject = {
-        groupBy: form.groupBy,
-        startDate: form.startDate,
-        endDate: form.endDate,
-      };
-
-      console.log(filterObject);
-
-      // do filter on accountStatement
-      // x-fer this filter data to child component
-    }
-  };
-
-  const resetForm = (e) => {
-    formRef.current.reset();
-    setErrors({});
-    setForm({});
-    setAccountStatementResponse({});
-    setModelErrors([]);
   };
 
   let modelErrorList =
@@ -284,11 +307,15 @@ const Account_Statement_All = () => {
                             <Form.Control
                               type="date"
                               name="startDate"
+                              isInvalid={!!errors.startDate}
                               placeholder="Start Date"
                               onChange={(e) =>
                                 setField("startDate", e.target.value)
                               }
                             />
+                            <Form.Control.Feedback type="invalid">
+                              {errors.startDate}
+                            </Form.Control.Feedback>
                           </div>
                           <div className="col-md-3 mx-auto">
                             <Form.Label>
@@ -297,11 +324,15 @@ const Account_Statement_All = () => {
                             <Form.Control
                               type="date"
                               name="endDate"
+                              isInvalid={!!errors.endDate}
                               placeholder="End Date"
                               onChange={(e) =>
                                 setField("endDate", e.target.value)
                               }
                             />
+                            <Form.Control.Feedback type="invalid">
+                              {errors.endDate}
+                            </Form.Control.Feedback>
                           </div>
                           <div className="col-md-1 mx-auto searchBtn">
                             <Button
