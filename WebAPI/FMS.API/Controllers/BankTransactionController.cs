@@ -94,7 +94,7 @@ namespace FMS.API.Controllers
             }
         }
 
-        // react wip
+        // react ok
         [HttpPost]
         [Route("getAccountStatementAll")]
         public IActionResult GetAccountStatementAll(AccountVM accountVM)

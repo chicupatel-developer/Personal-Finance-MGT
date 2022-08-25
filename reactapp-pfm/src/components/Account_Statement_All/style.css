@@ -47,7 +47,7 @@
     padding-top: 40px;
 }
 
-.noTrans {
+.apiError {
     text-align: center;
     color: red;
     font-size: xx-large;

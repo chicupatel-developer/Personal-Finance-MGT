@@ -150,14 +150,14 @@ const Bank_Account_List = () => {
       bankId: id,
       bankName: bankName,
       accountId: account.accountId,
+      // accountId: null,
     };
     console.log(accountVM);
 
     navigate("/account-statement-all", {
       state: accountVM,
     });
-    };
-    
+  };
 
   const columns = [
     {
