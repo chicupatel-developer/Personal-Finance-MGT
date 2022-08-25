@@ -42,8 +42,7 @@ const Account_Statement_All = () => {
   const formRef = useRef(null);
 
   const [transactions_, setTransactions_] = useState([]);
-  const [enableSearch, setEnableSearch] = useState(false);
-  const [searchDone, setSearchDone] = useState(false);
+  const [doSearch, setDoSearch] = useState(false);
 
   useEffect(() => {
     if (accountId === undefined) navigate("/bank-account-list" + bankId);
@@ -200,21 +199,9 @@ const Account_Statement_All = () => {
     return newErrors;
   };
 
-  // search
-  const displaySearchPanel = (e) => {
-    setEnableSearch(true);
-    setSearchDone(false);
-  };
-  const resetForm = (e) => {
-    setSearchDone(false);
-    setTransactions_([]);
-    formRef.current.reset();
-    setForm({});
-    setEnableSearch(false);
-  };
   const searchTransaction = (e) => {
     e.preventDefault();
-    setSearchDone(true);
+    setDoSearch(true);
     var searchTransactions = [];
 
     const newErrors = findFormErrors();
@@ -235,6 +222,13 @@ const Account_Statement_All = () => {
     }
   };
 
+  const allTransaction = (e) => {
+    e.preventDefault();
+    setDoSearch(false);
+    formRef.current.reset();
+    setForm({});
+    setTransactions_([]);
+  };
   const handleModelState = (error) => {
     var errors = [];
     if (error.response.status === 400) {
@@ -343,7 +337,16 @@ const Account_Statement_All = () => {
                               <i className="bi bi-search"></i>
                             </Button>
                           </div>
-                          <div className="col-md-5 mx-auto"></div>
+                          <div className="col-md-2 mx-auto searchBtn">
+                            <Button
+                              className="btn btn-success"
+                              type="button"
+                              onClick={(e) => allTransaction(e)}
+                            >
+                              All Transactions
+                            </Button>
+                          </div>
+                          <div className="col-md-3 mx-auto"></div>
                         </div>
                       </Form>
                     </div>
@@ -368,7 +371,8 @@ const Account_Statement_All = () => {
               </div>
               <div className="card-body">
                 <p></p>
-                {accountStatement.transactions &&
+                {!doSearch &&
+                accountStatement.transactions &&
                 accountStatement.transactions.length > 0 ? (
                   <BootstrapTable
                     bootstrap4
@@ -379,7 +383,27 @@ const Account_Statement_All = () => {
                     filter={filterFactory()}
                   />
                 ) : (
-                  <div className="noBanks">No Transactions!</div>
+                  <div className="noTrans"></div>
+                )}
+
+                <p></p>
+                {doSearch && transactions_.length > 0 ? (
+                  <BootstrapTable
+                    bootstrap4
+                    keyField="bankTransactionId"
+                    data={transactions_}
+                    columns={columns}
+                    pagination={paginationFactory({ sizePerPage: 5 })}
+                    filter={filterFactory()}
+                  />
+                ) : (
+                  <div>
+                    {doSearch && transactions_.length < 1 ? (
+                      <div className="noTrans"></div>
+                    ) : (
+                      <span></span>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
