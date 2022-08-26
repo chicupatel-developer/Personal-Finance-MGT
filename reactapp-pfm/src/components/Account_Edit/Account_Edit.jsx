@@ -18,12 +18,15 @@ const Account_Edit = () => {
 
   let { id } = useParams();
 
+  const [accountTypes, setAccountTypes] = useState([]);
+  const [banks, setBanks] = useState([]);
   const [modelErrors, setModelErrors] = useState([]);
 
   const [acEditResponse, setAcEditResponse] = useState({});
   const [account, setAccount] = useState({});
 
   // form
+  const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -38,6 +41,9 @@ const Account_Edit = () => {
         .then((response) => {
           console.log(response.data);
           setAccount(response.data);
+
+          getAccountTypes();
+          getAllBanks();
         })
         .catch((e) => {
           console.log(e);
@@ -50,6 +56,26 @@ const Account_Edit = () => {
           }
         });
     } else navigate("/account");
+  };
+  const getAccountTypes = () => {
+    AccountService.allAccountTypes()
+      .then((response) => {
+        console.log(response.data);
+        setAccountTypes(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+  const getAllBanks = () => {
+    BankService.allBanks()
+      .then((response) => {
+        console.log(response.data);
+        setBanks(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   // reset form
@@ -66,6 +92,69 @@ const Account_Edit = () => {
     navigate("/account");
   };
 
+  const setField = (field, value) => {
+    setForm({
+      ...form,
+      [field]: value,
+    });
+
+    // Check and see if errors exist, and remove them from the error object:
+    if (!!errors[field])
+      setErrors({
+        ...errors,
+        [field]: null,
+      });
+  };
+  const findFormErrors = () => {
+    const { accountNumber, accountType, balance, bankId } = form;
+    const newErrors = {};
+
+    if (!accountType || accountType === "")
+      newErrors.accountType = "Account Type is Required!";
+    if (!bankId || bankId === "") newErrors.bankId = "Bank is Required!";
+
+    if (!balance || balance === "") newErrors.balance = "Balance is Required!";
+    if (!(!balance || balance === "")) {
+      if (!checkForNumbersOnly(balance))
+        newErrors.balance = "Only Numbers are Allowed!";
+    }
+
+    if (!accountNumber || accountNumber === "")
+      newErrors.accountNumber = "Account Number is Required!";
+    if (!(!accountNumber || accountNumber === "")) {
+      if (!checkForNumbersOnly(accountNumber))
+        newErrors.accountNumber = "Only Numbers are Allowed!";
+    }
+    return newErrors;
+  };
+  const handleModelState = (error) => {
+    var errors = [];
+    if (error.response.status === 400) {
+      // console.log(error.response.data);
+
+      for (let prop in error.response.data.errors) {
+        if (error.response.data.errors[prop].length > 1) {
+          for (let error_ in error.response.data.errors[prop]) {
+            errors.push(error.response.data.errors[prop][error_]);
+          }
+        } else {
+          errors.push(error.response.data.errors[prop]);
+        }
+      }
+    } else {
+      console.log(error);
+    }
+    return errors;
+  };
+
+  const resetForm = (e) => {
+    formRef.current.reset();
+    setErrors({});
+    setForm({});
+    setAcEditResponse({});
+    setModelErrors([]);
+  };
+
   let modelErrorList =
     modelErrors.length > 0 &&
     modelErrors.map((item, i) => {
@@ -75,7 +164,24 @@ const Account_Edit = () => {
         </ul>
       );
     }, this);
-
+  const renderOptionsForAccountTypes = () => {
+    return accountTypes.map((dt, i) => {
+      return (
+        <option value={i} key={i} name={dt}>
+          {dt}
+        </option>
+      );
+    });
+  };
+  const renderOptionsForBankList = () => {
+    return banks.map((dt, i) => {
+      return (
+        <option value={dt.bankId} key={i} name={dt.bankName}>
+          {dt.bankName}
+        </option>
+      );
+    });
+  };
   return (
     <div className="mainContainer">
       <div className="container">

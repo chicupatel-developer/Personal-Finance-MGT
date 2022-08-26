@@ -82,7 +82,10 @@ const Payee = () => {
       </div>
     );
   };
-  const editAccount = (e, accountId) => {};
+  const editAccount = (e, accountId) => {
+    console.log("edit account : ", accountId);
+    navigate("/account-edit/" + accountId);
+  };
   const removeAccount = (e, accountId) => {};
   const createNewAccount = () => {
     navigate("/account-create");
