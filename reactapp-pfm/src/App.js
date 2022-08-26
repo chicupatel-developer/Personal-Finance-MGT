@@ -16,7 +16,7 @@ import Bank_Transaction_Add from "./components/Bank_Transaction_Add/Bank_Transac
 import Source_To_Bank_Transaction from "./components/Source_To_Bank_Transaction/Source_To_Bank_Transaction";
 import Account_Statement_All from "./components/Account_Statement_All/Account_Statement_All";
 import Account from "./components/Account/Account";
-
+import Account_Create from "./components/Account_Create/Account_Create";
 
 function App() {
   return (
@@ -50,6 +50,7 @@ function App() {
               element={<Account_Statement_All />}
             />
             <Route path="/account" element={<Account />} />
+            <Route path="/account-create" element={<Account_Create />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
