@@ -85,7 +85,7 @@ namespace FMS.API.Controllers
             }
         }
 
-        // react wip
+        // react ok
         // edit account
         [HttpGet]
         [Route("getAccount/{selectedAcId}")]
@@ -115,7 +115,7 @@ namespace FMS.API.Controllers
             }
         }
 
-        // react wip
+        // react ok
         // edit account in action
         [HttpPost]
         [Route("editAccount")]

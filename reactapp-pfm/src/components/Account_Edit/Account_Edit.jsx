@@ -45,25 +45,19 @@ const Account_Edit = () => {
     console.log("Editing account : ", id);
     if (checkForNumbersOnly(id)) {
       AccountService.getAccount(id)
-        // BankService.getBank(11111) error: bank not found!
         .then((response) => {
           console.log(response.data);
           setAccount(response.data);
         })
         .catch((e) => {
-          console.log(e);
-          if (e.response.status === 400) {
+          if (e.response.status === 400 || e.response.status === 500) {
             var acEditResponse = {
               responseCode: -1,
               responseMessage: e.response.data,
             };
             setAcEditResponse(acEditResponse);
-          } else if (e.response.status === 500) {
-            var acEditResponse = {
-              responseCode: -1,
-              responseMessage: e.response.data,
-            };
-            setAcEditResponse(acEditResponse);
+          } else {
+            console.log(e);
           }
         });
     } else navigate("/account");
