@@ -36,6 +36,8 @@ const Account_Edit = () => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
+    getAccountTypes();
+    getAllBanks();
     getAccount(id);
   }, []);
 
@@ -47,13 +49,16 @@ const Account_Edit = () => {
         .then((response) => {
           console.log(response.data);
           setAccount(response.data);
-
-          getAccountTypes();
-          getAllBanks();
         })
         .catch((e) => {
           console.log(e);
           if (e.response.status === 400) {
+            var acEditResponse = {
+              responseCode: -1,
+              responseMessage: e.response.data,
+            };
+            setAcEditResponse(acEditResponse);
+          } else if (e.response.status === 500) {
             var acEditResponse = {
               responseCode: -1,
               responseMessage: e.response.data,
@@ -137,15 +142,18 @@ const Account_Edit = () => {
   const handleModelState = (error) => {
     var errors = [];
     if (error.response.status === 400) {
-      // console.log(error.response.data);
-
-      for (let prop in error.response.data.errors) {
-        if (error.response.data.errors[prop].length > 1) {
-          for (let error_ in error.response.data.errors[prop]) {
-            errors.push(error.response.data.errors[prop][error_]);
+      if (error.response.data.errors === undefined) {
+        console.log("Bad Request!!!");
+        errors.push(error.response.data);
+      } else {
+        for (let prop in error.response.data.errors) {
+          if (error.response.data.errors[prop].length > 1) {
+            for (let error_ in error.response.data.errors[prop]) {
+              errors.push(error.response.data.errors[prop][error_]);
+            }
+          } else {
+            errors.push(error.response.data.errors[prop]);
           }
-        } else {
-          errors.push(error.response.data.errors[prop]);
         }
       }
     } else {
@@ -174,9 +182,45 @@ const Account_Edit = () => {
         accountType: Number(account.accountType),
         balance: Number(account.balance),
         bankId: Number(account.bankId),
+        accountId: Number(id),
       };
 
       console.log(accountModel);
+
+      // api call
+      AccountService.editAccount(accountModel)
+        .then((response) => {
+          setModelErrors([]);
+          setAcEditResponse({});
+          console.log(response.data);
+
+          var acEditResponse = {
+            responseCode: response.data.responseCode,
+            responseMessage: response.data.responseMessage,
+          };
+          if (response.data.responseCode === 0) {
+            resetForm();
+            setAcEditResponse(acEditResponse);
+
+            setTimeout(() => {
+              navigate("/account");
+            }, 3000);
+          } else if (response.data.responseCode === -1) {
+            setAcEditResponse(acEditResponse);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          setModelErrors([]);
+          setAcEditResponse({});
+          // 400
+          // ModelState
+          if (error.response.status === 400) {
+            console.log("400 !");
+            var modelErrors = handleModelState(error);
+            setModelErrors(modelErrors);
+          }
+        });
     }
   };
 

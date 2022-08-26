@@ -93,16 +93,16 @@ namespace FMS.API.Controllers
         {
             try
             {
-                var account = _acRepo.GetAccount(selectedAcId);
-                // check for null
-                // account = null;
-
                 // check for exception
                 // throw new Exception();
 
+                var account = _acRepo.GetAccount(selectedAcId);
+                // check for null
+                // account = null;              
+
                 if (account == null)
                 {
-                    return BadRequest();
+                    return BadRequest("Account Not Found @ Server Side!");
                 }
                 else
                 {
@@ -111,7 +111,7 @@ namespace FMS.API.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status500InternalServerError, "Server Error!");
             }
         }
 
@@ -128,7 +128,7 @@ namespace FMS.API.Controllers
                 // account = null;
                 if (account == null)
                 {
-                    return BadRequest();
+                    return BadRequest("Account Object is Null");
                 }
 
                 // check for exception
