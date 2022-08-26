@@ -16,5 +16,9 @@ class AccountService {
   createAccount = async (data) => {
     return await http.post(`/addAccount`, data);
   };
+
+  getAccount = async (accountId) => {
+    return await http.get(`/getAccount/${accountId}`);
+  };
 }
 export default new AccountService();
