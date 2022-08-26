@@ -65,6 +65,7 @@ export class AccountComponent implements OnInit {
     this.dataService.getAccounts()
       .subscribe(
         data => {
+          console.log(data);
           this.accounts = data;
           
           // bank name wise color setup

@@ -8,5 +8,9 @@ class AccountService {
   allAccountTypes = async () => {
     return await http.get(`/allAccountTypes`);
   };
+
+  allAccounts = async () => {
+    return await http.get(`/allAccounts`);
+  };
 }
 export default new AccountService();

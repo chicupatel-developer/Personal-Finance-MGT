@@ -29,7 +29,8 @@ namespace FMS.API.Controllers
             var allAccountTypes = _acRepo.GetAllAccountTypes();
             return Ok(allAccountTypes);
         }
- 
+
+        // react wip
         [HttpGet]
         [Route("allAccounts")]
         public IActionResult GetAllAccounts()
