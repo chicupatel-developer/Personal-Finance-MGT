@@ -12,6 +12,7 @@ import AccountService from "../../services/account.service";
 import { useNavigate } from "react-router";
 
 import Moment from "moment";
+import accountHttpCommon from "../../axios/account-http-common";
 
 const Account_Edit = () => {
   let navigate = useNavigate();
@@ -23,7 +24,12 @@ const Account_Edit = () => {
   const [modelErrors, setModelErrors] = useState([]);
 
   const [acEditResponse, setAcEditResponse] = useState({});
-  const [account, setAccount] = useState({});
+  const [account, setAccount] = useState({
+    accountNumber: 0,
+    balance: 0,
+    bankId: 0,
+    accountType: 0,
+  });
 
   // form
   const [form, setForm] = useState({});
@@ -93,8 +99,9 @@ const Account_Edit = () => {
   };
 
   const setField = (field, value) => {
-    setForm({
-      ...form,
+    console.log(field, value);
+    setAccount({
+      ...account,
       [field]: value,
     });
 
@@ -106,7 +113,7 @@ const Account_Edit = () => {
       });
   };
   const findFormErrors = () => {
-    const { accountNumber, accountType, balance, bankId } = form;
+    const { accountNumber, accountType, balance, bankId } = account;
     const newErrors = {};
 
     if (!accountType || accountType === "")
@@ -153,6 +160,24 @@ const Account_Edit = () => {
     setForm({});
     setAcEditResponse({});
     setModelErrors([]);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newErrors = findFormErrors();
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      var accountModel = {
+        accountNumber: Number(account.accountNumber),
+        accountType: Number(account.accountType),
+        balance: Number(account.balance),
+        bankId: Number(account.bankId),
+      };
+
+      console.log(accountModel);
+    }
   };
 
   let modelErrorList =
@@ -203,9 +228,116 @@ const Account_Edit = () => {
                     </Button>
                   </div>
                 </div>
-                <p></p>
+                <p></p>{" "}
+                {acEditResponse && acEditResponse.responseCode === -1 ? (
+                  <span className="acEditError">
+                    {acEditResponse.responseMessage}
+                  </span>
+                ) : (
+                  <span className="acEditSuccess">
+                    {acEditResponse.responseMessage}
+                  </span>
+                )}
+                {modelErrors.length > 0 ? (
+                  <div className="modelError">{modelErrorList}</div>
+                ) : (
+                  <span></span>
+                )}
               </div>
-              <div className="card-body"></div>
+              <div className="card-body">
+                <Form ref={formRef}>
+                  <div className="row">
+                    <div className="col-md-6 mx-auto">
+                      <Form.Group controlId="accountNumber">
+                        <Form.Label>A/C Number</Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={account.accountNumber}
+                          isInvalid={!!errors.accountNumber}
+                          onChange={(e) =>
+                            setField("accountNumber", e.target.value)
+                          }
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.accountNumber}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="balance">
+                        <Form.Label>Balance</Form.Label>
+                        <Form.Control
+                          className="qtyField"
+                          type="text"
+                          value={account.balance}
+                          isInvalid={!!errors.balance}
+                          onChange={(e) => setField("balance", e.target.value)}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.balance}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </div>
+                    <div className="col-md-6 mx-auto">
+                      <Form.Group controlId="bankId">
+                        <Form.Label>Bank</Form.Label>
+                        <Form.Control
+                          as="select"
+                          value={account.bankId}
+                          isInvalid={!!errors.bankId}
+                          onChange={(e) => {
+                            setField("bankId", e.target.value);
+                          }}
+                        >
+                          <option value="">Select Bank</option>
+                          {renderOptionsForBankList()}
+                        </Form.Control>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.bankId}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="accountType">
+                        <Form.Label>Account Type</Form.Label>
+                        <Form.Control
+                          as="select"
+                          value={account.accountType}
+                          isInvalid={!!errors.accountType}
+                          onChange={(e) => {
+                            setField("accountType", e.target.value);
+                          }}
+                        >
+                          <option value="">Select Account Type</option>
+                          {renderOptionsForAccountTypes()}
+                        </Form.Control>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.accountType}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                    </div>
+                  </div>
+
+                  <p></p>
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <Button
+                      className="btn btn-success"
+                      type="button"
+                      onClick={(e) => handleSubmit(e)}
+                    >
+                      Edit Account
+                    </Button>
+                    <Button
+                      className="btn btn-primary"
+                      type="button"
+                      onClick={(e) => resetForm(e)}
+                    >
+                      Reset
+                    </Button>
+                  </div>
+                </Form>
+              </div>
             </div>
           </div>
         </div>
