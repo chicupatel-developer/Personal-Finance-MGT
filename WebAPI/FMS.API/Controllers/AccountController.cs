@@ -40,7 +40,7 @@ namespace FMS.API.Controllers
             return Ok(allAccounts);
         }
 
-        // react wip
+        // react ok
         [HttpPost]
         [Route("addAccount")]
         public IActionResult AddAccount(Account account)
@@ -52,14 +52,14 @@ namespace FMS.API.Controllers
                 // account = null;
                 if (account == null)
                 {
-                    return BadRequest();
+                    return BadRequest("Account Object is Null");
                 }
 
                 // check for exception
                 // throw new Exception();
 
                 // check for ModelState
-                // ModelState.AddModelError("error", "ModelState Check!");
+                // ModelState.AddModelError("AccountNumber", "ModelState Check!");
                 // ModelState.AddModelError("error", "Another ModelState Check!");
                 // ModelState.AddModelError("error", "One More Another ModelState Check!");
                               

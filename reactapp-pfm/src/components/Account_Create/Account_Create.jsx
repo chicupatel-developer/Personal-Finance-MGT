@@ -75,7 +75,7 @@ const Account_Create = () => {
   };
 
   const goBack = (e) => {
-    navigate("/payee");
+    navigate("/account");
   };
 
   const findFormErrors = () => {
@@ -104,13 +104,18 @@ const Account_Create = () => {
   const handleModelState = (error) => {
     var errors = [];
     if (error.response.status === 400) {
-      for (let prop in error.response.data.errors) {
-        if (error.response.data.errors[prop].length > 1) {
-          for (let error_ in error.response.data.errors[prop]) {
-            errors.push(error.response.data.errors[prop][error_]);
+      if (error.response.data.errors === undefined) {
+        console.log("Bad Request!!!");
+        errors.push(error.response.data);
+      } else {
+        for (let prop in error.response.data.errors) {
+          if (error.response.data.errors[prop].length > 1) {
+            for (let error_ in error.response.data.errors[prop]) {
+              errors.push(error.response.data.errors[prop][error_]);
+            }
+          } else {
+            errors.push(error.response.data.errors[prop]);
           }
-        } else {
-          errors.push(error.response.data.errors[prop]);
         }
       }
     } else {
@@ -143,6 +148,41 @@ const Account_Create = () => {
       };
 
       console.log(accountModel);
+
+      // api call
+      AccountService.createAccount(accountModel)
+        .then((response) => {
+          setModelErrors([]);
+          setAcCreateResponse({});
+          console.log(response.data);
+
+          var acCreateResponse = {
+            responseCode: response.data.responseCode,
+            responseMessage: response.data.responseMessage,
+          };
+          if (response.data.responseCode === 0) {
+            resetForm();
+            setAcCreateResponse(acCreateResponse);
+
+            setTimeout(() => {
+              navigate("/account");
+            }, 3000);
+          } else if (response.data.responseCode === -1) {
+            setAcCreateResponse(acCreateResponse);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          setModelErrors([]);
+          setAcCreateResponse({});
+          // 400
+          // ModelState
+          if (error.response.status === 400) {
+            console.log("400 !");
+            var modelErrors = handleModelState(error);
+            setModelErrors(modelErrors);
+          }
+        });
     }
   };
 
@@ -198,8 +238,111 @@ const Account_Create = () => {
                   </div>
                 </div>
                 <p></p>{" "}
+                {acCreateResponse && acCreateResponse.responseCode === -1 ? (
+                  <span className="acCreateError">
+                    {acCreateResponse.responseMessage}
+                  </span>
+                ) : (
+                  <span className="acCreateSuccess">
+                    {acCreateResponse.responseMessage}
+                  </span>
+                )}
+                {modelErrors.length > 0 ? (
+                  <div className="modelError">{modelErrorList}</div>
+                ) : (
+                  <span></span>
+                )}
               </div>
-              <div className="card-body"></div>
+              <div className="card-body">
+                <Form ref={formRef}>
+                  <div className="row">
+                    <div className="col-md-6 mx-auto">
+                      <Form.Group controlId="accountNumber">
+                        <Form.Label>A/C Number</Form.Label>
+                        <Form.Control
+                          type="text"
+                          isInvalid={!!errors.accountNumber}
+                          onChange={(e) =>
+                            setField("accountNumber", e.target.value)
+                          }
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.accountNumber}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="balance">
+                        <Form.Label>Balance</Form.Label>
+                        <Form.Control
+                          className="qtyField"
+                          type="text"
+                          isInvalid={!!errors.balance}
+                          onChange={(e) => setField("balance", e.target.value)}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.balance}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </div>
+                    <div className="col-md-6 mx-auto">
+                      <Form.Group controlId="bankId">
+                        <Form.Label>Bank</Form.Label>
+                        <Form.Control
+                          as="select"
+                          isInvalid={!!errors.bankId}
+                          onChange={(e) => {
+                            setField("bankId", e.target.value);
+                          }}
+                        >
+                          <option value="">Select Bank</option>
+                          {renderOptionsForBankList()}
+                        </Form.Control>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.bankId}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="accountType">
+                        <Form.Label>Account Type</Form.Label>
+                        <Form.Control
+                          as="select"
+                          isInvalid={!!errors.accountType}
+                          onChange={(e) => {
+                            setField("accountType", e.target.value);
+                          }}
+                        >
+                          <option value="">Select Account Type</option>
+                          {renderOptionsForAccountTypes()}
+                        </Form.Control>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.accountType}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                    </div>
+                  </div>
+
+                  <p></p>
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <Button
+                      className="btn btn-success"
+                      type="button"
+                      onClick={(e) => handleSubmit(e)}
+                    >
+                      Create Account
+                    </Button>
+                    <Button
+                      className="btn btn-primary"
+                      type="button"
+                      onClick={(e) => resetForm(e)}
+                    >
+                      Reset
+                    </Button>
+                  </div>
+                </Form>
+              </div>
             </div>
           </div>
         </div>
