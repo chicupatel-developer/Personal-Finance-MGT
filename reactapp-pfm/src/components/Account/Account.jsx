@@ -27,14 +27,17 @@ const Payee = () => {
   const getAllAccounts = () => {
     AccountService.allAccounts()
       .then((response) => {
+        // accounts sort by bank name
+        response.data.sort((a, b) => a.bankName.localeCompare(b.bankName));
         setAccounts(response.data);
       })
       .catch((e) => {
         console.log(e);
       });
   };
-  const getBankStyle = (_bankName) => {
-    var bankColor = getBankColor(_bankName);
+
+  const getBankStyle = (row, rowIdx) => {
+    var bankColor = getBankColor(row.bankName);
     return { backgroundColor: bankColor };
   };
 
@@ -85,32 +88,26 @@ const Payee = () => {
     navigate("/account-create");
   };
 
-  
   const columns = [
     {
-      dataField: "accountId",
-      text: "#",
-      sort: true,
-    },
-    {
       dataField: "accountNumber",
-      text: "Account Number",
+      text: "A/C Number",
       sort: true,
       formatter: (cell, row) => displayAccountNumber(cell, row),
     },
     {
       dataField: "accountType",
-      text: "Account Type",
+      text: "Type",
       sort: true,
       formatter: (cell, row) => displayAcType(cell, row),
     },
     {
-      dataField: "balance",
-      text: "Balance",
-    },
-    {
       dataField: "bankName",
       text: "Bank",
+    },
+    {
+      dataField: "balance",
+      text: "Balance",
     },
     {
       dataField: "actions",

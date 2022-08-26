@@ -45,3 +45,4 @@ C:\Personal_Finance_MGT\WebAPI\FMS.Entity.Context\obj\Debug\netcoreapp3.1\FMS.En
 C:\Personal_Finance_MGT\WebAPI\FMS.Entity.Context\obj\Debug\netcoreapp3.1\FMS.Entity.Context.dll
 C:\Personal_Finance_MGT\WebAPI\FMS.Entity.Context\obj\Debug\netcoreapp3.1\FMS.Entity.Context.pdb
 C:\Personal_Finance_MGT\WebAPI\FMS.Entity.Context\obj\Debug\netcoreapp3.1\FMS.Entity.Context.genruntimeconfig.cache
+C:\Personal_Finance_MGT\WebAPI\FMS.Entity.Context\obj\Debug\netcoreapp3.1\FMS.Entity.Context.csproj.AssemblyReference.cache

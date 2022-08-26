@@ -19,7 +19,7 @@ export function getAccountType(ac) {
 }
 
 export function getAccountColor(acType) {
-  if (acType === 0) return "orange";
+  if (acType === 0) return "green";
   if (acType === 1) return "blue";
   if (acType === 2) return "red";
 }

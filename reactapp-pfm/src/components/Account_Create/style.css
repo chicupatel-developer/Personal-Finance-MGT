@@ -1,0 +1,31 @@
+.mainContainer {
+    padding: 50px;
+}
+
+.acCreateSuccess {
+    color: green;
+    font-size: large;
+    font-weight: bold;
+}
+
+.acCreateError {
+    color: red;
+    font-size: large;
+    font-weight: bold;
+}
+
+.modelError {
+    color: red;
+    font-size: medium;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+.header {
+    background-color: lightsalmon;
+    text-align: left;
+}
+
+.qtyField {
+    width: 150px;
+}

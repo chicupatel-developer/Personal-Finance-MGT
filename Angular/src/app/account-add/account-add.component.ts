@@ -109,7 +109,7 @@ export class AccountAddComponent implements OnInit {
   addAccount(){
     this.submitted = true;
     if (this.accountForm.valid) {      
-      this.accountModel.accountNumber = Number(this.accountForm.value["AccountNumber"]);
+      this.accountModel.accountNumber = Number(this.accountForm.value["AccountNumber"]);      
       this.accountModel.balance = Number(this.accountForm.value["Balance"]); 
       this.accountModel.bankId = Number(this.accountForm.value["BankId"]);
       this.accountModel.accountType = this.convertAccountType(this.accountForm.value["AccountType"]);

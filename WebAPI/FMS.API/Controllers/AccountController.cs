@@ -22,6 +22,7 @@ namespace FMS.API.Controllers
             _acRepo = acRepo;
         }
 
+        // react ok
         [HttpGet]
         [Route("allAccountTypes")]
         public IActionResult GetAllAccountTypes()
@@ -30,7 +31,7 @@ namespace FMS.API.Controllers
             return Ok(allAccountTypes);
         }
 
-        // react wip
+        // react ok
         [HttpGet]
         [Route("allAccounts")]
         public IActionResult GetAllAccounts()
@@ -39,6 +40,7 @@ namespace FMS.API.Controllers
             return Ok(allAccounts);
         }
 
+        // react wip
         [HttpPost]
         [Route("addAccount")]
         public IActionResult AddAccount(Account account)
@@ -60,7 +62,7 @@ namespace FMS.API.Controllers
                 // ModelState.AddModelError("error", "ModelState Check!");
                 // ModelState.AddModelError("error", "Another ModelState Check!");
                 // ModelState.AddModelError("error", "One More Another ModelState Check!");
-
+                              
                 if (ModelState.IsValid)
                 {
                     _acRepo.AddAccount(account);

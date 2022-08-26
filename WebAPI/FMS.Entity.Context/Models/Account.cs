@@ -13,8 +13,10 @@ namespace FMS.Entity.Context.Models
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AccountId { get; set; }
+
         [Required(ErrorMessage = "Account Number is required")]
         public int AccountNumber { get; set; }
+        
         [Required(ErrorMessage = "Account Type is required")]
         public AccountType AccountType { get; set; }
 
