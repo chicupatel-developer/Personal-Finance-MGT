@@ -111,7 +111,6 @@ const Payee_Edit = () => {
     if (!payeeName || payeeName === "")
       newErrors.payeeName = "Payee Name is Required!";
 
-    if (!balance || balance === "") newErrors.balance = "Balance is Required!";
     if (!(!balance || balance === "")) {
       if (!checkForNumbersOnly(balance))
         newErrors.balance = "Only Numbers are Allowed!";
@@ -149,6 +148,14 @@ const Payee_Edit = () => {
     formRef.current.reset();
     setErrors({});
     setForm({});
+    setPayee({
+      ...payee,
+      payeeName: "",
+      description: "",
+      payeeACNumber: "",
+      payeeType: 0,
+      balance: 0,
+    });
     setPayeeEditResponse({});
     setModelErrors([]);
   };
@@ -192,6 +199,158 @@ const Payee_Edit = () => {
     });
   };
 
-  return <div className="mainContainer"></div>;
+  return (
+    <div className="mainContainer">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6 mx-auto">
+            <div className="card">
+              <div className="card-header header">
+                <div className="row">
+                  <div className="col-md-8 mx-auto">
+                    <h3>Edit Payee # {id}</h3>
+                  </div>
+                  <div className="col-md-4 mx-auto">
+                    <Button
+                      className="btn btn-primary"
+                      type="button"
+                      onClick={(e) => goBack(e)}
+                    >
+                      <i className="bi bi-arrow-return-left"></i> Back
+                    </Button>
+                  </div>
+                </div>
+                <p></p>{" "}
+                {payeeEditResponse && payeeEditResponse.responseCode === -1 ? (
+                  <span className="payeeEditError">
+                    {payeeEditResponse.responseMessage}
+                  </span>
+                ) : (
+                  <span className="payeeEditSuccess">
+                    {payeeEditResponse.responseMessage}
+                  </span>
+                )}
+                {modelErrors.length > 0 ? (
+                  <div className="modelError">{modelErrorList}</div>
+                ) : (
+                  <span></span>
+                )}
+              </div>
+              <div className="card-body">
+                <Form ref={formRef}>
+                  <div className="row">
+                    <div className="col-md-6 mx-auto">
+                      <Form.Group controlId="payeeName">
+                        <Form.Label>Payee Name</Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={payee.payeeName}
+                          isInvalid={!!errors.payeeName}
+                          onChange={(e) =>
+                            setField("payeeName", e.target.value)
+                          }
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.payeeName}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="payeeACNumber">
+                        <Form.Label>Payee A/C Number</Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={payee.payeeACNumber}
+                          isInvalid={!!errors.payeeACNumber}
+                          onChange={(e) =>
+                            setField("payeeACNumber", e.target.value)
+                          }
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.payeeACNumber}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      {payee.payeeType === 3 && (
+                        <Form.Group controlId="balance">
+                          <Form.Label>Balance</Form.Label>
+                          <Form.Control
+                            className="qtyField"
+                            type="text"
+                            value={payee.balance}
+                            isInvalid={!!errors.balance}
+                            onChange={(e) =>
+                              setField("balance", e.target.value)
+                            }
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.balance}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                      )}
+                    </div>
+                    <div className="col-md-6 mx-auto">
+                      <Form.Group controlId="description">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={payee.description}
+                          isInvalid={!!errors.description}
+                          onChange={(e) =>
+                            setField("description", e.target.value)
+                          }
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.description}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="payeeType">
+                        <Form.Label>Payee Type</Form.Label>
+                        <Form.Control
+                          as="select"
+                          value={payee.payeeType}
+                          isInvalid={!!errors.payeeType}
+                          onChange={(e) => {
+                            setField("payeeType", e.target.value);
+                          }}
+                        >
+                          <option value="">Select Payee Type</option>
+                          {renderOptionsForPayeeTypes()}
+                        </Form.Control>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.payeeType}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                    </div>
+                  </div>
+
+                  <p></p>
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <Button
+                      className="btn btn-success"
+                      type="button"
+                      onClick={(e) => handleSubmit(e)}
+                    >
+                      Edit Payee
+                    </Button>
+                    <Button
+                      className="btn btn-primary"
+                      type="button"
+                      onClick={(e) => resetForm(e)}
+                    >
+                      Reset
+                    </Button>
+                  </div>
+                </Form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 export default Payee_Edit;
