@@ -12,5 +12,7 @@ namespace FMS.Service.Interfaces
         Payee AddPayee(Payee payee);
         List<string> GetAllPayeeTypes();
         IEnumerable<Payee> GetAllPayeesCC();
+        Payee GetPayee(int payeeId);
+        Payee EditPayee(Payee payee);
     }
 }

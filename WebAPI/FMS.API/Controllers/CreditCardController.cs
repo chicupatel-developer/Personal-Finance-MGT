@@ -80,7 +80,7 @@ namespace FMS.API.Controllers
         }
 
 
-        // react wip
+        // react ok
         [HttpPost]
         [Route("addCCTransaction")]
         public IActionResult AddCCTransaction(CreditCardTransaction ccTransaction)

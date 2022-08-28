@@ -72,6 +72,24 @@ const Payee = () => {
     if (row.payeeType === 3) return { color: "blue", fontSize: "20px" };
     else return { color: "black" };
   };
+  const displayActionBtn = (cell, row) => {
+    return (
+      <div>
+        {" "}
+        <Button
+          className="btn btn-info"
+          type="button"
+          onClick={(e) => editPayee(e, row.payeeId)}
+        >
+          <i className="bi bi-pencil-square"></i>
+        </Button>
+      </div>
+    );
+  };
+  const editPayee = (e, payeeId) => {
+    console.log("edit payee : ", payeeId);
+    navigate("/payee-edit/" + payeeId);
+  };
   const columns = [
     {
       dataField: "payeeId",
@@ -100,6 +118,11 @@ const Payee = () => {
       text: "Balance",
       sort: true,
       formatter: (cell, row) => displayBalance(cell, row),
+    },
+    {
+      dataField: "actions",
+      text: "Actions",
+      formatter: (cell, row) => displayActionBtn(cell, row),
     },
   ];
 

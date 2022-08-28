@@ -58,5 +58,32 @@ namespace FMS.Service.Repositories
             }
             return payees;
         }
+
+        public Payee GetPayee(int payeeId)
+        {
+            return appDbContext.Payees.Where(x => x.PayeeId == payeeId).FirstOrDefault();
+        }
+
+        public Payee EditPayee(Payee payee)
+        {
+            var result = appDbContext.Payees.Where(x => x.PayeeId == payee.PayeeId).FirstOrDefault();
+            if (result != null)
+            {
+                result.PayeeName = payee.PayeeName;
+                result.Description = payee.Description;
+                result.PayeeACNumber = payee.PayeeACNumber;
+                result.Balance = payee.Balance;
+
+                appDbContext.SaveChanges();
+                return payee;
+
+                // check for null
+                // return null;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

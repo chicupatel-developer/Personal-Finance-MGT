@@ -71,5 +71,30 @@ namespace FMS.Test.PayeeTest
             }
             return payees;
         }
+
+
+        public Payee GetPayee(int payeeId)
+        {
+            return _payees.Where(a => a.PayeeId == payeeId)
+                .FirstOrDefault();
+        }
+        public Payee EditPayee(Payee payee)
+        {
+            var result = _payees.Where(x => x.PayeeId == payee.PayeeId).FirstOrDefault();
+            if (result != null)
+            {
+                result.PayeeName = payee.PayeeName;
+                result.Description = payee.Description;
+                result.PayeeACNumber = payee.PayeeACNumber;
+                result.Balance = payee.Balance;
+             
+                return payee;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
     }
 }
