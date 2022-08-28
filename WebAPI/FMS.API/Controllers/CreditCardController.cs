@@ -92,7 +92,7 @@ namespace FMS.API.Controllers
                 // ccTransaction = null;
                 if (ccTransaction == null)
                 {
-                    return BadRequest();
+                    return BadRequest("CC-Transaction Object is Null");
                 }
 
                 // check for exception
