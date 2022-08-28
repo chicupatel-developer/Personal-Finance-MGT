@@ -4,7 +4,7 @@ import "./style.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-import { getBankColor } from "../../services/local.service";
+import { getCCTypeColor } from "../../services/local.service";
 import BankTransactionService from "../../services/bank.transaction.service";
 import CCService from "../../services/cc.service";
 
@@ -15,7 +15,8 @@ const CreditCard_Transaction = () => {
   let navigate = useNavigate();
 
   const { state } = useLocation();
-  const { creditCardId, balance, ccAccountNumber } = state || {}; // Read values passed on state
+  const { creditCardId, balance, ccAccountNumber, creditCardName } =
+    state || {}; // Read values passed on state
 
   const [payees, setPayees] = useState([]);
   const [modelErrors, setModelErrors] = useState([]);
@@ -91,17 +92,17 @@ const CreditCard_Transaction = () => {
   const handleModelState = (error) => {
     var errors = [];
     if (error.response.status === 400) {
-      if (error.response.data.errors === undefined) {
+      if (error.response.data.status === 400) {
         console.log("Bad Request!!!");
-        errors.push(error.response.data);
+        errors.push(error.response.statusText + " !");
       } else {
-        for (let prop in error.response.data.errors) {
-          if (error.response.data.errors[prop].length > 1) {
-            for (let error_ in error.response.data.errors[prop]) {
-              errors.push(error.response.data.errors[prop][error_]);
+        for (let prop in error.response.data) {
+          if (error.response.data[prop].length > 1) {
+            for (let error_ in error.response.data[prop]) {
+              errors.push(error.response.data[prop][error_]);
             }
           } else {
-            errors.push(error.response.data.errors[prop]);
+            errors.push(error.response.data[prop]);
           }
         }
       }
@@ -193,7 +194,137 @@ const CreditCard_Transaction = () => {
     });
   };
 
-  return <div></div>;
+  return (
+    <div className="mainContainer">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-8 mx-auto">
+            <div className="card">
+              <div
+                style={{
+                  backgroundColor: getCCTypeColor(creditCardName),
+                }}
+                className="card-header"
+              >
+                <div className="row">
+                  <div className="col-md-10 mx-auto">
+                    <h4>Add Your Transaction Here...</h4>
+                    <h5>[ From Credit-Card ---&gt; Payee ]</h5>
+                    <div className="ccHeader">
+                      Credit-Card : {creditCardName}
+                      <br />
+                      CC A/C Number : {ccAccountNumber}
+                      <br />
+                      Maximum Pay : {balance}
+                    </div>
+                  </div>
+                  <div className="col-md-2 mx-auto">
+                    <Button
+                      className="btn btn-primary"
+                      type="button"
+                      onClick={(e) => goBack(e)}
+                    >
+                      <i className="bi bi-arrow-return-left"></i> Back
+                    </Button>
+                  </div>
+                </div>
+                <p></p>
+                {ccTrAddCreateResponse &&
+                ccTrAddCreateResponse.responseCode === -1 ? (
+                  <span className="ccTrAddCreateError">
+                    {ccTrAddCreateResponse.responseMessage}
+                  </span>
+                ) : (
+                  <span className="ccTrAddCreateSuccess">
+                    {ccTrAddCreateResponse.responseMessage}
+                  </span>
+                )}
+                {modelErrors.length > 0 ? (
+                  <div className="modelError">{modelErrorList}</div>
+                ) : (
+                  <span></span>
+                )}
+              </div>
+              <div className="card-body">
+                <Form ref={formRef}>
+                  <div className="row">
+                    <div className="col-md-6 mx-auto">
+                      <Form.Group controlId="payeeId">
+                        <Form.Label>Payee</Form.Label>
+                        <Form.Control
+                          as="select"
+                          isInvalid={!!errors.payeeId}
+                          onChange={(e) => {
+                            setField("payeeId", e.target.value);
+                          }}
+                        >
+                          <option value="">Select Payee</option>
+                          {renderOptionsForPayees()}
+                        </Form.Control>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.payeeId}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <Form.Group controlId="transactionAmount">
+                        <Form.Label>Amount</Form.Label>
+                        <Form.Control
+                          className="qtyField"
+                          type="text"
+                          isInvalid={!!errors.transactionAmount}
+                          onChange={(e) =>
+                            setField("transactionAmount", e.target.value)
+                          }
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.transactionAmount}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Label>Transaction Date</Form.Label>
+                      <Form.Control
+                        type="date"
+                        name="transactionDate"
+                        placeholder="Transaction Date"
+                        isInvalid={!!errors.transactionDate}
+                        onChange={(e) =>
+                          setField("transactionDate", e.target.value)
+                        }
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.transactionDate}
+                      </Form.Control.Feedback>
+                    </div>
+                  </div>
+                  <p></p>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Button
+                      className="btn btn-success"
+                      type="button"
+                      onClick={(e) => handleSubmit(e)}
+                    >
+                      Commit Transaction
+                    </Button>
+                    <Button
+                      className="btn btn-primary"
+                      type="button"
+                      onClick={(e) => resetForm(e)}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </Form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default CreditCard_Transaction;

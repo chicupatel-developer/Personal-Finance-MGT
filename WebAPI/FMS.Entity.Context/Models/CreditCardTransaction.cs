@@ -15,17 +15,17 @@ namespace FMS.Entity.Context.Models
         public int CreditCardTransactionId { get; set; }
 
         // payeeId from payees of selected cc by which payment is done - source     
-        [Required]
+        [Required(ErrorMessage = "Credit Card is required")]
         public int CreditCardId { get; set; }
-       
-        [Required]
+
+        [Required(ErrorMessage = "Transaction Amount is required")]
         public decimal TransactionAmount { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Transaction Date is required")]
         public DateTime TransactionDate { get; set; }        
         public TransactionStatus TransactionStatus { get; set; }
 
         // payeeeId from payees of selected payee to which payment is done - destination
-        [Required]
+        [Required(ErrorMessage = "Payee is required")]
         [ForeignKey(nameof(Payee))]
         public int PayeeId { get; set; }
         [JsonIgnore]

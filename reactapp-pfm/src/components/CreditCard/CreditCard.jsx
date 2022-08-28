@@ -130,6 +130,7 @@ const CreditCard = () => {
         creditCardId: cc.creditCardId,
         balance: cc.balance,
         ccAccountNumber: cc.creditCardNumber,
+        creditCardName: cc.creditCardName,
       };
       console.log(ccTransaction);
 

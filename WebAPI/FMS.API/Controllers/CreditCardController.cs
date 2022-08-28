@@ -92,14 +92,14 @@ namespace FMS.API.Controllers
                 // ccTransaction = null;
                 if (ccTransaction == null)
                 {
-                    return BadRequest("CC-Transaction Object is Null");
+                    return BadRequest();
                 }
 
                 // check for exception
                 // throw new Exception();
 
                 // check for ModelState
-                // ModelState.AddModelError("error", "ModelState Check!");
+                // ModelState.AddModelError("CreditCardId", "CreditCardId is Required!");
                 // ModelState.AddModelError("error", "Another ModelState Check!");
                 // ModelState.AddModelError("error", "One More Another ModelState Check!");
 

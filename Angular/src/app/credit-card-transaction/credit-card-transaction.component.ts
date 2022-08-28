@@ -84,7 +84,6 @@ export class CreditCardTransactionComponent implements OnInit {
 
       console.log(this.ccTransaction);
 
-      /*
       this.dataService.addCCTransaction(this.ccTransaction)
         .subscribe(
           response => {
@@ -126,7 +125,6 @@ export class CreditCardTransactionComponent implements OnInit {
             this.errors = this.localDataService.display400andEx(error, 'Credit-Card-Transaction');
           }
         );
-        */
     }
   }
 
