@@ -12,6 +12,7 @@ import Bank_Edit from "./components/Bank_Edit/Bank_Edit";
 import Bank_Account_List from "./components/Bank_Account_List/Bank_Account_List";
 import Payee from "./components/Payee/Payee";
 import Payee_Create from "./components/Payee_Create/Payee_Create";
+import Payee_Edit from "./components/Payee_Edit/Payee_Edit";
 import Bank_Transaction_Add from "./components/Bank_Transaction_Add/Bank_Transaction_Add";
 import Source_To_Bank_Transaction from "./components/Source_To_Bank_Transaction/Source_To_Bank_Transaction";
 import Account_Statement_All from "./components/Account_Statement_All/Account_Statement_All";
@@ -40,6 +41,7 @@ function App() {
             />
             <Route path="/payee" element={<Payee />} />
             <Route path="/payee-create" element={<Payee_Create />} />
+            <Route path="/payee-edit/:id" element={<Payee_Edit />} />
             <Route
               path="/bank-transaction-add"
               element={<Bank_Transaction_Add />}

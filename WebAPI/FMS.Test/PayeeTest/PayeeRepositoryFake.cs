@@ -87,7 +87,8 @@ namespace FMS.Test.PayeeTest
                 result.Description = payee.Description;
                 result.PayeeACNumber = payee.PayeeACNumber;
                 result.Balance = payee.Balance;
-             
+                result.PayeeType = payee.PayeeType;
+
                 return payee;
             }
             else

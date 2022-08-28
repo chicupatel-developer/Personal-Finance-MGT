@@ -73,6 +73,7 @@ namespace FMS.Service.Repositories
                 result.Description = payee.Description;
                 result.PayeeACNumber = payee.PayeeACNumber;
                 result.Balance = payee.Balance;
+                result.PayeeType = payee.PayeeType;
 
                 appDbContext.SaveChanges();
                 return payee;
