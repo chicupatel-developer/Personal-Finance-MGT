@@ -12,8 +12,22 @@ import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 
 import Button from "react-bootstrap/Button";
 
+import Modal from "react-bootstrap/Modal";
+import ModalBody from "react-bootstrap/ModalBody";
+import ModalHeader from "react-bootstrap/ModalHeader";
+import ModalFooter from "react-bootstrap/ModalFooter";
+import ModalTitle from "react-bootstrap/ModalTitle";
+
 const CreditCard = () => {
   let navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const showModal = () => {
+    setIsOpen(true);
+  };
+  const hideModal = () => {
+    setIsOpen(false);
+  };
 
   const [creditcards, setCreditcards] = useState([]);
   const allCCs = () => {
@@ -110,6 +124,7 @@ const CreditCard = () => {
     // if balance is 0
     if (cc.balance <= 0) {
       console.log("balance is zero!");
+      showModal();
     } else {
       var ccTransaction = {
         creditCardId: cc.creditCardId,
@@ -117,6 +132,10 @@ const CreditCard = () => {
         ccAccountNumber: cc.creditCardNumber,
       };
       console.log(ccTransaction);
+
+      navigate("/credit-card-transaction", {
+        state: ccTransaction,
+      });
     }
   };
   return (
@@ -140,6 +159,22 @@ const CreditCard = () => {
           )}
         </div>
       </div>
+      <p></p>
+      <Modal show={isOpen} onHide={hideModal}>
+        <Modal.Header>
+          <Modal.Title>Warning !!!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>You can not pay by this Credit-Card !</h4>
+          <p></p>
+          <h5>Balance is 0 !</h5>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button className="btn btn-warning" type="button" onClick={hideModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

@@ -22,7 +22,8 @@ namespace FMS.API.Controllers
         {
             _ccRepo = ccRepo;
         }
- 
+
+        // react ok
         [HttpGet]
         [Route("allCCs")]
         public IActionResult GetAllCCs()
@@ -78,6 +79,8 @@ namespace FMS.API.Controllers
             }
         }
 
+
+        // react wip
         [HttpPost]
         [Route("addCCTransaction")]
         public IActionResult AddCCTransaction(CreditCardTransaction ccTransaction)

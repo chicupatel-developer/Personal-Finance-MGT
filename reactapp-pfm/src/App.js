@@ -19,6 +19,7 @@ import Account from "./components/Account/Account";
 import Account_Create from "./components/Account_Create/Account_Create";
 import Account_Edit from "./components/Account_Edit/Account_Edit";
 import CreditCard from "./components/CreditCard/CreditCard";
+import CreditCard_Transaction from "./components/CreditCard_Transaction/CreditCard_Transaction";
 
 function App() {
   return (
@@ -55,6 +56,10 @@ function App() {
             <Route path="/account-create" element={<Account_Create />} />
             <Route path="/account-edit/:id" element={<Account_Edit />} />
             <Route path="/creditcard" element={<CreditCard />} />
+            <Route
+              path="/credit-card-transaction"
+              element={<CreditCard_Transaction />}
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
