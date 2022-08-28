@@ -114,3 +114,12 @@ export function getTransactionTypeDisplay(transactionType) {
   if (transactionType === 1) return "Out";
 }
 
+export function getCCTypeColor(ccName) {
+  if (ccName.toLowerCase().search("visa") !== -1) {
+    return "orange";
+  } else if (ccName.toLowerCase().search("master") !== -1) {
+    return "blue";
+  } else {
+    return "black";
+  }
+}
