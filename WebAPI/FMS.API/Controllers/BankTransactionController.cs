@@ -142,6 +142,7 @@ namespace FMS.API.Controllers
             }
         }
                   
+        // react wip
         [HttpPost]
         [Route("getBankStatement")]
         public IActionResult GetBankStatement(Bank bank)

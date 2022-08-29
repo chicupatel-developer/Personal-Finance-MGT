@@ -3,10 +3,8 @@ import "./style.css";
 import PayeeService from "../../../services/payee.service";
 import BankService from "../../../services/bank.service";
 import AccountService from "../../../services/account.service";
-import {
-  getPayeeIcon,
-  getPayeeTypeName,
-} from "../../../services/local.service";
+import BankTransactionService from "../../../services/bank.transaction.service";
+import { getAccountType } from "../../../services/local.service";
 import { useNavigate } from "react-router-dom";
 
 // react-bootstrap-table-2
@@ -31,13 +29,27 @@ const Account_Payee_Report = () => {
   // form reference
   const formRef = useRef(null);
 
+  const [bank, setBank] = useState({});
+
   useEffect(() => {
     getAllPayees();
     getAllPayeeTypes();
     getAllBanks();
   }, []);
 
+  const getBankName = (bankId) => {
+    let obj = banks.find((x) => x.bankId === bankId);
+    return obj.bankName;
+  };
   const setField = (field, value) => {
+    if (field === "bankId") {
+      setBank({
+        ...bank,
+        bankId: Number(value),
+        bankName: getBankName(Number(value)),
+      });
+      getBankAccounts(Number(value));
+    }
     setForm({
       ...form,
       [field]: value,
@@ -65,8 +77,8 @@ const Account_Payee_Report = () => {
   const getBankAccounts = (bankId) => {
     AccountService.getBankAccounts(bankId)
       .then((response) => {
-        console.log(response.data);
-        setAccounts(response.data);
+        console.log(response.data.accounts);
+        setAccounts(response.data.accounts);
       })
       .catch((e) => {
         console.log(e);
@@ -133,7 +145,7 @@ const Account_Payee_Report = () => {
     return accounts.map((dt, i) => {
       return (
         <option value={dt.accountId} key={i} name={dt.accountNumber}>
-          {dt.accountNumber}
+          {getAccountType(dt.accountType)} - [{dt.accountNumber}]
         </option>
       );
     });
@@ -143,11 +155,24 @@ const Account_Payee_Report = () => {
     e.preventDefault();
 
     const newErrors = findFormErrors();
-      if (Object.keys(newErrors).length > 0) {
-          setErrors(newErrors);
-      } else {
-          console.log('getting report !');
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      console.log("getting report !");
+
+      // get all-accounts-payee report
+      if (form.accountId === "0") {
+        console.log(bank);
+        // api call
+        BankTransactionService.getBankStatement(bank)
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
+    }
   };
   return (
     <div className="mainContainer">
@@ -193,11 +218,30 @@ const Account_Payee_Report = () => {
                             setField("accountId", e.target.value);
                           }}
                         >
-                          <option value="">Select Account Type</option>
+                          <option value="">---Select Account---</option>
+                          <option value="0">---All Accounts---</option>
                           {renderOptionsForAccountList()}
                         </Form.Control>
                         <Form.Control.Feedback type="invalid">
                           {errors.accountId}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <p></p>
+                      <Form.Group controlId="payeeId">
+                        <Form.Label>Payee</Form.Label>
+                        <Form.Control
+                          as="select"
+                          isInvalid={!!errors.payeeId}
+                          onChange={(e) => {
+                            setField("payeeId", e.target.value);
+                          }}
+                        >
+                          <option value="">---Select Payee---</option>
+                          <option value="0">---All Payees---</option>
+                          {renderOptionsForPayeeList()}
+                        </Form.Control>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.payeeId}
                         </Form.Control.Feedback>
                       </Form.Group>
                     </div>

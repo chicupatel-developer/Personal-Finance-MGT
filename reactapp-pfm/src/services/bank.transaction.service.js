@@ -12,5 +12,9 @@ class BankTransactionService {
   getAccountStatementAll = async (data) => {
     return await http.post(`/getAccountStatementAll`, data);
   };
+
+  getBankStatement = async (data) => {
+    return await http.post(`/getBankStatement`, data);
+  };
 }
 export default new BankTransactionService();
