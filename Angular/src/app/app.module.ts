@@ -18,6 +18,7 @@ import { AccountEditComponent } from './account-edit/account-edit.component';
 import { BankEditComponent } from './bank-edit/bank-edit.component';
 import { BankAccountListComponent } from './bank-account-list/bank-account-list.component';
 import { PayeeAddComponent } from './payee-add/payee-add.component';
+import { PayeeEditComponent } from './payee-edit/payee-edit.component';
 import { BankTransactionAddComponent } from './bank-transaction-add/bank-transaction-add.component';
 import { AccountStatementAllComponent } from './account-statement-all/account-statement-all.component';
 import { CreditcardComponent } from './creditcard/creditcard.component';
@@ -43,7 +44,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { PayeeEditComponent } from './payee-edit/payee-edit.component';
 
 @NgModule({
   declarations: [

@@ -78,7 +78,16 @@ export class PayeeEditComponent implements OnInit {
           this.apiResponse = '';
           this.responseColor = 'red';
 
-          this.errors = this.localDataService.display400andEx(error,'Payee');       
+          if (error.status === 500) {
+            this.apiResponse = error.error;
+          }
+          else if (error.status === 400) {
+            this.errors = this.localDataService.display400andEx(error, 'Payee');            
+            // this.errors = this.localDataService.displayModelStateErrors(error, 'Payee');
+          }
+          else
+            console.log(error);           
+          
         });  
   }
 
@@ -163,7 +172,7 @@ export class PayeeEditComponent implements OnInit {
     this.submitted = true;
     if (this.payeeForm.valid) {
       this.payeeModel.payeeACNumber = this.payeeForm.value["PayeeACNumber"];
-      this.payeeModel.balance = Number(this.payeeForm.value["Balance"]);
+      this.payeeModel.balance = this.convertPayeeType(this.payeeForm.value["PayeeType"])===3 ? Number(this.payeeForm.value["Balance"]) : 0;
       this.payeeModel.payeeName = this.payeeForm.value["PayeeName"];
       this.payeeModel.description = this.payeeForm.value["Description"];
       this.payeeModel.payeeType = this.convertPayeeType(this.payeeForm.value["PayeeType"]);
@@ -180,7 +189,7 @@ export class PayeeEditComponent implements OnInit {
               this.errors = [];
               this.payeeForm.reset();
               this.submitted = false;
-              this.payeeForm.get("PayeetType").patchValue('');
+              this.payeeForm.get("PayeeType").patchValue('');
 
               // redirect to payee component
               setTimeout(() => {
@@ -200,8 +209,13 @@ export class PayeeEditComponent implements OnInit {
             this.responseColor = 'red';
             this.errors = [];
 
-            this.errors = this.localDataService.display400andEx(error, 'Payee');          
-          }
+            // this.errors = this.localDataService.display400andEx(error, 'Payee');                  
+            if (error.status === 400) {            
+              this.errors = this.localDataService.displayModelStateErrors(error, 'Payee');
+            }
+            else
+              console.log(error);
+            }
         );
     }
   }

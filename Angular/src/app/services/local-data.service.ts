@@ -141,6 +141,28 @@ export class LocalDataService {
     }
     return errors;
   }
+  displayModelStateErrors(error, componentName): string[] {
+    var errors = [];
+     if (error.status === 400) {
+       if (error.error != null) {
+         console.log(error.error);
+         if (error.error.status === 400) {
+           errors.push(error.error.title+ " !");
+         }
+         else {
+          for (var key in error.error) {
+            errors.push(error.error[key]);
+          }   
+         }        
+        } else {
+          errors.push('[' + componentName + '] Data Not Found ! / Bad Request !');
+        }      
+    }
+    else {
+      console.log(error);
+    }
+    return errors;
+  }
 
   // ok
   // convert from string[] into AccountType[]

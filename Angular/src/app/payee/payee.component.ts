@@ -152,8 +152,10 @@ export class PayeeComponent implements OnInit {
   }
 
   // ok
-  editPayee(payee){
-    console.log(payee);
+  editPayee(editPayee) {
+    // redirect to payee-edit component
+    // this.router.navigate(['/payee-edit/' + editPayee.payeeId]);
+    this.router.navigate(['/payee-edit/', { selectedPayeeObject: JSON.stringify(editPayee) }]);
   }
 
   // ok

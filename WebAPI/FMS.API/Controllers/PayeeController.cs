@@ -94,7 +94,7 @@ namespace FMS.API.Controllers
             return Ok(allPayees);
         }
 
-        // react ok
+        // ng-react ok
         // edit payee
         [HttpGet]
         [Route("getPayee/{selectedPayeeId}")]
@@ -124,7 +124,7 @@ namespace FMS.API.Controllers
             }
         }
 
-        // react ok
+        // ng-react ok
         // edit payee in action
         [HttpPost]
         [Route("editPayee")]

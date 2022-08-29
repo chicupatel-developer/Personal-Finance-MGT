@@ -12,6 +12,7 @@ import { AccountEditComponent } from './account-edit/account-edit.component';
 import { BankEditComponent } from './bank-edit/bank-edit.component';
 import { BankAccountListComponent } from './bank-account-list/bank-account-list.component';
 import { PayeeAddComponent } from './payee-add/payee-add.component';
+import { PayeeEditComponent } from './payee-edit/payee-edit.component';
 import { BankTransactionAddComponent } from './bank-transaction-add/bank-transaction-add.component';
 import { AccountStatementAllComponent } from './account-statement-all/account-statement-all.component';
 import { CreditcardComponent } from './creditcard/creditcard.component';
@@ -41,6 +42,7 @@ const routes: Routes = [
   { path: 'bank-edit/:id', component: BankEditComponent },
   { path: 'bank-account-list/:id', component: BankAccountListComponent },
   { path: 'payee-add', component: PayeeAddComponent },
+  { path: 'payee-edit', component: PayeeEditComponent },
   { path: 'bank-transaction-add', component: BankTransactionAddComponent },
   { path: 'credit-card-transaction', component: CreditCardTransactionComponent },
   { path: 'account-statement-all', component: AccountStatementAllComponent },
