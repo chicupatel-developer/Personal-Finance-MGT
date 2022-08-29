@@ -117,7 +117,7 @@ export class PayeeEditComponent implements OnInit {
   public handleError = (controlName: string, errorName: string) => {
     return this.payeeForm.controls[controlName].hasError(errorName);
   }
-  get accountFormControl() {
+  get payeeFormControl() {
     return this.payeeForm.controls;
   }
 
@@ -159,7 +159,7 @@ export class PayeeEditComponent implements OnInit {
     this.router.navigate(['/payee']);
   }
 
-  editAccount(): void {
+  editPayee(): void {
     this.submitted = true;
     if (this.payeeForm.valid) {
       this.payeeModel.payeeACNumber = this.payeeForm.value["PayeeACNumber"];

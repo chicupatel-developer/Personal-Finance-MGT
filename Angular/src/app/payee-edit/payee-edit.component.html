@@ -1,1 +1,173 @@
-<p>payee-edit works!</p>
+<div class="container main-container">
+    <div>
+        <h2>
+            Manage Payees
+        </h2>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div                     
+                    class="card-header">
+                    <h3>
+                        <div class="row">
+                            <div class="col-md-3 mx-auto">
+                                <button type="button" 
+                                    (click)="goBack()" 
+                                    class="btn btn-primary">
+                                    <i class="bi bi-backspace-fill"> Cancel</i>
+                                </button>
+                            </div>
+                            <div *ngIf="!apiResponse && errors.length<1" 
+                                class="col-md-9 mx-auto edit-payee-header">
+                                Edit Payee [{{editingPayee.payeeId}}] here...
+                            </div>
+                            <div *ngIf="apiResponse" 
+                                class="col-md-9 mx-auto edit-payee-header">
+                                <h4>
+                                    <span [style.color]="responseColor">
+                                        {{apiResponse}}
+                                    </span>
+                                    <hr />
+                                </h4>
+                            </div>
+                            <div *ngIf="errors.length > 0" 
+                                    class="col-md-9 mx-auto edit-payee-header">
+                                <h5>
+                                    <ul [style.color]="responseColor">
+                                        <li *ngFor="let error of errors">
+                                            {{ error }}
+                                        </li>
+                                    </ul>
+                                    <hr />
+                                </h5>
+                            </div>
+                        </div>
+                    </h3>
+                </div>
+
+                <div class="card-body">
+                    <form class="form-payee" 
+                        [formGroup]="payeeForm">
+                        <div class="form-group">
+                            <div class="row mb-3">
+                                <label for="PayeeACNumber" 
+                                    class="col-sm-4 col-form-label">
+                                    Payee A/C Number
+                                </label>
+                                <div class="col-sm-4">
+                                    <input type="text" 
+                                        class="form-control"
+                                        formControlName="PayeeACNumber">
+                                </div>
+                                <span class="col-sm-4 text-danger"
+                                    *ngIf="(payeeFormControl.PayeeACNumber.touched || submitted) && payeeFormControl.PayeeACNumber.errors?.required">
+                                    Payee A/C Number is required!
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row mb-3">
+                                <label for="Balance" 
+                                    class="col-sm-4 col-form-label">
+                                    Balance
+                                </label>
+                                <div class="col-sm-4">
+                                    <input type="text" 
+                                        (keypress)="numberOnly($event,0)" 
+                                        class="form-control"
+                                        formControlName="Balance">
+                                </div>
+                                <span class="col-sm-4 text-danger"
+                                    *ngIf="(payeeFormControl.Balance.touched || submitted) && payeeFormControl.Balance.errors?.required">
+                                    Balance is required!
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row mb-3">
+                                <label for="PayeeName" 
+                                    class="col-sm-4 col-form-label">
+                                    Payee Name
+                                </label>
+                                <div class="col-sm-4">
+                                    <input type="text" 
+                                        class="form-control" 
+                                        formControlName="PayeeName">
+                                </div>
+                                <span class="col-sm-4 text-danger"
+                                    *ngIf="(payeeFormControl.PayeeName.touched || submitted) && payeeFormControl.PayeeName.errors?.required">
+                                    Payee Name is required!
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row mb-3">
+                                <label for="Description" 
+                                    class="col-sm-4 col-form-label">
+                                    Description
+                                </label>
+                                <div class="col-sm-4">
+                                    <input type="text" 
+                                        class="form-control" 
+                                        formControlName="Description">
+                                </div>
+                                <span class="col-sm-4 text-danger"
+                                    *ngIf="(payeeFormControl.Description.touched || submitted) && payeeFormControl.Description.errors?.required">
+                                    Description is required!
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row mb-3">
+                                <label for="PayeeType" 
+                                    class="col-sm-4 col-form-label">
+                                    Payee Type
+                                </label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" 
+                                        formControlName="PayeeType">
+                                        <option disabled>Select Payee Type</option>
+                                        <option value="">Choose Payee Type</option>
+                                        <option *ngFor="let at of payeeTypesName">
+                                            {{at}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <span class="col-sm-4 text-danger"
+                                    *ngIf="(payeeFormControl.PayeeType.touched || submitted) && handleError('PayeeType', 'required')">
+                                    Payee Type is required!
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <button type="button" 
+                                (click)="editPayee()" 
+                                class="btn btn-success">
+                                Edit Payee
+                            </button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" 
+                                (click)="resetPayee()" 
+                                class="btn btn-primary">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
