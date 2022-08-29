@@ -114,6 +114,14 @@ export class DataService {
   getPayeesCC(): Observable<Array<Payee>> {
     return this.http.get<Array<Payee>>(this.PAYEE_API + '/allPayeesCC');
   }
+  // edit payee
+  getPayee(selectedPayeeId: number): Observable<Payee> {
+    return this.http.get<Payee>(this.PAYEE_API + '/getPayee/' + selectedPayeeId);
+  }
+  // edit payee in action
+  editPayee(data): Observable<any> {
+    return this.http.post(this.PAYEE_API + '/editPayee', data);
+  }
 
   //////////// credit-card
   // list credit-card

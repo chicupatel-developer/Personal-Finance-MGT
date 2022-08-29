@@ -43,6 +43,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { PayeeEditComponent } from './payee-edit/payee-edit.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     CcStatementComponent,
     SourceBankTransactionComponent,
     AllProjectCodingLengthComponent,
-    MonitorAccountMonthlyComponent
+    MonitorAccountMonthlyComponent,
+    PayeeEditComponent
   ],
   imports: [
     BrowserModule,
