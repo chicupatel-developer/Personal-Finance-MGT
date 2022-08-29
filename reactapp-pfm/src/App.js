@@ -21,6 +21,8 @@ import Account_Create from "./components/Account_Create/Account_Create";
 import Account_Edit from "./components/Account_Edit/Account_Edit";
 import CreditCard from "./components/CreditCard/CreditCard";
 import CreditCard_Transaction from "./components/CreditCard_Transaction/CreditCard_Transaction";
+import Account_Payee_Report from "./components/Reports/Account_Payee_Report/Account_Payee_Report";
+import CreditCard_Payee_Report from "./components/Reports/CreditCard_Payee_Report/CreditCard_Payee_Report";
 
 function App() {
   return (
@@ -61,6 +63,14 @@ function App() {
             <Route
               path="/credit-card-transaction"
               element={<CreditCard_Transaction />}
+            />
+            <Route
+              path="/account-payee-report"
+              element={<Account_Payee_Report />}
+            />
+            <Route
+              path="/creditcard-payee-report"
+              element={<CreditCard_Payee_Report />}
             />
             <Route path="*" element={<NotFound />} />
           </Routes>
