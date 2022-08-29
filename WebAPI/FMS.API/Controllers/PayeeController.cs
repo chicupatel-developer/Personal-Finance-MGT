@@ -94,7 +94,7 @@ namespace FMS.API.Controllers
             return Ok(allPayees);
         }
 
-        // react wip
+        // react ok
         // edit payee
         [HttpGet]
         [Route("getPayee/{selectedPayeeId}")]
@@ -124,7 +124,7 @@ namespace FMS.API.Controllers
             }
         }
 
-        // react wip
+        // react ok
         // edit payee in action
         [HttpPost]
         [Route("editPayee")]
@@ -137,14 +137,14 @@ namespace FMS.API.Controllers
                 // payee = null;
                 if (payee == null)
                 {
-                    return BadRequest("Payee Object is Null");
+                    return BadRequest();
                 }
 
                 // check for exception
                 // throw new Exception();
 
                 // check for ModelState
-                // ModelState.AddModelError("error", "ModelState Check!");
+                // ModelState.AddModelError("PayeeId", "Payee is Required!");
                 // ModelState.AddModelError("error", "Another ModelState Check!");
                 // ModelState.AddModelError("error", "One More Another ModelState Check!");
                 if (ModelState.IsValid)

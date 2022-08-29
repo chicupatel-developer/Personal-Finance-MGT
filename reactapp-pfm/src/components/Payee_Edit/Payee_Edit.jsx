@@ -33,18 +33,22 @@ const Payee_Edit = () => {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
 
+  const [showBalance, setShowBalance] = useState(false);
+
   useEffect(() => {
     getPayeeTypes();
     getPayee(id);
   }, []);
 
   const getPayee = (id) => {
-    console.log("Editing paye : ", id);
+    console.log("Editing payee : ", id);
     if (checkForNumbersOnly(id)) {
       PayeeService.getPayee(id)
         .then((response) => {
           console.log(response.data);
           setPayee(response.data);
+          if (response.data.payeeType === 3) setShowBalance(true);
+          else setShowBalance(false);
         })
         .catch((e) => {
           if (e.response.status === 400 || e.response.status === 500) {
@@ -85,7 +89,9 @@ const Payee_Edit = () => {
   };
 
   const setField = (field, value) => {
-    console.log(field, value);
+    if (field === "payeeType" && value === "3") setShowBalance(true);
+    else if (field === "payeeType" && value !== "3") setShowBalance(false);
+
     setPayee({
       ...payee,
       [field]: value,
@@ -111,6 +117,10 @@ const Payee_Edit = () => {
     if (!payeeName || payeeName === "")
       newErrors.payeeName = "Payee Name is Required!";
 
+    if (showBalance) {
+      if (!balance || balance === "")
+        newErrors.balance = "Balance is Required!";
+    }
     if (!(!balance || balance === "")) {
       if (!checkForNumbersOnly(balance))
         newErrors.balance = "Only Numbers are Allowed!";
@@ -124,17 +134,17 @@ const Payee_Edit = () => {
   const handleModelState = (error) => {
     var errors = [];
     if (error.response.status === 400) {
-      if (error.response.data.errors === undefined) {
+      if (error.response.data.status === 400) {
         console.log("Bad Request!!!");
-        errors.push(error.response.data);
+        errors.push(error.response.data.title + "!");
       } else {
-        for (let prop in error.response.data.errors) {
-          if (error.response.data.errors[prop].length > 1) {
-            for (let error_ in error.response.data.errors[prop]) {
-              errors.push(error.response.data.errors[prop][error_]);
+        for (let prop in error.response.data) {
+          if (error.response.data[prop].length > 1) {
+            for (let error_ in error.response.data[prop]) {
+              errors.push(error.response.data[prop][error_]);
             }
           } else {
-            errors.push(error.response.data.errors[prop]);
+            errors.push(error.response.data[prop]);
           }
         }
       }
@@ -172,11 +182,46 @@ const Payee_Edit = () => {
         description: payee.description,
         payeeACNumber: payee.payeeACNumber,
         payeeType: Number(payee.payeeType),
-        balance: Number(payee.balance),
+        balance: showBalance ? Number(payee.balance) : 0,
         payeeId: Number(id),
       };
 
       console.log(payeeModel);
+
+      // api call
+      PayeeService.editPayee(payeeModel)
+        .then((response) => {
+          setModelErrors([]);
+          setPayeeEditResponse({});
+          console.log(response.data);
+
+          var editResponse = {
+            responseCode: response.data.responseCode,
+            responseMessage: response.data.responseMessage,
+          };
+          if (response.data.responseCode === 0) {
+            resetForm();
+            setPayeeEditResponse(editResponse);
+
+            setTimeout(() => {
+              navigate("/payee");
+            }, 3000);
+          } else if (response.data.responseCode === -1) {
+            setPayeeEditResponse(editResponse);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          setModelErrors([]);
+          setPayeeEditResponse({});
+          // 400
+          // ModelState
+          if (error.response.status === 400) {
+            console.log("400 !");
+            var modelErrors = handleModelState(error);
+            setModelErrors(modelErrors);
+          }
+        });
     }
   };
 
@@ -270,7 +315,7 @@ const Payee_Edit = () => {
                         </Form.Control.Feedback>
                       </Form.Group>
                       <p></p>
-                      {payee.payeeType === 3 && (
+                      {showBalance && (
                         <Form.Group controlId="balance">
                           <Form.Label>Balance</Form.Label>
                           <Form.Control
