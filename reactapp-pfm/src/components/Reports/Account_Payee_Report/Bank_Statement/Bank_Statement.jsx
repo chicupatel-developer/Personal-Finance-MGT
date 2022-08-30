@@ -34,7 +34,10 @@ const Bank_Statement = ({ bankAccounts }) => {
             </h4>
           </div>
           <div>
-            <Transactions myTransactions={dt.transactions} textColor={getAccountColor(dt.accountType)} />
+            <Transactions
+              myTransactions={dt.transactions}
+              textColor={getAccountColor(dt.accountType)}
+            />
           </div>
         </div>
       );
@@ -43,8 +46,10 @@ const Bank_Statement = ({ bankAccounts }) => {
 
   return (
     <div>
-      {bankAccounts && bankAccounts.length > 0 && (
+      {bankAccounts && bankAccounts.length > 0 ? (
         <div>{renderAccountList()}</div>
+      ) : (
+        <div className="noAccounts">No Accounts!</div>
       )}
     </div>
   );

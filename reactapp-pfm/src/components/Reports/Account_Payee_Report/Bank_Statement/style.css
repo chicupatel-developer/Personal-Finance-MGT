@@ -8,3 +8,10 @@
     border-radius: 10px;
     font-size: medium;
 }
+
+.noAccounts {
+    text-align: center;
+    color: red;
+    font-size: xx-large;
+    font-weight: bold;
+}
