@@ -26,11 +26,9 @@ const Bank_Statement = ({ bankAccounts }) => {
               Last Balance <b>${dt.lastBalance}</b>
             </h4>
           </div>
-          {dt.transactions && dt.transactions.length > 0 && (
-            <div>
-              <Transactions myTransactions={dt.transactions} />
-            </div>
-          )}
+          <div>
+            <Transactions myTransactions={dt.transactions} />
+          </div>
         </div>
       );
     });
@@ -38,10 +36,8 @@ const Bank_Statement = ({ bankAccounts }) => {
 
   return (
     <div>
-      {bankAccounts && bankAccounts.length > 0 ? (
+      {bankAccounts && bankAccounts.length > 0 && (
         <div>{renderAccountList()}</div>
-      ) : (
-        <div className="noAccounts">No Accounts!</div>
       )}
     </div>
   );

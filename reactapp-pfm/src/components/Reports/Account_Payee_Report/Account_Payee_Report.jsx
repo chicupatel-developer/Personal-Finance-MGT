@@ -188,6 +188,11 @@ const Account_Payee_Report = () => {
     }
   };
 
+  const getBankStyle = (bankName) => {
+    var bankColor = getBankColor(bankName);
+    return { color: bankColor };
+  };
+
   return (
     <div className="mainContainer">
       <div className="container">
@@ -293,6 +298,18 @@ const Account_Payee_Report = () => {
         <p></p>
         <div className="row">
           <div className="col-md-12 mx-auto">
+            {bank && bank.bankName && (
+              <div
+                className="bankTitleHeader"
+                style={getBankStyle(bank.bankName)}
+              >
+                <h2>{bank.bankName}</h2>
+                <p></p>
+                <hr />
+                <p></p>
+              </div>
+            )}
+
             <Bank_Statement bankAccounts={bankAccounts} />
           </div>
         </div>
