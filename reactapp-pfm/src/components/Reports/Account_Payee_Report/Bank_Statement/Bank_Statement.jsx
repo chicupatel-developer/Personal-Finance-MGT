@@ -7,19 +7,26 @@ import Moment from "moment";
 
 import Transactions from "../Transactions/Transactions";
 
-import { getAccountType } from "../../../../services/local.service";
+import {
+  getAccountType,
+  getAccountColor,
+} from "../../../../services/local.service";
 
 const Bank_Statement = ({ bankAccounts }) => {
   useEffect(() => {
     console.log("child component : ", bankAccounts);
   }, [bankAccounts]);
 
+  const getAccountStyle = (acType) => {
+    var acColor = getAccountColor(acType);
+    return { color: acColor };
+  };
   const renderAccountList = () => {
     return bankAccounts.map((dt, i) => {
       return (
         <div key={i}>
           <div className="accountHeader">
-            <h3>
+            <h3 style={getAccountStyle(dt.accountType)}>
               [{getAccountType(dt.accountType)}] # {dt.accountNumber}
             </h3>
             <h4>
@@ -27,7 +34,7 @@ const Bank_Statement = ({ bankAccounts }) => {
             </h4>
           </div>
           <div>
-            <Transactions myTransactions={dt.transactions} />
+            <Transactions myTransactions={dt.transactions} textColor={getAccountColor(dt.accountType)} />
           </div>
         </div>
       );

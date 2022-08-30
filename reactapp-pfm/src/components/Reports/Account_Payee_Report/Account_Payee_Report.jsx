@@ -303,7 +303,7 @@ const Account_Payee_Report = () => {
                 className="bankTitleHeader"
                 style={getBankStyle(bank.bankName)}
               >
-                <h2>{bank.bankName}</h2>
+                <h1>{bank.bankName}</h1>
                 <p></p>
                 <hr />
                 <p></p>

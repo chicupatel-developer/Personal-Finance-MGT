@@ -123,3 +123,10 @@ export function getCCTypeColor(ccName) {
     return "black";
   }
 }
+
+export function getDaysDifference(startDate, endDate) {
+  if (startDate.getTime() === endDate.getTime()) return 1;
+  let difference = endDate.getTime() - startDate.getTime();
+  let totalDays = Math.ceil(difference / (1000 * 3600 * 24));
+  return totalDays;
+}

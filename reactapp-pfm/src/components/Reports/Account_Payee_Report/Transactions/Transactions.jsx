@@ -13,11 +13,17 @@ import {
   getPayeeTypeName,
   getAmountSign,
   getTransactionTypeDisplay,
+  getDaysDifference,
 } from "../../../../services/local.service";
 
-const Transactions = ({ myTransactions }) => {
+const Transactions = ({ myTransactions, textColor }) => {
+  const [totalIn, setTotalIn] = useState(0);
+  const [totalOut, setTotalOut] = useState(0);
+  const [daysDiff, setDaysDiff] = useState(0);
+
   useEffect(() => {
-    console.log("child component : ", myTransactions);
+    console.log("child component : ", myTransactions, textColor);
+    getTotalInOut();
   }, [myTransactions]);
 
   const displayEntity = (cell, row) => {
@@ -96,17 +102,66 @@ const Transactions = ({ myTransactions }) => {
       formatter: (cell, row) => displayDate(cell, row),
     },
   ];
+
+  const getTransactionStyle = (row, rowIdx) => {
+    return { color: textColor };
+  };
+
+  const getTotalInOut = () => {
+    var totalIn = 0;
+    var totalOut = 0;
+    myTransactions.map((tr, i) => {
+      if (tr.transactionType === 0) totalIn += tr.amountPaid;
+      else if (tr.transactionType === 1) totalOut += tr.amountPaid;
+    });
+    console.log(totalIn, totalOut, getDaysDifference(minDate, maxDate));
+    setTotalIn(totalIn);
+    setTotalOut(totalOut);
+    setDaysDiff(getDaysDifference(minDate, maxDate));
+  };
+  const maxDate = new Date(
+    Math.max(
+      ...myTransactions.map((element) => {
+        return new Date(element.transactionDate);
+      })
+    )
+  );
+  const minDate = new Date(
+    Math.min(
+      ...myTransactions.map((element) => {
+        return new Date(element.transactionDate);
+      })
+    )
+  );
+
   return (
     <div>
       {myTransactions && myTransactions.length > 0 ? (
-        <BootstrapTable
-          bootstrap4
-          keyField="bankTransactionId"
-          data={myTransactions}
-          columns={columns}
-          pagination={paginationFactory({ sizePerPage: 5 })}
-          filter={filterFactory()}
-        />
+        <div>
+          <BootstrapTable
+            bootstrap4
+            keyField="bankTransactionId"
+            data={myTransactions}
+            columns={columns}
+            rowStyle={getTransactionStyle}
+            pagination={paginationFactory({ sizePerPage: 5 })}
+            filter={filterFactory()}
+          />
+          <div
+            className="transactionFooter"
+            style={{
+              color: textColor,
+            }}
+          >
+            <h3>
+              Total In +$[{totalIn}] / {daysDiff} Days
+            </h3>
+            <h3>
+              Total Out -$[{totalOut}] / {daysDiff} Days
+            </h3>
+          </div>
+          <hr />
+        </div>
       ) : (
         <div className="noTrans">No Transactions!</div>
       )}
