@@ -1,0 +1,16 @@
+.noAccounts {
+    text-align: center;
+    color: red;
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+.accountHeader {
+    text-align: center;
+    vertical-align: middle;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: medium;
+}

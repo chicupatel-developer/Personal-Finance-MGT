@@ -4,7 +4,13 @@ import PayeeService from "../../../services/payee.service";
 import BankService from "../../../services/bank.service";
 import AccountService from "../../../services/account.service";
 import BankTransactionService from "../../../services/bank.transaction.service";
-import { getAccountType } from "../../../services/local.service";
+import {
+  getAccountType,
+  getBankColor,
+  getPayeeTypeName,
+  getAmountSign,
+  getTransactionTypeDisplay,
+} from "../../../services/local.service";
 import { useNavigate } from "react-router-dom";
 
 // react-bootstrap-table-2
@@ -14,6 +20,10 @@ import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Moment from "moment";
+
+import BankStatement from "./Bank_Statement/Bank_Statement";
+import Bank_Statement from "./Bank_Statement/Bank_Statement";
 
 const Account_Payee_Report = () => {
   const [payees, setPayees] = useState([]);
@@ -30,6 +40,8 @@ const Account_Payee_Report = () => {
   const formRef = useRef(null);
 
   const [bank, setBank] = useState({});
+
+  const [bankAccounts, setBankAccounts] = useState([]);
 
   useEffect(() => {
     getAllPayees();
@@ -167,6 +179,7 @@ const Account_Payee_Report = () => {
         BankTransactionService.getBankStatement(bank)
           .then((response) => {
             console.log(response.data);
+            setBankAccounts(response.data.bankAccounts);
           })
           .catch((error) => {
             console.log(error);
@@ -174,6 +187,7 @@ const Account_Payee_Report = () => {
       }
     }
   };
+
   return (
     <div className="mainContainer">
       <div className="container">
@@ -183,7 +197,7 @@ const Account_Payee_Report = () => {
               <div className="card-header header">
                 <div className="row">
                   <div className="col-md-9 mx-auto">
-                    <h3>Account To Payee Report</h3>
+                    <h3>Bank/Account --&gt; Payee [Report]</h3>
                   </div>
                   <div className="col-md-3 mx-auto"></div>
                 </div>
@@ -191,7 +205,7 @@ const Account_Payee_Report = () => {
               <div className="card-body">
                 <Form ref={formRef}>
                   <div className="row">
-                    <div className="col-md-6 mx-auto">
+                    <div className="col-md-5 mx-auto">
                       <Form.Group controlId="bankId">
                         <Form.Label>Bank</Form.Label>
                         <Form.Control
@@ -226,7 +240,8 @@ const Account_Payee_Report = () => {
                           {errors.accountId}
                         </Form.Control.Feedback>
                       </Form.Group>
-                      <p></p>
+                    </div>
+                    <div className="col-md-5 mx-auto">
                       <Form.Group controlId="payeeId">
                         <Form.Label>Payee</Form.Label>
                         <Form.Control
@@ -245,10 +260,10 @@ const Account_Payee_Report = () => {
                         </Form.Control.Feedback>
                       </Form.Group>
                     </div>
-                    <div className="col-md-6 mx-auto"></div>
                   </div>
 
                   <p></p>
+                  <hr />
                   <div
                     style={{
                       display: "flex",
@@ -273,6 +288,12 @@ const Account_Payee_Report = () => {
                 </Form>
               </div>
             </div>
+          </div>
+        </div>
+        <p></p>
+        <div className="row">
+          <div className="col-md-12 mx-auto">
+            <Bank_Statement bankAccounts={bankAccounts} />
           </div>
         </div>
       </div>
