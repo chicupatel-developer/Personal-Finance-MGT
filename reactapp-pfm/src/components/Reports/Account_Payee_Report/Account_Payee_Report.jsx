@@ -42,6 +42,7 @@ const Account_Payee_Report = () => {
   const [bank, setBank] = useState({});
 
   const [bankAccounts, setBankAccounts] = useState([]);
+  const [reportType, setReportType] = useState("");
 
   useEffect(() => {
     getAllPayees();
@@ -172,19 +173,32 @@ const Account_Payee_Report = () => {
     } else {
       console.log("getting report !");
 
-      // get all-accounts-payee report
+      // bank-statement
+      // get all-accounts-all-payees report
       if (form.accountId === "0") {
         console.log(bank);
         // api call
         BankTransactionService.getBankStatement(bank)
           .then((response) => {
             console.log(response.data);
-            setBankAccounts(response.data.bankAccounts);
+
+            if (form.payeeId === "0") {
+              setReportType("ALL-AC-ALL-PAYEE");
+              console.log("getting all-accounts-all-payees report");
+              setBankAccounts(response.data.bankAccounts);
+            } else {
+              setReportType("ALL-AC-SELECTED-PAYEE");
+              console.log("getting all-accounts-selected-payee report");
+              setBankAccounts(response.data.bankAccounts);
+            }
           })
           .catch((error) => {
             console.log(error);
           });
       }
+
+      // account-to-payee-statement
+      // get selected-account-all-payees report
     }
   };
 
@@ -310,7 +324,7 @@ const Account_Payee_Report = () => {
               </div>
             )}
 
-            <Bank_Statement bankAccounts={bankAccounts} />
+            <Bank_Statement bankAccounts={bankAccounts} reportType={reportType} />
           </div>
         </div>
       </div>

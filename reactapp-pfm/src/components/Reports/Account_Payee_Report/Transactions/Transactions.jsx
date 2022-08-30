@@ -23,6 +23,10 @@ const Transactions = ({ myTransactions, textColor }) => {
 
   useEffect(() => {
     console.log("child component : ", myTransactions, textColor);
+
+    // filter transactions on payeeName,,,
+    // if reportType==='ALL-AC-SELECTED-PAYEE'
+
     getTotalInOut();
   }, [myTransactions]);
 
@@ -153,12 +157,12 @@ const Transactions = ({ myTransactions, textColor }) => {
               color: textColor,
             }}
           >
-            <h3>
-              Total In +$[{totalIn}] / {daysDiff} Days
-            </h3>
-            <h3>
-              Total Out -$[{totalOut}] / {daysDiff} Days
-            </h3>
+            <h5>
+              Total In +${totalIn} / {daysDiff} Days
+            </h5>
+            <h5>
+              Total Out -${totalOut} / {daysDiff} Days
+            </h5>
           </div>
           <hr />
         </div>

@@ -12,7 +12,7 @@ import {
   getAccountColor,
 } from "../../../../services/local.service";
 
-const Bank_Statement = ({ bankAccounts }) => {
+const Bank_Statement = ({ bankAccounts, reportType }) => {
   useEffect(() => {
     console.log("child component : ", bankAccounts);
   }, [bankAccounts]);
@@ -44,10 +44,40 @@ const Bank_Statement = ({ bankAccounts }) => {
     });
   };
 
+  const renderAccountList_ = () => {
+    return bankAccounts.map((dt, i) => {
+      return (
+        <div key={i}>
+          <div className="accountHeader">
+            <h3 style={getAccountStyle(dt.accountType)}>
+              [{getAccountType(dt.accountType)}] # {dt.accountNumber}
+            </h3>
+            <h4>
+              Last Balance <b>${dt.lastBalance}</b>
+            </h4>
+          </div>
+          <div>
+            <Transactions
+              myTransactions={dt.transactions}
+              textColor={getAccountColor(dt.accountType)}
+            />
+          </div>
+        </div>
+      );
+    });
+  };
+
   return (
     <div>
       {bankAccounts && bankAccounts.length > 0 ? (
-        <div>{renderAccountList()}</div>
+        <div>
+          {reportType === "ALL-AC-ALL-PAYEE" && (
+            <div>{renderAccountList()}</div>
+          )}
+          {reportType === "ALL-AC-SELECTED-PAYEE" && (
+            <div>{renderAccountList_()}</div>
+          )}
+        </div>
       ) : (
         <div className="noAccounts">No Accounts!</div>
       )}
