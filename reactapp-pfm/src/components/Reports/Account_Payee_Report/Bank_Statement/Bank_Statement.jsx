@@ -13,9 +13,44 @@ import {
 } from "../../../../services/local.service";
 
 const Bank_Statement = ({ bankAccounts, payee }) => {
+  const [totalInGrand, setTotalInGrand] = useState(0);
+  const [totalOutGrand, setTotalOutGrand] = useState(0);
+  const [daysDiffGrand, setDaysDiffGrand] = useState(0);
+
   useEffect(() => {
     console.log("child component : ", bankAccounts);
+
+    getGrandTotalInOut();
   }, [bankAccounts]);
+
+  const getGrandTotalInOut = () => {
+    var totalIn = 0;
+    var totalOut = 0;
+    // filter trasactions
+    if (payee !== "0") {
+      bankAccounts.map((ba) => {
+        console.log(ba);
+        ba.transactions.filter((tr) => {
+          console.log(tr);
+        });
+      });
+    }
+    // all transactions
+    else {
+      console.log("all transactions");
+      bankAccounts.map((ba) => {
+        console.log(ba);
+        ba.transactions.filter((tr) => {
+          console.log(tr);
+          if (tr.transactionType === 0) totalIn += tr.amountPaid;
+          else if (tr.transactionType === 1) totalOut += tr.amountPaid;
+        });
+      });
+    }
+
+    setTotalInGrand(totalIn);
+    setTotalOutGrand(totalOut);
+  };
 
   const getAccountStyle = (acType) => {
     var acColor = getAccountColor(acType);
@@ -38,6 +73,8 @@ const Bank_Statement = ({ bankAccounts, payee }) => {
               myTransactions={dt.transactions}
               textColor={getAccountColor(dt.accountType)}
               payee={payee}
+              totalInGrand={totalInGrand}
+              totalOutGrand={totalOutGrand}
             />
           </div>
         </div>

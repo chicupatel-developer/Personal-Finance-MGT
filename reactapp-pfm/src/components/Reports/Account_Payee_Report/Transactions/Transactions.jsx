@@ -16,11 +16,17 @@ import {
   getDaysDifference,
 } from "../../../../services/local.service";
 
-const Transactions = ({ myTransactions, textColor, payee }) => {
+const Transactions = ({
+  myTransactions,
+  textColor,
+  payee,
+  totalInGrand,
+  totalOutGrand,
+}) => {
   const [footerReady, setFooterReady] = useState(false);
-  const [totalIn, setTotalIn] = useState(0);
-  const [totalOut, setTotalOut] = useState(0);
-  const [daysDiff, setDaysDiff] = useState(0);
+  const [totalInAc, setTotalInAc] = useState(0);
+  const [totalOutAc, setTotalOutAc] = useState(0);
+  const [daysDiffAc, setDaysDiffAc] = useState(0);
 
   const [transactions, setTransactions] = useState([]);
 
@@ -30,18 +36,12 @@ const Transactions = ({ myTransactions, textColor, payee }) => {
     } else {
       setTransactions([...myTransactions]);
     }
+  }, [myTransactions]);
 
-    getTotalInOut();
+  useEffect(() => {
+    getTotalInOutAc();
     setFooterReady(true);
-  }, [
-    myTransactions,
-    payee,
-    footerReady,
-    daysDiff,
-    totalIn,
-    totalOut,
-    transactions,
-  ]);
+  }, [totalInAc, totalOutAc, daysDiffAc, footerReady, transactions]);
 
   const filterTransactions = () => {
     var selectedTrs = [];
@@ -134,7 +134,7 @@ const Transactions = ({ myTransactions, textColor, payee }) => {
     return { color: textColor };
   };
 
-  const getTotalInOut = () => {
+  const getTotalInOutAc = () => {
     var totalIn = 0;
     var totalOut = 0;
     transactions.map((tr, i) => {
@@ -142,9 +142,9 @@ const Transactions = ({ myTransactions, textColor, payee }) => {
       else if (tr.transactionType === 1) totalOut += tr.amountPaid;
     });
     console.log(totalIn, totalOut, getDaysDifference(minDate, maxDate));
-    setTotalIn(totalIn);
-    setTotalOut(totalOut);
-    setDaysDiff(getDaysDifference(minDate, maxDate));
+    setTotalInAc(totalIn);
+    setTotalOutAc(totalOut);
+    setDaysDiffAc(getDaysDifference(minDate, maxDate));
   };
   const maxDate = new Date(
     Math.max(
@@ -175,7 +175,7 @@ const Transactions = ({ myTransactions, textColor, payee }) => {
             filter={filterFactory()}
           />
 
-          {console.log(daysDiff)}
+          {console.log(daysDiffAc)}
           {footerReady && (
             <div
               className="transactionFooter"
@@ -184,10 +184,10 @@ const Transactions = ({ myTransactions, textColor, payee }) => {
               }}
             >
               <h5>
-                Total In +${totalIn} / {daysDiff} Days
+                Total In +${totalInAc} / {daysDiffAc} Days
               </h5>
               <h5>
-                Total Out -${totalOut} / {daysDiff} Days
+                Total Out -${totalOutAc} / {daysDiffAc} Days
               </h5>
             </div>
           )}
