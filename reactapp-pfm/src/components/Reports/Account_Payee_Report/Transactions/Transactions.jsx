@@ -33,7 +33,15 @@ const Transactions = ({ myTransactions, textColor, payee }) => {
 
     getTotalInOut();
     setFooterReady(true);
-  }, [myTransactions, payee]);
+  }, [
+    myTransactions,
+    payee,
+    footerReady,
+    daysDiff,
+    totalIn,
+    totalOut,
+    transactions,
+  ]);
 
   const filterTransactions = () => {
     var selectedTrs = [];
@@ -167,7 +175,8 @@ const Transactions = ({ myTransactions, textColor, payee }) => {
             filter={filterFactory()}
           />
 
-          {footerReady && daysDiff !== NaN && (
+          {console.log(daysDiff)}
+          {footerReady && (
             <div
               className="transactionFooter"
               style={{
