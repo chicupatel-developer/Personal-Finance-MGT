@@ -16,19 +16,34 @@ import {
   getDaysDifference,
 } from "../../../../services/local.service";
 
-const Transactions = ({ myTransactions, textColor }) => {
+const Transactions = ({ myTransactions, textColor, payee }) => {
+  const [footerReady, setFooterReady] = useState(false);
   const [totalIn, setTotalIn] = useState(0);
   const [totalOut, setTotalOut] = useState(0);
   const [daysDiff, setDaysDiff] = useState(0);
 
-  useEffect(() => {
-    console.log("child component : ", myTransactions, textColor);
+  const [transactions, setTransactions] = useState([]);
 
-    // filter transactions on payeeName,,,
-    // if reportType==='ALL-AC-SELECTED-PAYEE'
+  useEffect(() => {
+    if (payee !== "0") {
+      filterTransactions();
+    } else {
+      setTransactions([...myTransactions]);
+    }
 
     getTotalInOut();
-  }, [myTransactions]);
+    setFooterReady(true);
+  }, [myTransactions, payee]);
+
+  const filterTransactions = () => {
+    var selectedTrs = [];
+    myTransactions.filter((tr) => {
+      if (Number(tr.payeeId) === Number(payee)) {
+        selectedTrs.push(tr);
+      }
+    });
+    setTransactions([...selectedTrs]);
+  };
 
   const displayEntity = (cell, row) => {
     return (
@@ -114,7 +129,7 @@ const Transactions = ({ myTransactions, textColor }) => {
   const getTotalInOut = () => {
     var totalIn = 0;
     var totalOut = 0;
-    myTransactions.map((tr, i) => {
+    transactions.map((tr, i) => {
       if (tr.transactionType === 0) totalIn += tr.amountPaid;
       else if (tr.transactionType === 1) totalOut += tr.amountPaid;
     });
@@ -125,14 +140,14 @@ const Transactions = ({ myTransactions, textColor }) => {
   };
   const maxDate = new Date(
     Math.max(
-      ...myTransactions.map((element) => {
+      ...transactions.map((element) => {
         return new Date(element.transactionDate);
       })
     )
   );
   const minDate = new Date(
     Math.min(
-      ...myTransactions.map((element) => {
+      ...transactions.map((element) => {
         return new Date(element.transactionDate);
       })
     )
@@ -140,30 +155,34 @@ const Transactions = ({ myTransactions, textColor }) => {
 
   return (
     <div>
-      {myTransactions && myTransactions.length > 0 ? (
+      {transactions && transactions.length > 0 ? (
         <div>
           <BootstrapTable
             bootstrap4
             keyField="bankTransactionId"
-            data={myTransactions}
+            data={transactions}
             columns={columns}
             rowStyle={getTransactionStyle}
             pagination={paginationFactory({ sizePerPage: 5 })}
             filter={filterFactory()}
           />
-          <div
-            className="transactionFooter"
-            style={{
-              color: textColor,
-            }}
-          >
-            <h5>
-              Total In +${totalIn} / {daysDiff} Days
-            </h5>
-            <h5>
-              Total Out -${totalOut} / {daysDiff} Days
-            </h5>
-          </div>
+
+          {footerReady && daysDiff !== NaN && (
+            <div
+              className="transactionFooter"
+              style={{
+                color: textColor,
+              }}
+            >
+              <h5>
+                Total In +${totalIn} / {daysDiff} Days
+              </h5>
+              <h5>
+                Total Out -${totalOut} / {daysDiff} Days
+              </h5>
+            </div>
+          )}
+
           <hr />
         </div>
       ) : (

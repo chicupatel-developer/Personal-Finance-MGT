@@ -42,7 +42,6 @@ const Account_Payee_Report = () => {
   const [bank, setBank] = useState({});
 
   const [bankAccounts, setBankAccounts] = useState([]);
-  const [reportType, setReportType] = useState("");
 
   useEffect(() => {
     getAllPayees();
@@ -182,14 +181,11 @@ const Account_Payee_Report = () => {
           .then((response) => {
             console.log(response.data);
 
+            setBankAccounts(response.data.bankAccounts);
             if (form.payeeId === "0") {
-              setReportType("ALL-AC-ALL-PAYEE");
-              console.log("getting all-accounts-all-payees report");
-              setBankAccounts(response.data.bankAccounts);
+              console.log("getting all-accounts-all-payees report");              
             } else {
-              setReportType("ALL-AC-SELECTED-PAYEE");
               console.log("getting all-accounts-selected-payee report");
-              setBankAccounts(response.data.bankAccounts);
             }
           })
           .catch((error) => {
@@ -324,7 +320,7 @@ const Account_Payee_Report = () => {
               </div>
             )}
 
-            <Bank_Statement bankAccounts={bankAccounts} reportType={reportType} />
+            <Bank_Statement bankAccounts={bankAccounts} payee={form.payeeId} />
           </div>
         </div>
       </div>
