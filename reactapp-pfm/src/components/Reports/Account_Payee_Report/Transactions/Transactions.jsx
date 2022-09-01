@@ -16,13 +16,7 @@ import {
   getDaysDifference,
 } from "../../../../services/local.service";
 
-const Transactions = ({
-  myTransactions,
-  textColor,
-  payee,
-  totalInGrand,
-  totalOutGrand,
-}) => {
+const Transactions = ({ myTransactions, textColor, payee }) => {
   const [footerReady, setFooterReady] = useState(false);
   const [totalInAc, setTotalInAc] = useState(0);
   const [totalOutAc, setTotalOutAc] = useState(0);
@@ -191,8 +185,6 @@ const Transactions = ({
               </h5>
             </div>
           )}
-
-          <hr />
         </div>
       ) : (
         <div className="noTrans">No Transactions!</div>

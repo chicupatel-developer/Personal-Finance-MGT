@@ -320,7 +320,7 @@ const Account_Payee_Report = () => {
               </div>
             )}
 
-            <Bank_Statement bankAccounts={bankAccounts} payee={form.payeeId} />
+            <Bank_Statement bank={bank} bankAccounts={bankAccounts} payee={form.payeeId} />
           </div>
         </div>
       </div>

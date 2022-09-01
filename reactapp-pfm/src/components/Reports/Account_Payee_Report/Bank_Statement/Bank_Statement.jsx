@@ -6,16 +6,15 @@ import { useNavigate } from "react-router-dom";
 import Moment from "moment";
 
 import Transactions from "../Transactions/Transactions";
+import Report_Footer from "../Report_Footer/Report_Footer";
 
 import {
   getAccountType,
   getAccountColor,
 } from "../../../../services/local.service";
 
-const Bank_Statement = ({ bankAccounts, payee }) => {
-  const [totalInGrand, setTotalInGrand] = useState(0);
-  const [totalOutGrand, setTotalOutGrand] = useState(0);
-  const [daysDiffGrand, setDaysDiffGrand] = useState(0);
+const Bank_Statement = ({ bank, bankAccounts, payee }) => {
+  const [reportFooterObj, setReportFooterObj] = useState({});
 
   useEffect(() => {
     console.log("child component : ", bankAccounts);
@@ -23,6 +22,8 @@ const Bank_Statement = ({ bankAccounts, payee }) => {
     getGrandTotalInOut();
   }, [bankAccounts]);
 
+  // report-footer
+  // grand total in-out
   const getGrandTotalInOut = () => {
     var totalIn = 0;
     var totalOut = 0;
@@ -48,8 +49,10 @@ const Bank_Statement = ({ bankAccounts, payee }) => {
       });
     }
 
-    setTotalInGrand(totalIn);
-    setTotalOutGrand(totalOut);
+    setReportFooterObj({
+      totalIn: totalIn,
+      totalOut: totalOut,
+    });
   };
 
   const getAccountStyle = (acType) => {
@@ -73,8 +76,6 @@ const Bank_Statement = ({ bankAccounts, payee }) => {
               myTransactions={dt.transactions}
               textColor={getAccountColor(dt.accountType)}
               payee={payee}
-              totalInGrand={totalInGrand}
-              totalOutGrand={totalOutGrand}
             />
           </div>
         </div>
@@ -85,7 +86,15 @@ const Bank_Statement = ({ bankAccounts, payee }) => {
   return (
     <div>
       {bankAccounts && bankAccounts.length > 0 ? (
-        <div>{renderAccountList()}</div>
+        <div>
+          {renderAccountList()}
+          <p></p>
+          <hr />
+          <p></p>
+          <div>
+            <Report_Footer bank={bank} reportFooter={reportFooterObj} />
+          </div>
+        </div>
       ) : (
         <div className="noAccounts">No Accounts!</div>
       )}
