@@ -307,7 +307,7 @@ export class AccountPayeeReportComponent implements OnInit {
           }
         },
         error => {
-
+          console.log(error);
         }
       );
   }

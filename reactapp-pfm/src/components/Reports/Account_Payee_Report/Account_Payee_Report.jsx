@@ -174,6 +174,7 @@ const Account_Payee_Report = () => {
 
       // bank-statement
       // get all-accounts-all-payees report
+      // get all-accounts-selected-payee report
       if (form.accountId === "0") {
         console.log(bank);
         // api call
@@ -183,7 +184,7 @@ const Account_Payee_Report = () => {
 
             setBankAccounts(response.data.bankAccounts);
             if (form.payeeId === "0") {
-              console.log("getting all-accounts-all-payees report");              
+              console.log("getting all-accounts-all-payees report");
             } else {
               console.log("getting all-accounts-selected-payee report");
             }
@@ -192,9 +193,22 @@ const Account_Payee_Report = () => {
             console.log(error);
           });
       }
-
       // account-to-payee-statement
       // get selected-account-all-payees report
+      // get selected-account-selected-payee report
+      else {
+        var accountVM = {
+          accountId: Number(form.accountId),
+        };
+        // api call
+        BankTransactionService.getAccountStatementAll(accountVM)
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
   };
 
@@ -320,7 +334,11 @@ const Account_Payee_Report = () => {
               </div>
             )}
 
-            <Bank_Statement bank={bank} bankAccounts={bankAccounts} payee={form.payeeId} />
+            <Bank_Statement
+              bank={bank}
+              bankAccounts={bankAccounts}
+              payee={form.payeeId}
+            />
           </div>
         </div>
       </div>
