@@ -8,5 +8,9 @@ class CCService {
   addCCTransaction = async (data) => {
     return await http.post(`/addCCTransaction`, data);
   };
+
+  getCCStatementAll = async (data) => {
+    return await http.post(`/getCCStatementAll`, data);
+  };
 }
 export default new CCService();

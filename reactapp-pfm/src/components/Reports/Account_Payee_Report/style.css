@@ -6,3 +6,10 @@
     font-size: x-large;
     font-style: italic;
 }
+
+.apiError {
+    text-align: center;
+    color: red;
+    font-size: xx-large;
+    font-weight: bold;
+}
