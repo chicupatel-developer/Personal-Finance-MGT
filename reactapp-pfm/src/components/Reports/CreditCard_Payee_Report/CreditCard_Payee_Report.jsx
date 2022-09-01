@@ -2,13 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./style.css";
 import PayeeService from "../../../services/payee.service";
 import CCService from "../../../services/cc.service";
-import {
-  getAccountType,
-  getBankColor,
-  getPayeeTypeName,
-  getAmountSign,
-  getTransactionTypeDisplay,
-} from "../../../services/local.service";
+import { getCCColor } from "../../../services/local.service";
 import { useNavigate } from "react-router-dom";
 
 import Form from "react-bootstrap/Form";
@@ -162,6 +156,11 @@ const CreditCard_Payee_Report = () => {
     }
   };
 
+  const getCCStyle = (ccName) => {
+    var ccColor = getCCColor(ccName);
+    return { color: ccColor };
+  };
+
   return (
     <div className="mainContainer">
       <div className="container">
@@ -250,8 +249,11 @@ const CreditCard_Payee_Report = () => {
           <div className="col-md-12 mx-auto">
             {apiError && <div className="apiError">{apiError}</div>}
 
-            {!apiError && selectedCC && (
-              <div className="ccHeader">
+            {!apiError && selectedCC && selectedCC.lastBalance && (
+              <div
+                className="ccTitleHeader"
+                style={getCCStyle(selectedCC.creditCardName)}
+              >
                 <h3>
                   {selectedCC.creditCardName} - [{selectedCC.creditCardNumber}]
                 </h3>
@@ -260,13 +262,16 @@ const CreditCard_Payee_Report = () => {
                 </h4>
               </div>
             )}
-            {!apiError && transactions && (
-              <Transactions
-                myTransactions={transactions}
-                textColor={""}
-                payee={"0"}
-              />
-            )}
+            {!apiError &&
+              transactions &&
+              selectedCC &&
+              selectedCC.creditCardName && (
+                <Transactions
+                  myTransactions={transactions}
+                  payee={"0"}
+                  textColor={getCCColor(selectedCC.creditCardName)}
+                />
+              )}
           </div>
         </div>
       </div>
