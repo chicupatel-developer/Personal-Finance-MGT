@@ -22,7 +22,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Moment from "moment";
 
-import BankStatement from "./Bank_Statement/Bank_Statement";
+import Account_Statement from "./Account_Statement/Account_Statement";
 import Bank_Statement from "./Bank_Statement/Bank_Statement";
 
 const Account_Payee_Report = () => {
@@ -41,7 +41,15 @@ const Account_Payee_Report = () => {
 
   const [bank, setBank] = useState({});
 
+  // all-accounts-all-payees
+  // all accounts-selected-payee
   const [bankAccounts, setBankAccounts] = useState([]);
+
+  // selected-account-all-payees
+  // selected account-selected-payee
+  const [account, setAccount] = useState([]);
+
+  const [reportType, setReportType] = useState("");
 
   useEffect(() => {
     getAllPayees();
@@ -188,6 +196,7 @@ const Account_Payee_Report = () => {
             } else {
               console.log("getting all-accounts-selected-payee report");
             }
+            setReportType("ALL-ACCOUNTS-PAYEE");
           })
           .catch((error) => {
             console.log(error);
@@ -204,6 +213,14 @@ const Account_Payee_Report = () => {
         BankTransactionService.getAccountStatementAll(accountVM)
           .then((response) => {
             console.log(response.data);
+
+            setAccount(response.data);
+            if (form.payeeId === "0") {
+              console.log("getting selected-account-all-payees report");
+            } else {
+              console.log("getting selected-account-selected-payee report");
+            }
+            setReportType("SELECTED-ACCOUNT-PAYEE");
           })
           .catch((error) => {
             console.log(error);
@@ -334,11 +351,17 @@ const Account_Payee_Report = () => {
               </div>
             )}
 
-            <Bank_Statement
-              bank={bank}
-              bankAccounts={bankAccounts}
-              payee={form.payeeId}
-            />
+            {reportType === "" && <span></span>}
+            {reportType === "ALL-ACCOUNTS-PAYEE" && (
+              <Bank_Statement
+                bank={bank}
+                bankAccounts={bankAccounts}
+                payee={form.payeeId}
+              />
+            )}
+            {reportType === "SELECTED-ACCOUNT-PAYEE" && (
+              <Account_Statement account={account} payee={form.payeeId} />
+            )}
           </div>
         </div>
       </div>
