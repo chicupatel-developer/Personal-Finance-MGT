@@ -15,12 +15,11 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Moment from "moment";
 
-import Transactions from "../Account_Payee_Report/Transactions/Transactions";
+import Transactions from "./Transactions/Transactions";
 
 const CreditCard_Payee_Report = () => {
   const [apiError, setApiError] = useState("");
   const [payees, setPayees] = useState([]);
-  const [payeeTypes, setPayeeTypes] = useState([]);
   const [ccs, setCcs] = useState([]);
 
   // form
@@ -31,17 +30,22 @@ const CreditCard_Payee_Report = () => {
   // form reference
   const formRef = useRef(null);
 
-  const [cc, setCc] = useState({});
+  const [selectedCC, setSelectedCC] = useState({});
+  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     getAllCreditCards();
-    getAllPayeeTypes();
+    getAllPayees();
   }, []);
-  const getAllPayeeTypes = () => {
-    PayeeService.allPayeeTypes()
+  const getAllPayees = () => {
+    PayeeService.allPayees()
       .then((response) => {
         console.log(response.data);
-        setPayeeTypes(response.data);
+        setPayees(
+          response.data.filter((p) => {
+            return p.payeeType !== 3;
+          })
+        );
       })
       .catch((e) => {
         console.log(e);
@@ -88,7 +92,7 @@ const CreditCard_Payee_Report = () => {
     setForm({});
   };
 
-  const renderOptionsForPayeeList = () => {
+  const renderOptionsForPayees = () => {
     return payees.map((dt, i) => {
       return (
         <option value={dt.payeeId} key={i} name={dt.payeeName}>
@@ -101,13 +105,62 @@ const CreditCard_Payee_Report = () => {
     return ccs.map((dt, i) => {
       return (
         <option value={dt.creditCardId} key={i} name={dt.creditCardName}>
-          {dt.creditCardName}
+          {dt.creditCardName} - [{dt.creditCardNumber}]
         </option>
       );
     });
   };
 
-  const handleSubmit = (e) => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setApiError("");
+    setTransactions([]);
+    setSelectedCC({});
+
+    const newErrors = findFormErrors();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      console.log("getting report !");
+
+      var creditCard = {
+        creditCardId: Number(form.creditCardId),
+      };
+      // get cc-all-payees report
+      if (form.payeeId === "0") {
+        // api call
+        CCService.getCCStatementAll(creditCard)
+          .then((response) => {
+            console.log(response.data);
+            if (response.data.responseCode === -1) {
+              // server error
+              setApiError(response.data.responseMessage);
+            } else {
+              setSelectedCC({
+                ...selectedCC,
+                creditCardName: response.data.creditCardName,
+                creditCardNumber: response.data.creditCardNumber,
+                lastBalance: response.data.balance,
+              });
+              setTransactions(response.data.transactions);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            if (error.response.status === 400) {
+              setApiError(error.response.statusText + " !");
+            } else {
+              console.log(error);
+              setApiError("Error !");
+            }
+          });
+      }
+      // get cc-selected-payee report
+      else {
+      }
+    }
+  };
 
   return (
     <div className="mainContainer">
@@ -155,7 +208,7 @@ const CreditCard_Payee_Report = () => {
                         >
                           <option value="">---Select Payee---</option>
                           <option value="0">---All Payees---</option>
-                          {renderOptionsForPayeeList()}
+                          {renderOptionsForPayees()}
                         </Form.Control>
                         <Form.Control.Feedback type="invalid">
                           {errors.payeeId}
@@ -194,7 +247,27 @@ const CreditCard_Payee_Report = () => {
         </div>
         <p></p>
         <div className="row">
-          <div className="col-md-12 mx-auto"></div>
+          <div className="col-md-12 mx-auto">
+            {apiError && <div className="apiError">{apiError}</div>}
+
+            {!apiError && selectedCC && (
+              <div className="ccHeader">
+                <h3>
+                  {selectedCC.creditCardName} - [{selectedCC.creditCardNumber}]
+                </h3>
+                <h4>
+                  Last Balance <b>${selectedCC.lastBalance}</b>
+                </h4>
+              </div>
+            )}
+            {!apiError && transactions && (
+              <Transactions
+                myTransactions={transactions}
+                textColor={""}
+                payee={"0"}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

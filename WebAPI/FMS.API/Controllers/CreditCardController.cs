@@ -32,6 +32,7 @@ namespace FMS.API.Controllers
             return Ok(allCCs);
         }
 
+        // react wip
         [HttpPost]
         [Route("getCCStatementAll")]
         public IActionResult GetCreditCardStatementAll(CreditCard cc)
