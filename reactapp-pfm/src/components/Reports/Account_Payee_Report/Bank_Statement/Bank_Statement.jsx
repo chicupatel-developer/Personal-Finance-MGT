@@ -9,8 +9,13 @@ import Transactions from "../Transactions/Transactions";
 import Report_Footer from "../Report_Footer/Report_Footer";
 
 import {
+  getDaysDifference,
   getAccountType,
   getAccountColor,
+  getMaxDate,
+  getMinDate,
+  getMyTransactions,
+  getMyFilterTransactions,
 } from "../../../../services/local.service";
 
 const Bank_Statement = ({ bank, bankAccounts, payee }) => {
@@ -27,31 +32,54 @@ const Bank_Statement = ({ bank, bankAccounts, payee }) => {
   const getGrandTotalInOut = () => {
     var totalIn = 0;
     var totalOut = 0;
+    var maxDate = null;
+    var minDate = null;
+    var daysDifference = 0;
+
     // filter trasactions
     if (payee !== "0") {
-      bankAccounts.map((ba) => {
-        console.log(ba);
-        ba.transactions.filter((tr) => {
-          console.log(tr);
-        });
+      var filterTransactions = [];
+      filterTransactions = getMyFilterTransactions(bankAccounts, payee);
+      filterTransactions.map((tr) => {
+        if (tr.transactionType === 0) totalIn += tr.amountPaid;
+        else if (tr.transactionType === 1) totalOut += tr.amountPaid;
       });
+
+      if (filterTransactions.length < 1) {
+        daysDifference = 0;
+      } else {
+        maxDate = getMaxDate(filterTransactions);
+        minDate = getMinDate(filterTransactions);
+        daysDifference = getDaysDifference(minDate, maxDate);
+      }
     }
     // all transactions
     else {
+      var allTransactions = [];
       console.log("all transactions");
       bankAccounts.map((ba) => {
         console.log(ba);
-        ba.transactions.filter((tr) => {
+        ba.transactions.map((tr) => {
           console.log(tr);
           if (tr.transactionType === 0) totalIn += tr.amountPaid;
           else if (tr.transactionType === 1) totalOut += tr.amountPaid;
         });
       });
+
+      allTransactions = getMyTransactions(bankAccounts);
+      if (allTransactions.length < 1) {
+        daysDifference = 0;
+      } else {
+        maxDate = getMaxDate(allTransactions);
+        minDate = getMinDate(allTransactions);
+        daysDifference = getDaysDifference(minDate, maxDate);
+      }
     }
 
     setReportFooterObj({
       totalIn: totalIn,
       totalOut: totalOut,
+      daysDifference: daysDifference,
     });
   };
 

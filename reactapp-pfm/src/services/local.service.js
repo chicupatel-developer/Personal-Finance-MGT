@@ -130,3 +130,46 @@ export function getDaysDifference(startDate, endDate) {
   let totalDays = Math.ceil(difference / (1000 * 3600 * 24));
   return totalDays;
 }
+
+export function getMaxDate(transactions) {
+  return new Date(
+    Math.max(
+      ...transactions.map((element) => {
+        return new Date(element.transactionDate);
+      })
+    )
+  );
+}
+export function getMinDate(transactions) {
+  return new Date(
+    Math.min(
+      ...transactions.map((element) => {
+        return new Date(element.transactionDate);
+      })
+    )
+  );
+}
+
+export function getMyTransactions(bankAccounts) {
+  var allTransactions = [];
+  bankAccounts.map((ba) => {
+    ba.transactions.map((tr) => {
+      console.log(tr);
+      allTransactions.push(tr);
+    });
+  });
+  return allTransactions;
+}
+
+export function getMyFilterTransactions(bankAccounts, payee) {
+  var filterTransactions = [];
+  bankAccounts.map((ba) => {
+    ba.transactions.map((tr) => {
+      console.log(tr);
+      if (Number(tr.payeeId) === Number(payee)) {
+        filterTransactions.push(tr);
+      }
+    });
+  });
+  return filterTransactions;
+}

@@ -11,11 +11,17 @@ const Report_Footer = ({ bank, reportFooter }) => {
   return (
     <div className="reportFooter" style={getBankStyle(bank.bankName)}>
       <div>
-        Grand Total In <b>+$ {reportFooter.totalIn}</b>
+        Grand Total In{" "}
+        <b>
+          +$ {reportFooter.totalIn} / {reportFooter.daysDifference} Days
+        </b>
       </div>
       <p></p>
       <div>
-        Grand Total Out <b>-$ {reportFooter.totalOut}</b>
+        Grand Total Out{" "}
+        <b>
+          -$ {reportFooter.totalOut} / {reportFooter.daysDifference} Days
+        </b>
       </div>
     </div>
   );
