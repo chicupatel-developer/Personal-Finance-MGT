@@ -450,7 +450,13 @@ const Account_Payee_Report = () => {
               />
             )}
             {reportType === "SELECTED-ACCOUNT-PAYEE" && (
-              <Account_Statement account={account} payee={form.payeeId} />
+              <Account_Statement
+                account={account}
+                payee={form.payeeId}
+                filterOnDates={doFilterOnDates}
+                startDate={form.startDate}
+                endDate={form.endDate}
+              />
             )}
           </div>
         </div>

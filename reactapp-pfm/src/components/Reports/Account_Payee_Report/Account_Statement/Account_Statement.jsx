@@ -17,7 +17,13 @@ import {
   getMyFilterTransactions,
 } from "../../../../services/local.service";
 
-const Account_Statement = ({ account, payee }) => {
+const Account_Statement = ({
+  account,
+  payee,
+  filterOnDates,
+  startDate,
+  endDate,
+}) => {
   useEffect(() => {
     console.log("child component : ", account);
   }, [account]);
@@ -42,6 +48,9 @@ const Account_Statement = ({ account, payee }) => {
             myTransactions={account.transactions}
             textColor={getAccountColor(account.accountType)}
             payee={payee}
+            filterOnDates={filterOnDates}
+            startDate={startDate}
+            endDate={endDate}
           />
         </div>
       </div>
