@@ -16,6 +16,7 @@ import {
   getMinDate,
   getMyTransactions,
   getMyFilterTransactions,
+  getMyFilterTransactionsByDates,
 } from "../../../../services/local.service";
 
 const Bank_Statement = ({
@@ -45,41 +46,96 @@ const Bank_Statement = ({
 
     // filter transactions
     if (payee !== "0") {
-      var filterTransactions = [];
+      var filterTransactions = []; // filter by payee
+      var filterTransactionsByDates = []; // filter by dates
       filterTransactions = getMyFilterTransactions(bankAccounts, payee);
-      filterTransactions.map((tr) => {
-        if (tr.transactionType === 0) totalIn += tr.amountPaid;
-        else if (tr.transactionType === 1) totalOut += tr.amountPaid;
-      });
 
-      if (filterTransactions.length < 1) {
-        daysDifference = 0;
+      if (filterTransactions.length > 0) {
+        // filter by payee and dates
+        if (filterOnDates) {
+          filterTransactionsByDates = getMyFilterTransactionsByDates(
+            filterTransactions,
+            startDate,
+            endDate
+          );
+          filterTransactionsByDates.map((tr) => {
+            if (tr.transactionType === 0) totalIn += tr.amountPaid;
+            else if (tr.transactionType === 1) totalOut += tr.amountPaid;
+          });
+
+          if (filterTransactionsByDates.length < 1) {
+            daysDifference = 0;
+          } else {
+            maxDate = getMaxDate(filterTransactionsByDates);
+            minDate = getMinDate(filterTransactionsByDates);
+            daysDifference = getDaysDifference(minDate, maxDate);
+          }
+        }
+        // filter by payee
+        else {
+          filterTransactions.map((tr) => {
+            if (tr.transactionType === 0) totalIn += tr.amountPaid;
+            else if (tr.transactionType === 1) totalOut += tr.amountPaid;
+          });
+
+          if (filterTransactions.length < 1) {
+            daysDifference = 0;
+          } else {
+            maxDate = getMaxDate(filterTransactions);
+            minDate = getMinDate(filterTransactions);
+            daysDifference = getDaysDifference(minDate, maxDate);
+          }
+        }
       } else {
-        maxDate = getMaxDate(filterTransactions);
-        minDate = getMinDate(filterTransactions);
-        daysDifference = getDaysDifference(minDate, maxDate);
+        daysDifference = 0;
+        totalIn = 0;
+        totalOut = 0;
       }
     }
     // all transactions
     else {
       var allTransactions = [];
-      console.log("all transactions");
-      bankAccounts.map((ba) => {
-        console.log(ba);
-        ba.transactions.map((tr) => {
-          console.log(tr);
-          if (tr.transactionType === 0) totalIn += tr.amountPaid;
-          else if (tr.transactionType === 1) totalOut += tr.amountPaid;
-        });
-      });
-
+      var filterTransactionsByDates = []; // filter by dates
       allTransactions = getMyTransactions(bankAccounts);
-      if (allTransactions.length < 1) {
-        daysDifference = 0;
+
+      if (allTransactions.length > 0) {
+        // filter on dates
+        if (filterOnDates) {
+          filterTransactionsByDates = getMyFilterTransactionsByDates(
+            allTransactions,
+            startDate,
+            endDate
+          );
+          filterTransactionsByDates.map((tr) => {
+            if (tr.transactionType === 0) totalIn += tr.amountPaid;
+            else if (tr.transactionType === 1) totalOut += tr.amountPaid;
+          });
+
+          if (filterTransactionsByDates.length < 1) {
+            daysDifference = 0;
+          } else {
+            maxDate = getMaxDate(filterTransactionsByDates);
+            minDate = getMinDate(filterTransactionsByDates);
+            daysDifference = getDaysDifference(minDate, maxDate);
+          }
+        } else {
+          allTransactions.map((tr) => {
+            if (tr.transactionType === 0) totalIn += tr.amountPaid;
+            else if (tr.transactionType === 1) totalOut += tr.amountPaid;
+          });
+
+          if (allTransactions.length < 1) {
+            daysDifference = 0;
+          } else {
+            maxDate = getMaxDate(allTransactions);
+            minDate = getMinDate(allTransactions);
+            daysDifference = getDaysDifference(minDate, maxDate);
+          }
+        }
       } else {
-        maxDate = getMaxDate(allTransactions);
-        minDate = getMinDate(allTransactions);
-        daysDifference = getDaysDifference(minDate, maxDate);
+        daysDifference = 0;
+        totalIn = 0;
+        totalOut = 0;
       }
     }
 
@@ -111,6 +167,9 @@ const Bank_Statement = ({
               myTransactions={dt.transactions}
               textColor={getAccountColor(dt.accountType)}
               payee={payee}
+              filterOnDates={filterOnDates}
+              startDate={startDate}
+              endDate={endDate}
             />
           </div>
         </div>

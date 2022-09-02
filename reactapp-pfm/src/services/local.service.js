@@ -171,6 +171,7 @@ export function getMyTransactions(bankAccounts) {
   return allTransactions;
 }
 
+// filter by payee
 export function getMyFilterTransactions(bankAccounts, payee) {
   var filterTransactions = [];
   bankAccounts.map((ba) => {
@@ -180,6 +181,21 @@ export function getMyFilterTransactions(bankAccounts, payee) {
         filterTransactions.push(tr);
       }
     });
+  });
+  return filterTransactions;
+}
+
+// filter by dates
+export function getMyFilterTransactionsByDates(transactions, startDate, endDate) {
+  var filterTransactions = [];
+  transactions.map((tr) => {
+    console.log(tr);
+     if (
+       new Date(tr.transactionDate) >= new Date(startDate) &&
+       new Date(tr.transactionDate) <= new Date(endDate)
+     ) {
+       filterTransactions.push(tr);
+     }
   });
   return filterTransactions;
 }
