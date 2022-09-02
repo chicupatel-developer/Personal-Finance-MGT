@@ -15,7 +15,7 @@ export function getBankColor(bankName) {
 export function getCCColor(ccName) {
   if (ccName.search("visa") !== -1) {
     return "orange";
-  } else  if (ccName.search("master card") !== -1) {
+  } else if (ccName.search("master card") !== -1) {
     return "blue";
   } else {
     return "black";

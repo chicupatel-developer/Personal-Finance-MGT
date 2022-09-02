@@ -121,38 +121,32 @@ const CreditCard_Payee_Report = () => {
       var creditCard = {
         creditCardId: Number(form.creditCardId),
       };
-      // get cc-all-payees report
-      if (form.payeeId === "0") {
-        // api call
-        CCService.getCCStatementAll(creditCard)
-          .then((response) => {
-            console.log(response.data);
-            if (response.data.responseCode === -1) {
-              // server error
-              setApiError(response.data.responseMessage);
-            } else {
-              setSelectedCC({
-                ...selectedCC,
-                creditCardName: response.data.creditCardName,
-                creditCardNumber: response.data.creditCardNumber,
-                lastBalance: response.data.balance,
-              });
-              setTransactions(response.data.transactions);
-            }
-          })
-          .catch((error) => {
+      // api call
+      CCService.getCCStatementAll(creditCard)
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.responseCode === -1) {
+            // server error
+            setApiError(response.data.responseMessage);
+          } else {
+            setSelectedCC({
+              ...selectedCC,
+              creditCardName: response.data.creditCardName,
+              creditCardNumber: response.data.creditCardNumber,
+              lastBalance: response.data.balance,
+            });
+            setTransactions(response.data.transactions);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status === 400) {
+            setApiError(error.response.statusText + " !");
+          } else {
             console.log(error);
-            if (error.response.status === 400) {
-              setApiError(error.response.statusText + " !");
-            } else {
-              console.log(error);
-              setApiError("Error !");
-            }
-          });
-      }
-      // get cc-selected-payee report
-      else {
-      }
+            setApiError("Error !");
+          }
+        });
     }
   };
 
@@ -268,7 +262,7 @@ const CreditCard_Payee_Report = () => {
               selectedCC.creditCardName && (
                 <Transactions
                   myTransactions={transactions}
-                  payee={"0"}
+                  payee={form.payeeId}
                   textColor={getCCColor(selectedCC.creditCardName)}
                 />
               )}
