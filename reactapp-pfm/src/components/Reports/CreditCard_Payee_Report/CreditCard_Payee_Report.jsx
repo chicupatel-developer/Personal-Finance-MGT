@@ -27,6 +27,8 @@ const CreditCard_Payee_Report = () => {
   const [selectedCC, setSelectedCC] = useState({});
   const [transactions, setTransactions] = useState([]);
 
+  const [doFilterOnDates, setDoFilterOnDates] = useState(false);
+
   useEffect(() => {
     getAllCreditCards();
     getAllPayees();
@@ -70,13 +72,39 @@ const CreditCard_Payee_Report = () => {
       });
   };
   const findFormErrors = () => {
-    const { creditCardId, payeeId } = form;
+    const { creditCardId, payeeId, startDate, endDate } = form;
     const newErrors = {};
+
+    setDoFilterOnDates(false);
 
     if (!creditCardId || creditCardId === "")
       newErrors.creditCardId = "Credit-Card is Required!";
     if (!payeeId || payeeId === "") newErrors.payeeId = "Payee is Required!";
 
+    if (!(!startDate || startDate === "")) {
+      if (!endDate || endDate === "") {
+        newErrors.endDate = "End Date is Required!";
+      } else {
+        delete newErrors["endDate"];
+      }
+    }
+    if (!(!endDate || endDate === "")) {
+      if (!startDate || startDate === "") {
+        newErrors.startDate = "Start Date is Required!";
+      } else {
+        delete newErrors["startDate"];
+      }
+    }
+    if (!(!startDate || startDate === "") && !(!endDate || endDate === "")) {
+      if (startDate > endDate) {
+        newErrors.startDate = "Start Date Must be < End Date!";
+      } else {
+        delete newErrors["startDate"];
+        delete newErrors["endDate"];
+
+        setDoFilterOnDates(true);
+      }
+    }
     return newErrors;
   };
 
@@ -116,6 +144,7 @@ const CreditCard_Payee_Report = () => {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
+      setErrors({});
       console.log("getting report !");
 
       var creditCard = {
@@ -208,7 +237,36 @@ const CreditCard_Payee_Report = () => {
                         </Form.Control.Feedback>
                       </Form.Group>
                     </div>
-                    <div className="col-md-5 mx-auto"></div>
+                    <div className="col-md-5 mx-auto">
+                      <Form.Label>
+                        <b>Start Date</b>
+                      </Form.Label>
+                      <Form.Control
+                        type="date"
+                        name="startDate"
+                        isInvalid={!!errors.startDate}
+                        placeholder="Start Date"
+                        onChange={(e) => setField("startDate", e.target.value)}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.startDate}
+                      </Form.Control.Feedback>
+
+                      <p></p>
+                      <Form.Label>
+                        <b>End Date</b>
+                      </Form.Label>
+                      <Form.Control
+                        type="date"
+                        name="endDate"
+                        isInvalid={!!errors.endDate}
+                        placeholder="End Date"
+                        onChange={(e) => setField("endDate", e.target.value)}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.endDate}
+                      </Form.Control.Feedback>
+                    </div>
                   </div>
                   <p></p>
                   <hr />
@@ -264,6 +322,7 @@ const CreditCard_Payee_Report = () => {
                   myTransactions={transactions}
                   payee={form.payeeId}
                   textColor={getCCColor(selectedCC.creditCardName)}
+                  filterOnDates={doFilterOnDates}
                 />
               )}
           </div>

@@ -16,7 +16,7 @@ import {
   getDaysDifference,
 } from "../../../../services/local.service";
 
-const Transactions = ({ myTransactions, textColor, payee }) => {
+const Transactions = ({ myTransactions, textColor, payee, filterOnDates }) => {
   const [footerReady, setFooterReady] = useState(false);
   const [totalInAc, setTotalInAc] = useState(0);
   const [totalOutAc, setTotalOutAc] = useState(0);
@@ -25,6 +25,7 @@ const Transactions = ({ myTransactions, textColor, payee }) => {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
+    console.log("filter on dates!", filterOnDates);
     if (payee !== "0") {
       filterTransactions();
     } else {
