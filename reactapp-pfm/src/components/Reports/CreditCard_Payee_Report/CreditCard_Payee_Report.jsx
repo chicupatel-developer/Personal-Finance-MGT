@@ -323,6 +323,8 @@ const CreditCard_Payee_Report = () => {
                   payee={form.payeeId}
                   textColor={getCCColor(selectedCC.creditCardName)}
                   filterOnDates={doFilterOnDates}
+                  startDate={form.startDate}
+                  endDate={form.endDate}
                 />
               )}
           </div>

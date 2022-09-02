@@ -16,7 +16,14 @@ import {
   getDaysDifference,
 } from "../../../../services/local.service";
 
-const Transactions = ({ myTransactions, textColor, payee, filterOnDates }) => {
+const Transactions = ({
+  myTransactions,
+  textColor,
+  payee,
+  filterOnDates,
+  startDate,
+  endDate,
+}) => {
   const [footerReady, setFooterReady] = useState(false);
   const [totalInAc, setTotalInAc] = useState(0);
   const [totalOutAc, setTotalOutAc] = useState(0);
@@ -25,11 +32,10 @@ const Transactions = ({ myTransactions, textColor, payee, filterOnDates }) => {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
-    console.log("filter on dates!", filterOnDates);
     if (payee !== "0") {
       filterTransactions();
     } else {
-      setTransactions([...myTransactions]);
+      filterTransactionsOnlyByDates();
     }
   }, [myTransactions]);
 
@@ -38,14 +44,56 @@ const Transactions = ({ myTransactions, textColor, payee, filterOnDates }) => {
     setFooterReady(true);
   }, [totalInAc, totalOutAc, daysDiffAc, footerReady, transactions]);
 
+  // filter by payee & dates
   const filterTransactions = () => {
     var selectedTrs = [];
+    // filter by payee
     myTransactions.filter((tr) => {
       if (Number(tr.payeeId) === Number(payee)) {
         selectedTrs.push(tr);
       }
     });
-    setTransactions([...selectedTrs]);
+
+    if (filterOnDates) {
+      // filter by dates
+      if (selectedTrs.length > 0) {
+        var selectedTrsByDates = [];
+        selectedTrs.filter((tr) => {
+          if (
+            tr.transactionDate >= startDate &&
+            tr.transactionDate <= endDate
+          ) {
+            selectedTrsByDates.push(tr);
+          }
+        });
+        setTransactions([...selectedTrsByDates]);
+      } else {
+        setTransactions([]);
+      }
+    } else {
+      setTransactions([...selectedTrs]);
+    }
+  };
+
+  // filter by only dates
+  const filterTransactionsOnlyByDates = () => {
+    console.log(startDate, endDate);
+    if (filterOnDates) {
+      // filter by dates
+      var selectedTrsByDates = [];
+      myTransactions.filter((tr) => {
+        if (
+          new Date(tr.transactionDate) >= new Date(startDate) &&
+          new Date(tr.transactionDate) <= new Date(endDate)
+        ) {
+          console.log("match : ", tr);
+          selectedTrsByDates.push(tr);
+        }
+      });
+      setTransactions([...selectedTrsByDates]);
+    } else {
+      setTransactions([...myTransactions]);
+    }
   };
 
   const displayEntity = (cell, row) => {
