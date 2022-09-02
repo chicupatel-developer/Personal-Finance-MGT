@@ -52,6 +52,8 @@ const Account_Payee_Report = () => {
 
   const [reportType, setReportType] = useState("");
 
+  const [doFilterOnDates, setDoFilterOnDates] = useState(false);
+
   useEffect(() => {
     getAllPayees();
     getAllPayeeTypes();
@@ -84,14 +86,40 @@ const Account_Payee_Report = () => {
       });
   };
   const findFormErrors = () => {
-    const { bankId, accountId, payeeId } = form;
+    const { bankId, accountId, payeeId, startDate, endDate } = form;
     const newErrors = {};
+
+    setDoFilterOnDates(false);
 
     if (!bankId || bankId === "") newErrors.bankId = "Bank is Required!";
     if (!accountId || accountId === "")
       newErrors.accountId = "Account is Required!";
     if (!payeeId || payeeId === "") newErrors.payeeId = "Payee is Required!";
 
+    if (!(!startDate || startDate === "")) {
+      if (!endDate || endDate === "") {
+        newErrors.endDate = "End Date is Required!";
+      } else {
+        delete newErrors["endDate"];
+      }
+    }
+    if (!(!endDate || endDate === "")) {
+      if (!startDate || startDate === "") {
+        newErrors.startDate = "Start Date is Required!";
+      } else {
+        delete newErrors["startDate"];
+      }
+    }
+    if (!(!startDate || startDate === "") && !(!endDate || endDate === "")) {
+      if (startDate > endDate) {
+        newErrors.startDate = "Start Date Must be < End Date!";
+      } else {
+        delete newErrors["startDate"];
+        delete newErrors["endDate"];
+
+        setDoFilterOnDates(true);
+      }
+    }
     return newErrors;
   };
 
@@ -183,6 +211,8 @@ const Account_Payee_Report = () => {
       setErrors(newErrors);
     } else {
       console.log("getting report !");
+
+      setErrors({});
 
       // bank-statement
       // get all-accounts-all-payees report
@@ -312,8 +342,7 @@ const Account_Payee_Report = () => {
                           {errors.accountId}
                         </Form.Control.Feedback>
                       </Form.Group>
-                    </div>
-                    <div className="col-md-5 mx-auto">
+                      <p></p>
                       <Form.Group controlId="payeeId">
                         <Form.Label>Payee</Form.Label>
                         <Form.Control
@@ -331,6 +360,36 @@ const Account_Payee_Report = () => {
                           {errors.payeeId}
                         </Form.Control.Feedback>
                       </Form.Group>
+                    </div>
+                    <div className="col-md-5 mx-auto">
+                      <Form.Label>
+                        <b>Start Date</b>
+                      </Form.Label>
+                      <Form.Control
+                        type="date"
+                        name="startDate"
+                        isInvalid={!!errors.startDate}
+                        placeholder="Start Date"
+                        onChange={(e) => setField("startDate", e.target.value)}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.startDate}
+                      </Form.Control.Feedback>
+
+                      <p></p>
+                      <Form.Label>
+                        <b>End Date</b>
+                      </Form.Label>
+                      <Form.Control
+                        type="date"
+                        name="endDate"
+                        isInvalid={!!errors.endDate}
+                        placeholder="End Date"
+                        onChange={(e) => setField("endDate", e.target.value)}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.endDate}
+                      </Form.Control.Feedback>
                     </div>
                   </div>
 
@@ -385,6 +444,9 @@ const Account_Payee_Report = () => {
                 bank={bank}
                 bankAccounts={bankAccounts}
                 payee={form.payeeId}
+                filterOnDates={doFilterOnDates}
+                startDate={form.startDate}
+                endDate={form.endDate}
               />
             )}
             {reportType === "SELECTED-ACCOUNT-PAYEE" && (

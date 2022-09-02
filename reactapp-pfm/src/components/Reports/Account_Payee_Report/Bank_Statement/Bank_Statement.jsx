@@ -18,7 +18,14 @@ import {
   getMyFilterTransactions,
 } from "../../../../services/local.service";
 
-const Bank_Statement = ({ bank, bankAccounts, payee }) => {
+const Bank_Statement = ({
+  bank,
+  bankAccounts,
+  payee,
+  filterOnDates,
+  startDate,
+  endDate,
+}) => {
   const [reportFooterObj, setReportFooterObj] = useState({});
 
   useEffect(() => {
@@ -36,7 +43,7 @@ const Bank_Statement = ({ bank, bankAccounts, payee }) => {
     var minDate = null;
     var daysDifference = 0;
 
-    // filter trasactions
+    // filter transactions
     if (payee !== "0") {
       var filterTransactions = [];
       filterTransactions = getMyFilterTransactions(bankAccounts, payee);
