@@ -11,6 +11,7 @@ import {
   getPayeeTypeName,
   getAmountSign,
   getTransactionTypeDisplay,
+  getMonthName,
 } from "../../services/local.service";
 import { useNavigate } from "react-router-dom";
 
@@ -67,7 +68,8 @@ const Monitor_Account_Monthly = () => {
               setChartData((oldValues) => [
                 ...oldValues,
                 [
-                  item.month + "",
+                  // getMonthName(Number(item.month)) + "",
+                  getMonthName(Number(item.month)),
                   item.tranType === 0 ? item.total : 0,
                   item.tranType === 1 ? item.total : 0,
                 ],

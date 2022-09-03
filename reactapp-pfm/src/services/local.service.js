@@ -186,16 +186,41 @@ export function getMyFilterTransactions(bankAccounts, payee) {
 }
 
 // filter by dates
-export function getMyFilterTransactionsByDates(transactions, startDate, endDate) {
+export function getMyFilterTransactionsByDates(
+  transactions,
+  startDate,
+  endDate
+) {
   var filterTransactions = [];
   transactions.map((tr) => {
     console.log(tr);
-     if (
-       new Date(tr.transactionDate) >= new Date(startDate) &&
-       new Date(tr.transactionDate) <= new Date(endDate)
-     ) {
-       filterTransactions.push(tr);
-     }
+    if (
+      new Date(tr.transactionDate) >= new Date(startDate) &&
+      new Date(tr.transactionDate) <= new Date(endDate)
+    ) {
+      filterTransactions.push(tr);
+    }
   });
   return filterTransactions;
+}
+
+// get month name from month number
+export function getMonthName(monthNumber) {
+  var monthNameList = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  let obj = monthNameList.find((o, i) => i + 1 === monthNumber);
+  return obj;
 }
