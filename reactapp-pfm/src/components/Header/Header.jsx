@@ -52,6 +52,10 @@ const Header = () => {
               <i className="bi bi-activity"></i>
               CreditCard-Payee-Report
             </Link>
+            <Link to={"/account-monitor"} className="nav-link">
+              <i className="bi bi-bar-chart-line-fill"></i>
+              Account-Monitor
+            </Link>
           </Nav>
         </Navbar.Collapse>
         {/*

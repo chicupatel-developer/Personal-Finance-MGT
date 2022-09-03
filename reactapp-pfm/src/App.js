@@ -23,6 +23,7 @@ import CreditCard from "./components/CreditCard/CreditCard";
 import CreditCard_Transaction from "./components/CreditCard_Transaction/CreditCard_Transaction";
 import Account_Payee_Report from "./components/Reports/Account_Payee_Report/Account_Payee_Report";
 import CreditCard_Payee_Report from "./components/Reports/CreditCard_Payee_Report/CreditCard_Payee_Report";
+import Monitor_Account_Monthly from "./components/Monitor_Account_Monthly/Monitor_Account_Monthly";
 
 function App() {
   return (
@@ -71,6 +72,10 @@ function App() {
             <Route
               path="/creditcard-payee-report"
               element={<CreditCard_Payee_Report />}
+            />
+            <Route
+              path="/account-monitor"
+              element={<Monitor_Account_Monthly />}
             />
             <Route path="*" element={<NotFound />} />
           </Routes>
