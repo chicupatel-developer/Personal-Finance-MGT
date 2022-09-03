@@ -187,6 +187,7 @@ export class MonitorAccountMonthlyComponent implements OnInit {
       this.dataService.monitorAccountMonthly(this.accountMonthlyRequest)
         .subscribe(
           data => {
+            console.log(data);
             if(data.length>0){
               this.accountMonthly = data;
               this.totalIn= 0;
