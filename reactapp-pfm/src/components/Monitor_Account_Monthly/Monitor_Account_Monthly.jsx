@@ -122,7 +122,32 @@ const Monitor_Account_Monthly = () => {
     return { color: bankColor };
   };
 
-  const handleSubmit = (e) => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newErrors = findFormErrors();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      console.log("getting report !");
+
+      setErrors({});
+
+      var accountMonthlyRequest = {
+        bankId: Number(form.bankId),
+        accountId: Number(form.accountId),
+      };
+      // api call
+      EntityMonitorService.monitorAccountMonthly(accountMonthlyRequest)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
   return (
     <div className="mainContainer">
       <div className="container">
