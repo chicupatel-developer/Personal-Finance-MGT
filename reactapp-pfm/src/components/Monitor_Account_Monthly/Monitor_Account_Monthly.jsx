@@ -18,6 +18,9 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Moment from "moment";
 
+// google chart api
+import Chart from "react-google-charts";
+
 const Monitor_Account_Monthly = () => {
   const [banks, setBanks] = useState([]);
   const [accounts, setAccounts] = useState([]);
@@ -30,6 +33,53 @@ const Monitor_Account_Monthly = () => {
   // reset form
   // form reference
   const formRef = useRef(null);
+
+  // chart
+  const [chartData, setChartData] = useState([[]]);
+  // month v/s $ [In] [Out]
+  // display google chart
+  const displayAccountProgress = (e) => {
+    e.preventDefault();
+
+    const newErrors = findFormErrors();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      console.log("getting report !");
+
+      var accountMonthlyRequest = {
+        bankId: Number(form.bankId),
+        accountId: Number(form.accountId),
+      };
+      EntityMonitorService.monitorAccountMonthly(accountMonthlyRequest)
+        .then((response) => {
+          console.log(response.data);
+
+          if (response.data.length < 1) {
+            setChartData([]);
+          } else {
+            var chartDatas_ = [];
+            var firstItem = ["Month", "+$ IN", "-$ OUT"];
+            chartDatas_.push(firstItem);
+            setChartData(chartDatas_);
+
+            response.data.map((item, i) => {
+              setChartData((oldValues) => [
+                ...oldValues,
+                [
+                  item.month + "",
+                  item.tranType === 0 ? item.total : 0,
+                  item.tranType === 1 ? item.total : 0,
+                ],
+              ]);
+            });
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  };
 
   useEffect(() => {
     getAllBanks();
@@ -122,32 +172,6 @@ const Monitor_Account_Monthly = () => {
     return { color: bankColor };
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const newErrors = findFormErrors();
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-    } else {
-      console.log("getting report !");
-
-      setErrors({});
-
-      var accountMonthlyRequest = {
-        bankId: Number(form.bankId),
-        accountId: Number(form.accountId),
-      };
-      // api call
-      EntityMonitorService.monitorAccountMonthly(accountMonthlyRequest)
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-
   return (
     <div className="mainContainer">
       <div className="container">
@@ -175,7 +199,7 @@ const Monitor_Account_Monthly = () => {
                             setField("bankId", e.target.value);
                           }}
                         >
-                          <option value="">Select Bank</option>
+                          <option value="">---Select Bank---</option>
                           {renderOptionsForBankList()}
                         </Form.Control>
                         <Form.Control.Feedback type="invalid">
@@ -193,7 +217,6 @@ const Monitor_Account_Monthly = () => {
                           }}
                         >
                           <option value="">---Select Account---</option>
-                          <option value="0">---All Accounts---</option>
                           {renderOptionsForAccountList()}
                         </Form.Control>
                         <Form.Control.Feedback type="invalid">
@@ -215,9 +238,9 @@ const Monitor_Account_Monthly = () => {
                     <Button
                       className="btn btn-success"
                       type="button"
-                      onClick={(e) => handleSubmit(e)}
+                      onClick={(e) => displayAccountProgress(e)}
                     >
-                      Monitor!
+                      Operation Progress [google Chart api]
                     </Button>
                     <Button
                       className="btn btn-primary"
@@ -245,6 +268,48 @@ const Monitor_Account_Monthly = () => {
                 <hr />
                 <p></p>
               </div>
+            )}
+          </div>
+
+          <p></p>
+          <hr />
+          <p></p>
+          <div className="container">
+            {chartData && chartData.length > 1 ? (
+              <Chart
+                // width={"700px"}
+                // height={"320px"}
+                chartType="BarChart"
+                loader={<div>Loading Chart</div>}
+                data={chartData}
+                options={{
+                  title: "Month v/s $ [+In] [-Out]",
+                  chartArea: { width: "70%" },
+                  hAxis: {
+                    title: "$ [IN] [OUT]",
+                    minValue: 0,
+                    textStyle: {
+                      fontSize: 12,
+                      color: "black",
+                      bold: true,
+                      italic: true,
+                    },
+                  },
+                  vAxis: {
+                    title: "Month",
+                    textStyle: {
+                      fontSize: 14,
+                      color: "black",
+                      bold: true,
+                      italic: true,
+                    },
+                  },
+                  colors: ["green", "red"],
+                }}
+                rootProps={{ "data-testid": "1" }}
+              />
+            ) : (
+              <div className="noContent">Chart-Data Not Found !</div>
             )}
           </div>
         </div>
