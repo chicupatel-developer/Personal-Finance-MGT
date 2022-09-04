@@ -26,6 +26,7 @@ const Monitor_Account_Monthly = () => {
   const [banks, setBanks] = useState([]);
   const [accounts, setAccounts] = useState([]);
   const [bank, setBank] = useState({});
+  const [account, setAccount] = useState({});
 
   // form
   const [form, setForm] = useState({});
@@ -37,6 +38,8 @@ const Monitor_Account_Monthly = () => {
 
   // chart
   const [chartData, setChartData] = useState([[]]);
+  const [chartTotalIn, setChartTotalIn] = useState(0);
+  const [chartTotalOut, setChartTotalOut] = useState(0);
   // month v/s $ [In] [Out]
   // display google chart
   const displayAccountProgress = (e) => {
@@ -59,8 +62,10 @@ const Monitor_Account_Monthly = () => {
           if (response.data.length < 1) {
             setChartData([[]]);
           } else {
+            var totalIn = 0;
+            var totalOut = 0;
             // group by month
-            const dataByMonth = response.data.reduce((acc, value) => {
+            var dataByMonth = response.data.reduce((acc, value) => {
               // Group initialization
               if (!acc[value.month]) {
                 acc[value.month] = [];
@@ -87,6 +92,12 @@ const Monitor_Account_Monthly = () => {
               if (dataByMonth[prop].length === 2) {
                 for (let data in dataByMonth[prop]) {
                   innerDataArr.push(dataByMonth[prop][data].total);
+                  if (dataByMonth[prop][data].tranType === 0)
+                    // IN
+                    totalIn += dataByMonth[prop][data].total;
+                  if (dataByMonth[prop][data].tranType === 1)
+                    // OUT
+                    totalOut += dataByMonth[prop][data].total;
                 }
               }
               // 1 record
@@ -97,15 +108,19 @@ const Monitor_Account_Monthly = () => {
                   // tranType===0 // IN
                   if (dataByMonth[prop][data].tranType === 0) {
                     innerDataArr.push(dataByMonth[prop][data].total, 0);
+                    totalIn += dataByMonth[prop][data].total;
                   }
                   // tranType===1 // OUT
                   else {
                     innerDataArr.push(0, dataByMonth[prop][data].total);
+                    totalOut += dataByMonth[prop][data].total;
                   }
                 }
               }
               displayData.push(innerDataArr);
             }
+            setChartTotalIn(totalIn);
+            setChartTotalOut(totalOut);
             setChartData(displayData);
           }
         })
@@ -124,6 +139,12 @@ const Monitor_Account_Monthly = () => {
       .then((response) => {
         console.log(response.data.accounts);
         setAccounts(response.data.accounts);
+
+        setForm({
+          ...form,
+          accountId: "",
+          bankId: bankId,
+        });
       })
       .catch((e) => {
         console.log(e);
@@ -145,8 +166,12 @@ const Monitor_Account_Monthly = () => {
     let obj = banks.find((x) => x.bankId === bankId);
     return obj.bankName;
   };
+  const getAccountName = (accountId) => {
+    let obj = accounts.find((x) => x.accountId === accountId);
+    return obj.accountNumber + " - [" + getAccountType(obj.accountType) + "]";
+  };
   const setField = (field, value) => {
-    if (field === "bankId") {
+    if (field === "bankId" && value !== "") {
       setBank({
         ...bank,
         bankId: Number(value),
@@ -154,6 +179,14 @@ const Monitor_Account_Monthly = () => {
       });
       getBankAccounts(Number(value));
     }
+    if (field === "accountId" && value !== "") {
+      setAccount({
+        ...account,
+        accountId: Number(value),
+        accountName: getAccountName(Number(value)),
+      });
+    }
+
     setForm({
       ...form,
       [field]: value,
@@ -250,7 +283,9 @@ const Monitor_Account_Monthly = () => {
                             setField("accountId", e.target.value);
                           }}
                         >
-                          <option value="">---Select Account---</option>
+                          <option value="" defaultValue>
+                            ---Select Account---
+                          </option>
                           {renderOptionsForAccountList()}
                         </Form.Control>
                         <Form.Control.Feedback type="invalid">
@@ -298,16 +333,19 @@ const Monitor_Account_Monthly = () => {
                 style={getBankStyle(bank.bankName)}
               >
                 <h1>{bank.bankName}</h1>
-                <p></p>
+                {account && account.accountId && account.accountName && (
+                  <div>
+                    <h3>{account.accountName} </h3>
+                    <h4>Total IN +${chartTotalIn}</h4>
+                    <h4>Total OUT -${chartTotalOut}</h4>
+                  </div>
+                )}
                 <hr />
                 <p></p>
               </div>
             )}
           </div>
 
-          <p></p>
-          <hr />
-          <p></p>
           <div className="container">
             {chartData && chartData.length > 1 ? (
               <Chart
