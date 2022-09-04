@@ -57,24 +57,56 @@ const Monitor_Account_Monthly = () => {
           console.log(response.data);
 
           if (response.data.length < 1) {
-            setChartData([]);
+            setChartData([[]]);
           } else {
-            var chartDatas_ = [];
-            var firstItem = ["Month", "+$ IN", "-$ OUT"];
-            chartDatas_.push(firstItem);
-            setChartData(chartDatas_);
+            // group by month
+            const dataByMonth = response.data.reduce((acc, value) => {
+              // Group initialization
+              if (!acc[value.month]) {
+                acc[value.month] = [];
+              }
 
-            response.data.map((item, i) => {
-              setChartData((oldValues) => [
-                ...oldValues,
-                [
-                  // getMonthName(Number(item.month)) + "",
-                  getMonthName(Number(item.month)),
-                  item.tranType === 0 ? item.total : 0,
-                  item.tranType === 1 ? item.total : 0,
-                ],
-              ]);
-            });
+              // Grouping
+              acc[value.month].push(value);
+
+              return acc;
+            }, {});
+            for (var key in dataByMonth) {
+              // console.log("group by #" + key);
+            }
+            var displayData = [["Month", "+$ IN", "-$ OUT"]];
+            for (let prop in dataByMonth) {
+              var innerDataArr = [];
+
+              // push month
+              innerDataArr.push(getMonthName(Number(prop)) + "");
+
+              // 2 records
+              // both IN OUT transaction type
+              // first record IN,,, second record OUT
+              if (dataByMonth[prop].length === 2) {
+                for (let data in dataByMonth[prop]) {
+                  innerDataArr.push(dataByMonth[prop][data].total);
+                }
+              }
+              // 1 record
+              // either IN or OUT transaction type
+              else {
+                for (let data in dataByMonth[prop]) {
+                  console.log(prop, dataByMonth[prop][data]);
+                  // tranType===0 // IN
+                  if (dataByMonth[prop][data].tranType === 0) {
+                    innerDataArr.push(dataByMonth[prop][data].total, 0);
+                  }
+                  // tranType===1 // OUT
+                  else {
+                    innerDataArr.push(0, dataByMonth[prop][data].total);
+                  }
+                }
+              }
+              displayData.push(innerDataArr);
+            }
+            setChartData(displayData);
           }
         })
         .catch((e) => {
@@ -279,9 +311,9 @@ const Monitor_Account_Monthly = () => {
           <div className="container">
             {chartData && chartData.length > 1 ? (
               <Chart
-                // width={"700px"}
-                // height={"320px"}
-                chartType="BarChart"
+                width={"700px"}
+                height={"320px"}
+                chartType="Bar"
                 loader={<div>Loading Chart</div>}
                 data={chartData}
                 options={{
