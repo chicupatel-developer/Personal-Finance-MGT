@@ -45,6 +45,9 @@ const Monitor_Account_Monthly = () => {
   const displayAccountProgress = (e) => {
     e.preventDefault();
 
+    setChartTotalIn(0);
+    setChartTotalOut(0);
+
     const newErrors = findFormErrors();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);

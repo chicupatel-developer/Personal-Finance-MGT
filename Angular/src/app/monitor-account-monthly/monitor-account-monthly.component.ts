@@ -41,11 +41,8 @@ export class MonitorAccountMonthlyComponent implements OnInit {
 
   // selected account
   // monitor account's monthly total In/Out
-  accountMonthlyRequest : AccountMonthlyRequest;
-  public multiIn = [];
-  public multiOut = [];
-  public multiInOut = [];
-  public multiFinal = [];
+  accountMonthlyRequest: AccountMonthlyRequest;
+  
   public chartData = [];
   accountMonthly: AccountMonthly[];
 
@@ -151,11 +148,7 @@ export class MonitorAccountMonthlyComponent implements OnInit {
   // ok
   initMonitorAccountMonthly(){
     this.accountMonthlyRequest = new AccountMonthlyRequest();
-    this.accountMonthly = [];
-    this.multiIn = [];
-    this.multiOut = [];
-    this.multiInOut = [];
-    this.multiFinal = [];
+    this.accountMonthly = [];   
     this.chartData = [];
     this.selectedBank = '';
     this.selectedAccount = '';
@@ -273,55 +266,6 @@ export class MonitorAccountMonthlyComponent implements OnInit {
               }
               console.log('chart data,,,',this.chartData);
 
-
-
-
-
-
-  
-              /*
-              this.accountMonthly.forEach((element) => {
-                var part = new Part();
-                var series = new Series();
-                part.series = [];
-
-                part.name = this.getMonthName(element.month);
-                series.name = this.getTransactionType(element.tranType);
-                series.value = element.total;
-                part.series.push(series);
-                if (element.tranType == 0) {
-                  this.multiIn.push(part);
-                }
-                else {
-                  this.multiOut.push(part);
-                }
-              });
-              */
-              // this.multiInOut = [...this.multiIn, ...this.multiOut];
-
-              // console.log(this.multiIn);
-              // console.log(this.multiOut);
-              // console.log(this.multiInOut);
-
-              /*
-              const map = new Map();
-              this.multiFinal = [];
-
-              for (const item of this.multiInOut) {
-                if (!map.has(item.name)) {
-                  map.set(item.name, true);
-                  this.multiFinal.push(item);
-                }
-                else {
-                  this.multiFinal.forEach((element) => {
-                    if (element.name == item.name) {
-                      element.series.push(item.series[0]);
-                    }
-                  });
-                }
-              }
-              */
-              console.log('check ,,,',this.multiFinal);
               this.selectedBank = this.accountMonthly[0].bankName;
               this.selectedAccount = this.accountMonthly[0].accountNumber + ' [ ' + this.displayAccountType(this.accountMonthly[0].accountType)+' ]';
           
