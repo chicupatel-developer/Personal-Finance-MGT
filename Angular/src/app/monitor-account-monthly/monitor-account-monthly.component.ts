@@ -46,6 +46,7 @@ export class MonitorAccountMonthlyComponent implements OnInit {
   public multiOut = [];
   public multiInOut = [];
   public multiFinal = [];
+  public chartData = [];
   accountMonthly: AccountMonthly[];
 
   // controls visibilty of chart panel display
@@ -155,6 +156,7 @@ export class MonitorAccountMonthlyComponent implements OnInit {
     this.multiOut = [];
     this.multiInOut = [];
     this.multiFinal = [];
+    this.chartData = [];
     this.selectedBank = '';
     this.selectedAccount = '';
     this.totalIn = 0;
@@ -201,6 +203,83 @@ export class MonitorAccountMonthlyComponent implements OnInit {
                 this.totalOut += element.total;
               });
 
+
+              // group by month
+              var dataByMonth = this.accountMonthly.reduce((acc, value) => {
+                // Group initialization
+                if (!acc[value.month]) {
+                  acc[value.month] = [];
+                }
+                // Grouping
+                acc[value.month].push(value);
+                return acc;
+              }, {});
+              for (var key in dataByMonth) {
+                // console.log("group by #" + key);
+              }
+              var allParts = [];       
+              this.chartData = [];
+              for (let prop in dataByMonth) {
+                if (dataByMonth[prop].length === 2) {
+                  var part = new Part();                  
+                  part.series = [];
+                  // part.name = prop+"";
+                  part.name = this.getMonthName(Number(prop));
+                  for (let data in dataByMonth[prop]) {
+                    var series = new Series();
+                    console.log('data,,,', data);
+                    // dataByMonth[prop][data].total
+                    if (dataByMonth[prop][data].tranType == 0) {
+                      series.name = "+$ In";  
+                    }
+                    else {
+                      series.name = "-$ Out";
+                    }                    
+                    series.value = dataByMonth[prop][data].total;
+
+                    part.series.push(series);
+                  }                  
+                }
+                else {
+                  var part = new Part();                  
+                  part.series = [];
+                  // part.name = prop + "";
+                  part.name = this.getMonthName(Number(prop));
+                  for (let data in dataByMonth[prop]) {
+                    var series = new Series();
+                    if (dataByMonth[prop][data].tranType == 0) {
+                      series.name = "+$ In";  
+                      series.value = dataByMonth[prop][data].total;
+                      part.series.push(series);
+
+                      series = new Series();
+                      series.name = "-$ Out";  
+                      series.value = 0;
+                      part.series.push(series);
+                    }
+                    else {
+                      series.name = "+$ In";  
+                      series.value = 0;
+                      part.series.push(series);
+
+                      series = new Series();
+                      series.name = "-$ Out";
+                      series.value = dataByMonth[prop][data].total;
+                      part.series.push(series);
+                    }    
+                  }
+                }
+                this.chartData.push(part);
+              }
+              console.log('chart data,,,',this.chartData);
+
+
+
+
+
+
+  
+              /*
               this.accountMonthly.forEach((element) => {
                 var part = new Part();
                 var series = new Series();
@@ -217,9 +296,14 @@ export class MonitorAccountMonthlyComponent implements OnInit {
                   this.multiOut.push(part);
                 }
               });
+              */
+              // this.multiInOut = [...this.multiIn, ...this.multiOut];
 
-              this.multiInOut = [...this.multiIn, ...this.multiOut];
+              // console.log(this.multiIn);
+              // console.log(this.multiOut);
+              // console.log(this.multiInOut);
 
+              /*
               const map = new Map();
               this.multiFinal = [];
 
@@ -236,7 +320,8 @@ export class MonitorAccountMonthlyComponent implements OnInit {
                   });
                 }
               }
-              console.log(this.multiFinal);
+              */
+              console.log('check ,,,',this.multiFinal);
               this.selectedBank = this.accountMonthly[0].bankName;
               this.selectedAccount = this.accountMonthly[0].accountNumber + ' [ ' + this.displayAccountType(this.accountMonthly[0].accountType)+' ]';
           
