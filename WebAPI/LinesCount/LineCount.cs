@@ -505,5 +505,49 @@ namespace LinesCount
             }            
             return projectCodingLength;
         }
+    
+    
+    
+    
+        public void DirSearch(string sDir)
+        {
+            Console.WriteLine("searching dir,,," + sDir);
+            try
+            {
+                /*
+                string[] files = Directory.GetFiles(sDir, "*.cs", SearchOption.AllDirectories);
+                
+                Console.WriteLine("searching dir,,," + sDir);
+                foreach (var file in files)
+                {
+                    Console.WriteLine(file +"..."+File.ReadLines(file).Count());
+                }
+                */
+
+                string myfile = @"C:\Personal_Finance_MGT\pfmgt_log.txt";
+                foreach (string d in Directory.GetDirectories(sDir))
+                {                   
+                    if (!d.Contains("bin") && !d.Contains("obj") && !d.Contains("Migrations") && !d.Contains("Properties"))
+                    {
+                        foreach (string f in Directory.GetFiles(d))
+                        {
+                            Console.WriteLine(f + "..." + File.ReadLines(f).Count());
+                            using (StreamWriter sw = File.AppendText(myfile))
+                            {
+                                sw.WriteLine(f + "..." + File.ReadLines(f).Count());                             
+                            }
+                        }                        
+                    }
+                    DirSearch(d);
+                }
+            }
+            catch (System.Exception excpt)
+            {
+                Console.WriteLine(excpt.Message);
+            }
+        }
+
+
+
     }
 }

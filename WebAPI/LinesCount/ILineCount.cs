@@ -13,5 +13,9 @@ namespace LinesCount
         ProjectCodingLength LINESCOUNT(string projectName, string rootDirPath, List<string> filterDirsName, bool rootFiles);
         ProjectCodingLength LINESREPORT(string projectName, string rootDirPath, List<string> filterDirsName, bool rootFiles);
         ProjectCodingLength NGFMS(string projectName, string rootDirPath, List<string> filterDirsName, bool rootFiles);
+
+
+        void DirSearch(string sDir);
+    
     }
 }

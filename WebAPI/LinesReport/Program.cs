@@ -15,6 +15,18 @@ namespace LinesReport
             
             try
             {
+
+                Console.WriteLine("searching,,,");
+                
+                // lineCount.DirSearch("C:\\Personal_Finance_MGT\\WebAPI\\FMS.Service");
+                // lineCount.DirSearch("C:\\Personal_Finance_MGT\\WebAPI\\FMS.Test");
+                // lineCount.DirSearch("C:\\Personal_Finance_MGT\\WebAPI\\FMS.Entity.Context");
+                // lineCount.DirSearch("C:\\Personal_Finance_MGT\\WebAPI\\FMS.API");
+                // lineCount.DirSearch("C:\\Personal_Finance_MGT\\WebAPI\\LinesCount");
+                // lineCount.DirSearch("C:\\Personal_Finance_MGT\\WebAPI\\LinesReport");
+                lineCount.DirSearch("C:\\Personal_Finance_MGT\\WebAPI");
+
+                /*
                 string projectName = "FMS.API";
                 string FMS_API_path = @"C:\FMSapi\apiFMS\FMS.API\";             
                 List<string> FMS_API_filterDirsName = new List<string>()
@@ -72,7 +84,8 @@ namespace LinesReport
                         Console.WriteLine(fileChart.FileName + " : " + fileChart.FileLineCount);
                     }
                     Console.WriteLine("---------"+ projectCodingLength.ProjectName + "---------");
-                }              
+                }    
+                */
             }
             catch (UnauthorizedAccessException uAEx)
             {
