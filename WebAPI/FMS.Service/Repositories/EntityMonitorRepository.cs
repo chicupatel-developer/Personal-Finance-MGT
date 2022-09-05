@@ -31,9 +31,10 @@ namespace FMS.Service.Repositories
                 throw new AccountNotFound("Unknown Bank/Account !");
 
             var accountMonthlyData =
-            (from d in appDbContext.BankTransactions                 
-                .Where(x => x.AccountId == accountMonthlyRequest.AccountId && x.BankId == accountMonthlyRequest.BankId)
-                     group d by new
+            (from d in appDbContext.BankTransactions
+                .Where(x => x.AccountId == accountMonthlyRequest.AccountId && x.BankId == accountMonthlyRequest.BankId && x.TransactionDate.Year==DateTime.Now.Year)
+                // .Where(x => x.AccountId == accountMonthlyRequest.AccountId && x.BankId == accountMonthlyRequest.BankId && x.TransactionDate.Year == 2023)
+             group d by new
                          {                    
                              Year = d.TransactionDate.Year,
                              Month = d.TransactionDate.Month,
