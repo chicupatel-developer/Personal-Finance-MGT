@@ -24,9 +24,10 @@ namespace LinesReport
                 // lineCount.DirSearch("C:\\Personal_Finance_MGT\\WebAPI\\FMS.API");
                 // lineCount.DirSearch("C:\\Personal_Finance_MGT\\WebAPI\\LinesCount");
                 // lineCount.DirSearch("C:\\Personal_Finance_MGT\\WebAPI\\LinesReport");
-                // lineCount.WebAPI_DirFileCount("C:\\Personal_Finance_MGT\\WebAPI");
+                
+                lineCount.WebAPI_DirFileCount("C:\\Personal_Finance_MGT\\WebAPI");
                 // lineCount.React_DirFileCount("C:\\Personal_Finance_MGT\\reactapp-pfm");
-                lineCount.NG_DirFileCount("C:\\Personal_Finance_MGT\\Angular");
+                // lineCount.NG_DirFileCount("C:\\Personal_Finance_MGT\\Angular");
 
 
 

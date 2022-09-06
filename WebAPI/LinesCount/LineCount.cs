@@ -509,6 +509,17 @@ namespace LinesCount
     
     
     
+        public ProjectCodingLength GetCodingLength(string projectName, string sDir)
+        {
+            ProjectCodingLength projectCodingLength = new ProjectCodingLength();
+            projectCodingLength.FileCharts = new List<FileChart>();
+
+            projectCodingLength.ProjectName = projectName;
+
+            WebAPI_DirFileCount(sDir);
+
+            return projectCodingLength;
+        }
         public void WebAPI_DirFileCount(string sDir)
         {
             Console.WriteLine("searching dir,,," + sDir);
@@ -537,9 +548,16 @@ namespace LinesCount
                                                 Lines = File.ReadLines(file).Count()
                                             };
 
+                        List<FileChart> files = new List<FileChart>();
                         foreach (var f in dirFiles)
                         {
+                            files.Add(new FileChart()
+                            {
+                                FileName = f.File,
+                                FileLineCount = f.Lines
+                            });
                             Console.WriteLine(f.File + "..." + File.ReadLines(f.File).Count());
+                            
                             using (StreamWriter sw = File.AppendText(myfile))
                             {
                                 sw.WriteLine(f.File + "..." + File.ReadLines(f.File).Count());
@@ -636,6 +654,52 @@ namespace LinesCount
             }
         }
 
+        public void WebAPI_DirFileCount_(string sDir)
+        {
+            Console.WriteLine("searching dir,,," + sDir);
+            try
+            {
+                List<FileChart> allFiles = new List<FileChart>();
+
+                string myfile = @"C:\Personal_Finance_MGT\webapi_log.txt";
+                foreach (string d in Directory.GetDirectories(sDir))
+                {
+                    if (!d.Contains("bin") && !d.Contains("obj") && !d.Contains("Migrations") && !d.Contains("Properties") && !d.Contains(".vs"))
+                    {
+                        var dirFiles = from file in Directory.EnumerateFiles(d, "*.*")
+                                       .Where(f => f.EndsWith(".cs") || f.EndsWith(".txt") || f.EndsWith(".json"))
+                                       select new
+                                       {
+                                           File = file,
+                                           Lines = File.ReadLines(file).Count()
+                                       };
+
+                        List<FileChart> files = new List<FileChart>();
+                        foreach (var f in dirFiles)
+                        {
+                            files.Add(new FileChart()
+                            {
+                                FileName = f.File,
+                                FileLineCount = f.Lines
+                            });
+                            Console.WriteLine(f.File + "..." + File.ReadLines(f.File).Count());
+
+                            using (StreamWriter sw = File.AppendText(myfile))
+                            {
+                                sw.WriteLine(f.File + "..." + File.ReadLines(f.File).Count());
+                            }
+                        }
+
+                        allFiles.AddRange(files);
+                    }                    
+                    WebAPI_DirFileCount(d);
+                }
+            }
+            catch (System.Exception excpt)
+            {
+                Console.WriteLine(excpt.Message);
+            }
+        }
 
     }
 }
