@@ -15,7 +15,9 @@ namespace LinesCount
         ProjectCodingLength NGFMS(string projectName, string rootDirPath, List<string> filterDirsName, bool rootFiles);
 
 
-        void DirSearch(string sDir);
-    
+        void WebAPI_DirFileCount(string sDir);
+        void React_DirFileCount(string sDir);
+        void NG_DirFileCount(string sDir);
+
     }
 }

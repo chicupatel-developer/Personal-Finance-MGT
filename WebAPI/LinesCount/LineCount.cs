@@ -509,7 +509,7 @@ namespace LinesCount
     
     
     
-        public void DirSearch(string sDir)
+        public void WebAPI_DirFileCount(string sDir)
         {
             Console.WriteLine("searching dir,,," + sDir);
             try
@@ -524,11 +524,29 @@ namespace LinesCount
                 }
                 */
 
-                string myfile = @"C:\Personal_Finance_MGT\pfmgt_log.txt";
+                string myfile = @"C:\Personal_Finance_MGT\webapi_log.txt";
                 foreach (string d in Directory.GetDirectories(sDir))
                 {                   
-                    if (!d.Contains("bin") && !d.Contains("obj") && !d.Contains("Migrations") && !d.Contains("Properties"))
+                    if (!d.Contains("bin") && !d.Contains("obj") && !d.Contains("Migrations") && !d.Contains("Properties") && !d.Contains(".vs"))
                     {
+                        var dirFiles = from file in Directory.EnumerateFiles(d, "*.*")
+                                       .Where(f => f.EndsWith(".cs") || f.EndsWith(".txt") || f.EndsWith(".json"))
+                                            select new
+                                            {
+                                                File = file,
+                                                Lines = File.ReadLines(file).Count()
+                                            };
+
+                        foreach (var f in dirFiles)
+                        {
+                            Console.WriteLine(f.File + "..." + File.ReadLines(f.File).Count());
+                            using (StreamWriter sw = File.AppendText(myfile))
+                            {
+                                sw.WriteLine(f.File + "..." + File.ReadLines(f.File).Count());
+                            }
+                        }
+
+                        /*
                         foreach (string f in Directory.GetFiles(d))
                         {
                             Console.WriteLine(f + "..." + File.ReadLines(f).Count());
@@ -536,9 +554,45 @@ namespace LinesCount
                             {
                                 sw.WriteLine(f + "..." + File.ReadLines(f).Count());                             
                             }
-                        }                        
+                        } 
+                        */
                     }
-                    DirSearch(d);
+                    WebAPI_DirFileCount(d);
+                }
+            }
+            catch (System.Exception excpt)
+            {
+                Console.WriteLine(excpt.Message);
+            }
+        }        
+        public void React_DirFileCount(string sDir)
+        {
+            Console.WriteLine("searching dir,,," + sDir);
+            try
+            {
+                string myfile = @"C:\Personal_Finance_MGT\react_log.txt";
+                foreach (string d in Directory.GetDirectories(sDir))
+                {
+                    if (!d.Contains("public") && !d.Contains("node_modules"))
+                    {
+                        var dirFiles = from file in Directory.EnumerateFiles(d, "*.*")
+                                       .Where(f => (f.EndsWith(".js") || f.EndsWith(".jsx") || f.EndsWith(".css")) && (!(f.Contains("setupTests") || f.Contains("App.test") || f.Contains("reportWebVitals"))))
+                                       select new
+                                       {
+                                           File = file,
+                                           Lines = File.ReadLines(file).Count()
+                                       };
+
+                        foreach (var f in dirFiles)
+                        {
+                            Console.WriteLine(f.File + "..." + File.ReadLines(f.File).Count());
+                            using (StreamWriter sw = File.AppendText(myfile))
+                            {
+                                sw.WriteLine(f.File + "..." + File.ReadLines(f.File).Count());
+                            }
+                        }                      
+                    }
+                    React_DirFileCount(d);
                 }
             }
             catch (System.Exception excpt)
@@ -546,7 +600,41 @@ namespace LinesCount
                 Console.WriteLine(excpt.Message);
             }
         }
+        public void NG_DirFileCount(string sDir)
+        {
+            Console.WriteLine("searching dir,,," + sDir);
+            try
+            {
+                string myfile = @"C:\Personal_Finance_MGT\ng_log.txt";
+                foreach (string d in Directory.GetDirectories(sDir))
+                {
+                    if (!d.Contains("e2e") && !d.Contains("node_modules") && !d.Contains("environments") && !d.Contains("assets"))
+                    {
+                        var dirFiles = from file in Directory.EnumerateFiles(d, "*.*")
+                                       .Where(f => (f.EndsWith(".ts") || f.EndsWith(".html") || f.EndsWith(".css")) && (!(f.Contains(".spec") || f.Contains("test") || f.Contains("polyfills"))))
+                                       select new
+                                       {
+                                           File = file,
+                                           Lines = File.ReadLines(file).Count()
+                                       };
 
+                        foreach (var f in dirFiles)
+                        {
+                            Console.WriteLine(f.File + "..." + File.ReadLines(f.File).Count());
+                            using (StreamWriter sw = File.AppendText(myfile))
+                            {
+                                sw.WriteLine(f.File + "..." + File.ReadLines(f.File).Count());
+                            }
+                        }
+                    }
+                    NG_DirFileCount(d);
+                }
+            }
+            catch (System.Exception excpt)
+            {
+                Console.WriteLine(excpt.Message);
+            }
+        }
 
 
     }
