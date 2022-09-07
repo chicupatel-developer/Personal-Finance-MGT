@@ -13,7 +13,16 @@ const Code_Length_Report = () => {
   useEffect(() => {
     getCodingLengthReport();
   }, []);
-  const getCodingLengthReport = () => {};
+  const getCodingLengthReport = () => {
+    CodingLengthService.getAllProjectCodingLength()
+      .then((response) => {
+        console.log(response.data);
+        setCodeingLengthReport(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   return (
     <div className="container">
