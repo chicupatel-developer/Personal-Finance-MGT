@@ -173,6 +173,10 @@ const Monitor_Account_Monthly = () => {
     let obj = accounts.find((x) => x.accountId === accountId);
     return obj.accountNumber + " - [" + getAccountType(obj.accountType) + "]";
   };
+  const getAccountBalance = (accountId) => {
+    let obj = accounts.find((x) => x.accountId === accountId);
+    return Number(obj.balance);
+  };
   const setField = (field, value) => {
     if (field === "bankId" && value !== "") {
       setBank({
@@ -187,6 +191,7 @@ const Monitor_Account_Monthly = () => {
         ...account,
         accountId: Number(value),
         accountName: getAccountName(Number(value)),
+        currentBalance: getAccountBalance(Number(value)),
       });
     }
 
@@ -338,7 +343,10 @@ const Monitor_Account_Monthly = () => {
                 <h1>{bank.bankName}</h1>
                 {account && account.accountId && account.accountName && (
                   <div>
-                    <h3>{account.accountName} </h3>
+                    <h3>
+                      {account.accountName} - [Current Balance $
+                      {account.currentBalance}]{" "}
+                    </h3>
                     <h4>Total IN +${chartTotalIn}</h4>
                     <h4>Total OUT -${chartTotalOut}</h4>
                   </div>

@@ -24,6 +24,7 @@ import CreditCard_Transaction from "./components/CreditCard_Transaction/CreditCa
 import Account_Payee_Report from "./components/Reports/Account_Payee_Report/Account_Payee_Report";
 import CreditCard_Payee_Report from "./components/Reports/CreditCard_Payee_Report/CreditCard_Payee_Report";
 import Monitor_Account_Monthly from "./components/Monitor_Account_Monthly/Monitor_Account_Monthly";
+import Code_Length_Report from "./components/Code_Length_Report/Code_Length_Report";
 
 function App() {
   return (
@@ -76,6 +77,10 @@ function App() {
             <Route
               path="/account-monitor"
               element={<Monitor_Account_Monthly />}
+            />
+            <Route
+              path="/code-length-report"
+              element={<Code_Length_Report />}
             />
             <Route path="*" element={<NotFound />} />
           </Routes>

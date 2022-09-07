@@ -4,3 +4,10 @@
     font-size: xx-large;
     font-weight: bold;
 }
+
+.plusTran {
+    color: green;
+}
+.minusTran { 
+    color: red;
+}

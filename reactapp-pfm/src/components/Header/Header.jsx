@@ -56,6 +56,10 @@ const Header = () => {
               <i className="bi bi-bar-chart-line-fill"></i>
               Account-Monitor
             </Link>
+            <Link to={"/code-length-report"} className="nav-link">
+              <i className="bi bi-file-code-fill"></i>
+              Coding-Report
+            </Link>
           </Nav>
         </Navbar.Collapse>
         {/*

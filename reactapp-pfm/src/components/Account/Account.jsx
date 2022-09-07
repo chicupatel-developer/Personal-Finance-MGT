@@ -16,7 +16,7 @@ import {
   getAccountColor,
 } from "../../services/local.service";
 
-const Payee = () => {
+const Account = () => {
   let navigate = useNavigate();
 
   const [accounts, setAccounts] = useState([]);
@@ -153,4 +153,4 @@ const Payee = () => {
   );
 };
 
-export default Payee;
+export default Account;

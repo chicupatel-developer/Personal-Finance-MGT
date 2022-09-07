@@ -38,10 +38,19 @@ const Transactions = ({ myTransactions }) => {
   const displayAmount = (cell, row) => {
     return (
       <div>
-        <span>
-          {getAmountSign(row.transactionType)}&nbsp;
-          {cell}
-        </span>
+        {row.transactionType === 0 && (
+          <div className="plusTran">
+            {getAmountSign(row.transactionType)}&nbsp;
+            {cell}
+          </div>
+        )}
+
+        {row.transactionType === 1 && (
+          <div className="minusTran">
+            {getAmountSign(row.transactionType)}&nbsp;
+            {cell}
+          </div>
+        )}
       </div>
     );
   };
@@ -104,7 +113,7 @@ const Transactions = ({ myTransactions }) => {
           keyField="bankTransactionId"
           data={myTransactions}
           columns={columns}
-          pagination={paginationFactory({ sizePerPage: 5 })}
+          pagination={paginationFactory({ sizePerPage: 50 })}
           filter={filterFactory()}
         />
       ) : (
