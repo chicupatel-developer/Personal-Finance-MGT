@@ -26,68 +26,14 @@ namespace FMS.API.Controllers
             List<ProjectCodingLength> listProjectCodingLength = new List<ProjectCodingLength>();
             try
             {
-                // Test Project
-                string projectName = "FMS.Test";
-                string FMS_Test_path = @"C:\FMSapi\apiFMS\FMS.Test\";
-                List<string> FMS_Test_filterDirsName = new List<string>()
-                {
-                    "obj","Properties","bin"
-                };
-                listProjectCodingLength.Add(_lineCount.FMS_Test(projectName, FMS_Test_path, FMS_Test_filterDirsName, true));
+                List<string> dirs = _lineCount.GetDirs("C:\\Personal_Finance_MGT\\WebAPI");
+                listProjectCodingLength.Add(_lineCount.WebAPI_Report(dirs, "WebAPI"));
 
+                dirs = _lineCount.GetDirs("C:\\Personal_Finance_MGT\\reactapp-pfm");
+                listProjectCodingLength.Add(_lineCount.React_Report(dirs, "React"));
 
-                projectName = "FMS.API";
-                string FMS_API_path = @"C:\FMSapi\apiFMS\FMS.API\";
-                List<string> FMS_API_filterDirsName = new List<string>()
-                {
-                    "obj","Properties","bin"
-                };
-                listProjectCodingLength.Add(_lineCount.FMS_API(projectName, FMS_API_path, FMS_API_filterDirsName, true));
-
-
-                projectName = " FMS.ENTITY.CONTEXT";
-                string FMS_ENTITY_CONTEXT_path = @"C:\FMSapi\apiFMS\FMS.ENTITY.CONTEXT\";
-                List<string> FMS_ENTITY_CONTEXT_filterDirsName = new List<string>()
-                {
-                    "obj","Migrations","bin"
-                };
-                listProjectCodingLength.Add(_lineCount.FMS_ENTITY_CONTEXT(projectName, FMS_ENTITY_CONTEXT_path, FMS_ENTITY_CONTEXT_filterDirsName, true));
-
-
-                projectName = "FMS.SERVICE";
-                string FMS_SERVICE_path = @"C:\FMSapi\apiFMS\FMS.SERVICE\";
-                List<string> FMS_SERVICE_filterDirsName = new List<string>()
-                {
-                    "obj","bin"
-                };
-                listProjectCodingLength.Add(_lineCount.FMS_SERVICE(projectName, FMS_SERVICE_path, FMS_SERVICE_filterDirsName, true));
-
-
-                projectName = "LINESCOUNT";
-                string LINESCOUNT_path = @"C:\FMSapi\apiFMS\LINESCOUNT\";
-                List<string> LINESCOUNT_filterDirsName = new List<string>()
-                {
-                    "obj","bin"
-                };
-                listProjectCodingLength.Add(_lineCount.LINESCOUNT(projectName, LINESCOUNT_path, LINESCOUNT_filterDirsName, true));
-
-
-                projectName = "LINESREPORT";
-                string LINESREPORT_path = @"C:\FMSapi\apiFMS\LINESREPORT\";
-                List<string> LINESREPORT_filterDirsName = new List<string>()
-                {
-                    "obj","bin"
-                };
-                listProjectCodingLength.Add(_lineCount.LINESREPORT(projectName, LINESREPORT_path, LINESREPORT_filterDirsName, true));
-
-
-                projectName = "NGFMS";
-                string NGFMS_path = @"C:\FMSng\ngFMS\";
-                List<string> NGFMS_filterDirsName = new List<string>()
-                {
-                    "node_modules","e2e"
-                };
-                listProjectCodingLength.Add(_lineCount.NGFMS(projectName, NGFMS_path, NGFMS_filterDirsName, true));
+                dirs = _lineCount.GetDirs("C:\\Personal_Finance_MGT\\Angular");
+                listProjectCodingLength.Add(_lineCount.Angular_Report(dirs, "Angular"));
 
                 return Ok(listProjectCodingLength);
             }

@@ -31,4 +31,3 @@ C:\Personal_Finance_MGT\WebAPI\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.Ass
 C:\Personal_Finance_MGT\WebAPI\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.csproj.CoreCompileInputs.cache
 C:\Personal_Finance_MGT\WebAPI\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.dll
 C:\Personal_Finance_MGT\WebAPI\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.pdb
-C:\Personal_Finance_MGT\WebAPI\LinesCount\obj\Debug\netcoreapp3.1\LinesCount.csproj.AssemblyReference.cache
