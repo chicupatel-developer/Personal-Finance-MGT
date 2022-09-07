@@ -120,6 +120,13 @@ Technology
 ![Monthly-Account-Monitor-Chart](https://user-images.githubusercontent.com/26190114/130497211-31294883-be5d-4299-8c45-99fa7e2784e8.PNG)
 
 
+![Coding-Length-1](https://user-images.githubusercontent.com/26190114/188976908-c7b1ffa6-092c-44e4-87e8-eb73759bbe4a.PNG)
+
+![Coding-Length-2](https://user-images.githubusercontent.com/26190114/188976934-7e2b6038-a51a-48f4-9d94-c80083076447.PNG)
+
+![Coding-Length-3](https://user-images.githubusercontent.com/26190114/188976951-06b2753b-4320-4fab-b292-764def45d6ae.PNG)
+
+![Coding-Length-4](https://user-images.githubusercontent.com/26190114/188976969-d086a1e4-bb99-45ff-af87-83c5779d83f0.PNG)
 
 
 DB Tables
