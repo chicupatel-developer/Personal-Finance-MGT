@@ -8,7 +8,7 @@ import Button from "react-bootstrap/Button";
 const Code_Length_Report = () => {
   let navigate = useNavigate();
 
-  const [codeingLengthReport, setCodeingLengthReport] = useState([]);
+  const [codingLengthReport, setCodingLengthReport] = useState([]);
 
   useEffect(() => {
     getCodingLengthReport();
@@ -17,11 +17,43 @@ const Code_Length_Report = () => {
     CodingLengthService.getAllProjectCodingLength()
       .then((response) => {
         console.log(response.data);
-        setCodeingLengthReport(response.data);
+        setCodingLengthReport(response.data);
       })
       .catch((e) => {
         console.log(e);
       });
+  };
+
+  const displayProjectDetails = (reportData) => {
+    return reportData.map((dt, i) => {
+      return (
+        <div value={i} key={i}>
+          <div className="row">
+            <div className="col-md-2 mx-auto">
+              <h3>{dt.projectName}</h3>
+            </div>
+            <div className="col-md-10 mx-auto">
+              {displayFileDetails(dt.fileCharts)}
+            </div>
+            <p></p>
+            <hr />
+          </div>
+        </div>
+      );
+    });
+  };
+
+  const displayFileDetails = (fileCharts) => {
+    return fileCharts.map((dt, i) => {
+      return (
+        <div value={i} key={i}>
+          <div className="row">
+            <div className="col-md-10 mx-auto">{dt.fileName}</div>
+            <div className="col-md-2 mx-auto">{dt.fileLineCount}</div>
+          </div>
+        </div>
+      );
+    });
   };
 
   return (
@@ -29,9 +61,19 @@ const Code_Length_Report = () => {
       <div className="mainHeader">Coding Report</div>
       <hr />
       <div className="row">
-        <div className="col-md-2 mx-auto"></div>
-        <div className="col-md-8 mx-auto"></div>
-        <div className="col-md-2 mx-auto"></div>
+        <div className="col-md-12 mx-auto">
+          <div className="row">
+            <div className="col-md-2 mx-auto">
+              <h3>Project</h3>
+            </div>
+            <div className="col-md-10 mx-auto">
+              <h3>Files-Coding-Length</h3>
+            </div>
+          </div>
+          <hr />
+
+          <div>{displayProjectDetails(codingLengthReport)}</div>
+        </div>
       </div>
     </div>
   );
