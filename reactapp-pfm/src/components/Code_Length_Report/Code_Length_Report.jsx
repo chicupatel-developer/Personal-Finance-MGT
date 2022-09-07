@@ -13,15 +13,42 @@ const Code_Length_Report = () => {
   useEffect(() => {
     getCodingLengthReport();
   }, []);
+
+  const updateState = (data) => {
+    const newState = data.map((obj) => {
+      var total = 0;
+      obj.fileCharts.map((fileData, index) => {
+        total += Number(fileData.fileLineCount);
+      });
+      return { ...obj, totalCodingByProject: total };
+    });
+    setCodingLengthReport(newState);
+  };
+
   const getCodingLengthReport = () => {
     CodingLengthService.getAllProjectCodingLength()
       .then((response) => {
         console.log(response.data);
         setCodingLengthReport(response.data);
+
+        var codingReportData = [...response.data];
+        updateState(codingReportData);
       })
       .catch((e) => {
         console.log(e);
       });
+  };
+
+  const displayTotalCodingForProject = (totalCodingByProject) => {
+    return (
+      <div className="row">
+        <div className="col-md-8 mx-auto"></div>
+        <div className="col-md-3 mx-auto projectFooter">
+          Total Line of Coding # {totalCodingByProject}
+        </div>
+        <div className="col-md-1 mx-auto"></div>
+      </div>
+    );
   };
 
   const displayProjectDetails = (reportData) => {
@@ -35,6 +62,8 @@ const Code_Length_Report = () => {
             <div className="col-md-10 mx-auto">
               {displayFileDetails(dt.fileCharts)}
             </div>
+            <p></p>
+            {displayTotalCodingForProject(dt.totalCodingByProject)}
             <p></p>
             <hr />
           </div>
@@ -62,6 +91,13 @@ const Code_Length_Report = () => {
       <hr />
       <div className="row">
         <div className="col-md-12 mx-auto">
+          <div className="projectHeader">
+            Total Coding By Lines of All Projects #{" "}
+            {codingLengthReport.reduce(
+              (total, item) => total + item.totalCodingByProject,
+              0
+            )}
+          </div>
           <div className="row">
             <div className="col-md-2 mx-auto">
               <h3>Project</h3>

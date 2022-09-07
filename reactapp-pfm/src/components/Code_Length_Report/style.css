@@ -3,6 +3,27 @@
     color: darkolivegreen;
     font-size: xx-large;
     font-weight: bold;
-
 }
 
+.projectFooter{
+    text-align: right;
+    vertical-align: middle;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border: 2px solid green;
+    border-radius: 10px;
+    background-color: lightskyblue;
+    font-size: large;
+}
+
+.projectHeader{
+    text-align: center;
+    vertical-align: middle;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border: 2px solid red;
+    border-radius: 10px;
+    background-color: lightcoral;
+    font-size: xx-large;
+    margin: 30px;
+}
